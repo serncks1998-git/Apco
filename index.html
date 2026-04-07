@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APCO | Ads & Sales Report</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+<style>
+:root{
+  --bg:#f0f2f7; --sidebar:#1a1f36; --card:#fff; --border:#e4e8f1;
+  --text:#1a1f36; --text2:#6b7694; --text3:#a0abc8;
+  --accent:#4f6ef7; --pos:#2db67d; --neg:#e6533c;
+  --bim:#3b82f6; --liv:#ef4444; --mylife:#10b981; --cancino:#f59e0b;
+  --fb:#1877f2; --google:#ea4335; --line:#06c755;
+  --r:10px; --gap:14px; --sw:196px; --th:52px; --mh:46px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);font-size:13px;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── TOP HEADER ── */
+.topbar{height:var(--th);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.logo{font-size:15px;font-weight:800;color:var(--text);}
+.logo span{color:var(--accent);}
+.report-lbl{font-size:12px;color:var(--text2);padding-left:14px;border-left:1px solid var(--border);}
+.spacer{flex:1;}
+.updated{font-size:11px;color:var(--text3);}
+
+/* ── MONTH TABS ── */
+.monthtabs{height:var(--mh);background:var(--sidebar);display:flex;align-items:center;padding:0 16px;gap:4px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+.monthtabs::-webkit-scrollbar{display:none;}
+.mtab{padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.45);border:1px solid transparent;white-space:nowrap;transition:all .15s;}
+.mtab:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.08);}
+.mtab.active{color:#fff;background:var(--accent);border-color:var(--accent);}
+.mtab.future{color:rgba(255,255,255,.25);cursor:default;font-style:italic;}
+
+/* ── BODY LAYOUT ── */
+.body{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sw);background:var(--sidebar);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;flex-shrink:0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;}
+.sb-section{padding:14px 12px 4px;}
+.sb-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 6px;margin-bottom:6px;}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 12px;}
+.nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.5);font-size:12px;font-weight:500;transition:all .12s;margin-bottom:2px;}
+.nav:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.nav.active{background:rgba(255,255,255,.13);color:#fff;font-weight:700;}
+.ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ndot.all{background:linear-gradient(135deg,#4f6ef7,#a855f7);}
+.ndot.bim{background:var(--bim);}
+.ndot.liv{background:var(--liv);}
+.ndot.mylife{background:var(--mylife);}
+.ndot.cancino{background:var(--cancino);}
+.sb-stat{background:rgba(255,255,255,.05);border-radius:8px;padding:10px 11px;margin:3px 0;}
+.ss-lbl{font-size:10px;color:rgba(255,255,255,.32);margin-bottom:1px;}
+.ss-val{font-size:16px;font-weight:800;color:#fff;}
+.ss-sub{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px;}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;overflow-x:hidden;padding:var(--gap);display:flex;flex-direction:column;gap:var(--gap);scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+
+/* ── SECTION HEAD ── */
+.sh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.sh::after{content:'';flex:1;height:1px;background:var(--border);}
+.pbadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.pbadge.fb{background:#e7f0ff;color:#1877f2;}
+.pbadge.google{background:#fde8e8;color:#ea4335;}
+.pbadge.line{background:#e0faf0;color:#059669;}
+
+/* ── AD COST ROW ── */
+.adrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:var(--gap);}
+.acard{background:var(--card);border-radius:var(--r);padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.06);position:relative;overflow:hidden;}
+.acard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.acard.total::before{background:#8b5cf6;}
+.acard.bim::before{background:var(--bim);}
+.acard.liv::before{background:var(--liv);}
+.acard.mylife::before{background:var(--mylife);}
+.acard.cancino::before{background:var(--cancino);}
+.ac-lbl{font-size:10px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.ac-val{font-size:19px;font-weight:800;margin:3px 0 4px;}
+.ac-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.atag{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 6px;border-radius:20px;font-weight:600;}
+.atag.fb{background:#e7f0ff;color:#1877f2;}
+.atag.google{background:#fde8e8;color:#ea4335;}
+.atag.line{background:#e0faf0;color:#059669;}
+.roas-pill{position:absolute;right:11px;top:13px;font-size:11px;font-weight:700;background:var(--bg);border-radius:20px;padding:2px 8px;color:var(--pos);}
+
+/* ── KPI ROW ── */
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--gap);}
+.kcard{background:var(--card);border-radius:var(--r);padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:3px solid transparent;}
+.kcard.total{border-top-color:#8b5cf6;}
+.kcard.bim{border-top-color:var(--bim);}
+.kcard.liv{border-top-color:var(--liv);}
+.kcard.mylife{border-top-color:var(--mylife);}
+.kcard.cancino{border-top-color:var(--cancino);}
+.kc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text2);}
+.kc-val{font-size:20px;font-weight:800;margin:3px 0 2px;}
+.kc-sub{font-size:10px;color:var(--text2);line-height:1.6;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:var(--gap);}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--gap);}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--gap);}
+.card{background:var(--card);border-radius:var(--r);padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.ct{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.card canvas{max-height:230px;}
+
+/* ── PLATFORM STAT GRID ── */
+.pstat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px;}
+.pstat{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.pst-lbl{font-size:10px;color:var(--text2);margin-bottom:2px;}
+.pst-val{font-size:17px;font-weight:800;}
+.pst-sub{font-size:10px;color:var(--text2);margin-top:1px;}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto;}
+table.t{width:100%;border-collapse:collapse;font-size:12px;}
+table.t thead th{padding:7px 10px;border-bottom:2px solid var(--border);font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;text-align:left;}
+table.t thead th.r{text-align:right;}
+table.t tbody td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+table.t tbody td.r{text-align:right;}
+table.t tbody tr:last-child td{border-bottom:none;}
+table.t tbody tr:hover{background:#f8faff;}
+table.t tfoot td{padding:7px 10px;font-weight:700;border-top:2px solid var(--border);background:#f8faff;}
+table.t tfoot td.r{text-align:right;}
+.rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--bg);font-size:10px;font-weight:700;color:var(--text2);flex-shrink:0;}
+.rank.top3{background:#fef3c7;color:#92400e;}
+.ad-name{max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kw-name{max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-cell{display:flex;align-items:center;gap:6px;}
+.mini-bar{height:6px;border-radius:3px;background:var(--bim);opacity:.7;min-width:2px;}
+.dot8{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.dot8.bim{background:var(--bim);}
+.dot8.liv{background:var(--liv);}
+.dot8.mylife{background:var(--mylife);}
+.dot8.cancino{background:var(--cancino);}
+.bc{display:flex;align-items:center;gap:7px;}
+
+/* ── SUMMARY TABLE ── */
+table.st{width:100%;border-collapse:collapse;font-size:11.5px;}
+table.st thead th{padding:8px 10px;border-bottom:2px solid var(--border);font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;text-align:right;}
+table.st thead th:first-child{text-align:left;}
+table.st tbody td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:right;}
+table.st tbody td:first-child{text-align:left;}
+table.st tbody tr:hover{background:var(--bg);}
+table.st tfoot td{padding:8px 10px;font-weight:700;border-top:2px solid var(--border);background:#f8faff;text-align:right;}
+table.st tfoot td:first-child{text-align:left;}
+
+/* ── FOOTER ── */
+.footer{font-size:10px;color:var(--text3);text-align:center;padding:8px;}
+
+@media(max-width:900px){.sidebar{display:none;}.g2,.g3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">AO<span>MEDIA</span></div>
+  <div class="report-lbl">Ads &amp; Sales Report</div>
+  <div class="spacer"></div>
+  <div class="updated">Updated: 6 April 2026</div>
+</header>
+
+<nav class="monthtabs">
+  <div class="mtab active" onclick="setMonth(this)">มีนาคม 2026</div>
+  <div class="mtab future">เมษายน 2026</div>
+  <div class="mtab future">พฤษภาคม 2026</div>
+</nav>
+
+<div class="body">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">สินค้า</div>
+      <div class="nav active" id="nav-all"      onclick="setFilter('all',this)"><span class="ndot all"></span>ทุกสินค้า</div>
+      <div class="nav"        id="nav-BIM-C"    onclick="setFilter('BIM-C',this)"><span class="ndot bim"></span>BIM-C</div>
+      <div class="nav"        id="nav-LIV"      onclick="setFilter('LIV',this)"><span class="ndot liv"></span>LIV</div>
+      <div class="nav"        id="nav-Mylife100" onclick="setFilter('Mylife100',this)"><span class="ndot mylife"></span>Mylife100</div>
+      <div class="nav"        id="nav-Cancino"  onclick="setFilter('Cancino',this)"><span class="ndot cancino"></span>Cancino</div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Quick Stats</div>
+      <div class="sb-stat"><div class="ss-lbl">Total Revenue</div><div class="ss-val" id="qs-rev">-</div><div class="ss-sub">มีนาคม 2026</div></div>
+      <div class="sb-stat"><div class="ss-lbl">Total Ad Spend</div><div class="ss-val" id="qs-spend">-</div><div class="ss-sub" id="qs-roas">-</div></div>
+      <div class="sb-stat"><div class="ss-lbl">New Customers</div><div class="ss-val" id="qs-new">-</div><div class="ss-sub" id="qs-old">-</div></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+    <!-- rendered by JS -->
+  </main>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════
+const P = ['BIM-C','LIV','Mylife100','Cancino'];
+const C = {'BIM-C':'#3b82f6','LIV':'#ef4444','Mylife100':'#10b981','Cancino':'#f59e0b'};
+const CL= {'BIM-C':'bim','LIV':'liv','Mylife100':'mylife','Cancino':'cancino'};
+
+const SALES={
+  'BIM-C':    {rev:3632922,old_rev:3116072,new_rev:516851,old_cnt:532,new_cnt:108,fb_rev:80019, line_rev:341399,other_rev:95433, spend:589586, sp_fb:440538,sp_g:124034,sp_l:25014, roas:6.16},
+  'LIV':      {rev:2384723,old_rev:2278938,new_rev:105785,old_cnt:569,new_cnt:27, fb_rev:11673, line_rev:62075, other_rev:32037, spend:199897, sp_fb:120148,sp_g:39517, sp_l:40232, roas:11.93},
+  'Mylife100':{rev:3103271,old_rev:2053738,new_rev:1049533,old_cnt:308,new_cnt:175,fb_rev:257009,line_rev:266748,other_rev:525776,spend:379530, sp_fb:310368,sp_g:39382, sp_l:29780, roas:8.17},
+  'Cancino':  {rev:486045, old_rev:371792, new_rev:114252, old_cnt:99, new_cnt:46, fb_rev:63000, line_rev:42000, other_rev:9252,  spend:30014,  sp_fb:30014, sp_g:0,     sp_l:0,    roas:16.19},
+};
+const FB={
+  'BIM-C':    {spend:440538,impr:2857629,reach:1303302,msg:2752,pur:58},
+  'LIV':      {spend:120148,impr:1336692,reach:620721, msg:1369,pur:52},
+  'Mylife100':{spend:310368,impr:1680381,reach:964747, msg:2753,pur:145},
+  'Cancino':  {spend:30014, impr:136938, reach:44166,  msg:221, pur:11},
+};
+const GG={
+  'BIM-C':    {cost:124034,clicks:12181,conv:698},
+  'LIV':      {cost:39517, clicks:3377, conv:48},
+  'Mylife100':{cost:39382, clicks:4268, conv:181},
+  'Cancino':  {cost:0,     clicks:0,    conv:0},
+};
+const LN={
+  'BIM-C':    {cost:25014, reach:763514,  impr:1524119,clicks:2764},
+  'LIV':      {cost:40232, reach:1857822, impr:3221780,clicks:5839},
+  'Mylife100':{cost:29780, reach:1062321, impr:1831582,clicks:3661},
+  'Cancino':  {cost:0,     reach:0,       impr:0,      clicks:0},
+};
+const DAILY={
+  'BIM-C':   [11201,162011,9925,176741,177164,115196,154907,22318,243066,179954,89221,128592,129828,87184,14636,157950,109100,109600,123442,135195,60932,16991,140032,155100,80906,78646,121370,101685,19803,164600,355627],
+  'LIV':     [4206,66230,13551,152214,86557,142965,70090,6156,97757,84037,88156,84903,74975,94931,8645,111417,104715,100015,85336,109797,54507,4673,103941,76776,69046,123887,61819,43757,900,139357,119407],
+  'Mylife100':[82710,122897,0,141589,101869,67290,160748,94393,107009,126636,128972,106542,95327,68692,88785,121028,68692,142056,88785,77103,107477,67290,103271,136449,129907,64019,51869,96729,114019,123364,117757],
+  'Cancino': [0,22346,0,28506,35439,729,23383,0,36477,6757,23295,10598,2495,4292,0,19963,7794,14972,5299,8743,7065,0,20647,17664,11992,16626,15701,22963,1766,39280,81252],
+};
+const DAYS = Array.from({length:31},(_,i)=>`${String(i+1).padStart(2,'0')}`);
+
+// FB Top 5 Ads
+const FB_TOP5={
+  'BIM-C':[
+    {ad:'11 พ.ย. 68 ตรวจพบถุงน้ำที่เต้านม ไม่ใช่ #เนื้อร้าย',spend:25243,impr:74461,reach:32895,msg:128,pur:4},
+    {ad:'26 พ.ย. 68 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell',spend:19583,impr:101726,reach:30166,msg:78,pur:11},
+    {ad:'16 ม.ค. 69 ยิ่งสูงวัย ยิ่งเสี่ยงเนื้อร้าย มากขึ้น',spend:19132,impr:182168,reach:75028,msg:178,pur:2},
+    {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต',spend:18222,impr:123488,reach:46402,msg:148,pur:12},
+    {ad:'30 ม.ค. 69 ภูมิคุ้มกันที่ดี คือเกราะป้องกันเนื้อร้าย',spend:17966,impr:41302,reach:20631,msg:86,pur:6},
+  ],
+  'LIV':[
+    {ad:'19 ก.พ. 69 เมื่อชีวิตต้องเจอกับ HIV',spend:12664,impr:167198,reach:98621,msg:207,pur:7},
+    {ad:'4 มี.ค. 68 จัดการเซลติดเชื้อ reel',spend:11878,impr:92629,reach:23619,msg:100,pur:7},
+    {ad:'9 ม.ค. 69 วินัย คือจุดเริ่มต้น',spend:8677,impr:93559,reach:50413,msg:83,pur:4},
+    {ad:'27 ต.ค. 68 คุณปีเตอร์ เป็น AIDS',spend:7046,impr:71356,reach:32276,msg:48,pur:4},
+    {ad:'4 ก.พ. 69 คุณแพทไม่ปล่อยให้ HIV',spend:5677,impr:86294,reach:49951,msg:49,pur:4},
+  ],
+  'Mylife100':[
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (A)',spend:26026,impr:98997,reach:63553,msg:366,pur:1},
+    {ad:'27 มิ.ย. 68 ไม่มีใครอยากแก่',spend:15146,impr:32958,reach:15032,msg:150,pur:7},
+    {ad:'11 ก.ย. 68 เปิดใจครั้งแรก',spend:15100,impr:55023,reach:31955,msg:168,pur:2},
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (B)',spend:14183,impr:54289,reach:37634,msg:204,pur:3},
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (C)',spend:13947,impr:60114,reach:42319,msg:183,pur:2},
+  ],
+  'Cancino':[
+    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง (A)',spend:6606,impr:24914,reach:10428,msg:52,pur:2},
+    {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',spend:6420,impr:39266,reach:14072,msg:39,pur:2},
+    {ad:'24 ต.ค. 68 เป็น #ก้อนเนื้อเต้านม ใช้ #มังคุดเสริมฤทธิ์',spend:5854,impr:19007,reach:6935,msg:57,pur:1},
+    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง (B)',spend:2585,impr:20633,reach:8371,msg:18,pur:1},
+    {ad:'19 ม.ค. 69 ดูแลสุขภาพ...ให้แข็งแรง',spend:2478,impr:9350,reach:3406,msg:17,pur:3},
+  ],
+};
+
+// Google Top 10 Keywords
+const GG_KW={
+  'BIM-C':[
+    {kw:'ภูมิคุ้มกัน บำบัด ราคา',clicks:1818,conv:73,impr:4746},
+    {kw:'รักษา มะเร็ง',clicks:1387,conv:78,impr:29081},
+    {kw:'มังคุด สกัด',clicks:437,conv:29,impr:2211},
+    {kw:'มะเร็ง ปอด',clicks:419,conv:6,impr:4641},
+    {kw:'มะเร็ง เต้านม',clicks:368,conv:25,impr:4735},
+    {kw:'ภูมิสมดุล มะเร็ง',clicks:289,conv:22,impr:1779},
+    {kw:'น้ำมังคุด bim',clicks:274,conv:16,impr:1219},
+    {kw:'มะเร็ง เม็ดเลือดขาว',clicks:214,conv:10,impr:1962},
+    {kw:'ภูมิคุ้มกัน บำบัด',clicks:146,conv:14,impr:1216},
+    {kw:'ประโยชน์ของน้ำมังคุด',clicks:135,conv:12,impr:849},
+  ],
+  'LIV':[
+    {kw:'เพิ่ม cd4',clicks:2660,conv:44,impr:17373},
+    {kw:'hiv อาการ',clicks:69,conv:0,impr:993},
+    {kw:'ยาต้าน hiv',clicks:39,conv:1,impr:385},
+    {kw:'โรคเอดส์',clicks:17,conv:0,impr:47},
+    {kw:'รักษา hiv',clicks:8,conv:0,impr:167},
+    {kw:'ยาต้าน เอดส์',clicks:2,conv:0,impr:72},
+    {kw:'ไวรัส ยาต้าน',clicks:2,conv:0,impr:99},
+    {kw:'ยารักษาโรคเอดส์',clicks:1,conv:0,impr:4},
+  ],
+  'Mylife100':[
+    {kw:'telomere',clicks:0,conv:30,impr:8740,cost:4195},
+    {kw:'ความเสื่อมของร่างกาย',clicks:0,conv:18,impr:3843,cost:5451},
+    {kw:'ชะลอวัย',clicks:0,conv:10,impr:3978,cost:2381},
+    {kw:'ริ้ว รอย',clicks:0,conv:6,impr:2910,cost:1680},
+    {kw:'Telomere คือ',clicks:0,conv:7,impr:2609,cost:2525},
+    {kw:'age skin care',clicks:0,conv:5,impr:2452,cost:3092},
+    {kw:'antiaging',clicks:0,conv:19,impr:1938,cost:2542},
+    {kw:'เทโลเมีย',clicks:0,conv:14,impr:1526,cost:2096},
+    {kw:'anti wrinkle treatment',clicks:0,conv:8,impr:1265,cost:1416},
+    {kw:'ยาแก้วัยทอง',clicks:0,conv:7,impr:776,cost:1977},
+  ],
+  'Cancino':[],
+};
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let filter='all';
+const charts={};
+
+// ════════════════════════════════════════════════
+// FORMAT
+// ════════════════════════════════════════════════
+const fmtM=n=>!n?'฿0':n>=1e6?'฿'+(n/1e6).toFixed(2)+'M':n>=1e3?'฿'+(n/1e3).toFixed(1)+'K':'฿'+Math.round(n).toLocaleString();
+const fmtN=n=>!n?'0':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.round(n).toLocaleString();
+const fmtF=n=>'฿'+Math.round(n||0).toLocaleString('th-TH');
+const vp=()=>filter==='all'?P:[filter];
+
+// ════════════════════════════════════════════════
+// SIDEBAR NAV
+// ════════════════════════════════════════════════
+function setFilter(v,el){
+  filter=v;
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  renderAll();
+}
+function setMonth(el){
+  document.querySelectorAll('.mtab:not(.future)').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ════════════════════════════════════════════════
+// SIDEBAR STATS
+// ════════════════════════════════════════════════
+function renderSbStats(){
+  const ps=vp();
+  const tRev=ps.reduce((s,p)=>s+SALES[p].rev,0);
+  const tSpend=ps.reduce((s,p)=>s+SALES[p].spend,0);
+  const tNew=ps.reduce((s,p)=>s+SALES[p].new_cnt,0);
+  const tOld=ps.reduce((s,p)=>s+SALES[p].old_cnt,0);
+  document.getElementById('qs-rev').textContent=fmtM(tRev);
+  document.getElementById('qs-spend').textContent=fmtM(tSpend);
+  document.getElementById('qs-roas').textContent=`ROAS ${(tRev/tSpend).toFixed(2)}x`;
+  document.getElementById('qs-new').textContent=tNew.toLocaleString();
+  document.getElementById('qs-old').textContent=`Returning: ${tOld.toLocaleString()} คน`;
+}
+
+// ════════════════════════════════════════════════
+// CHART HELPERS
+// ════════════════════════════════════════════════
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+const bOpts={responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:10}}}}};
+
+// ════════════════════════════════════════════════
+// BUILD AD COST CARDS HTML
+// ════════════════════════════════════════════════
+function adCostHTML(){
+  const ps=vp();
+  const tRev=ps.reduce((s,p)=>s+SALES[p].rev,0);
+  const tSp=ps.reduce((s,p)=>s+SALES[p].spend,0);
+  const tFb=ps.reduce((s,p)=>s+SALES[p].sp_fb,0);
+  const tG=ps.reduce((s,p)=>s+SALES[p].sp_g,0);
+  const tL=ps.reduce((s,p)=>s+SALES[p].sp_l,0);
+  let h=`<div class="acard total">
+    <div class="ac-lbl">💰 Total Ad Spend</div>
+    <div class="ac-val">${fmtM(tSp)}</div>
+    <div class="ac-tags">
+      <span class="atag fb">FB ${fmtN(tFb)}</span>
+      <span class="atag google">G ${fmtN(tG)}</span>
+      ${tL>0?`<span class="atag line">LINE ${fmtN(tL)}</span>`:''}
+    </div>
+    <div class="roas-pill">${(tRev/tSp).toFixed(2)}x</div>
+  </div>`;
+  P.filter(p=>ps.includes(p)).forEach(p=>{
+    const s=SALES[p];
+    h+=`<div class="acard ${CL[p]}">
+      <div class="ac-lbl">${p}</div>
+      <div class="ac-val">${fmtM(s.spend)}</div>
+      <div class="ac-tags">
+        ${s.sp_fb>0?`<span class="atag fb">${fmtN(s.sp_fb)}</span>`:''}
+        ${s.sp_g>0?`<span class="atag google">${fmtN(s.sp_g)}</span>`:''}
+        ${s.sp_l>0?`<span class="atag line">${fmtN(s.sp_l)}</span>`:''}
+      </div>
+      <div class="roas-pill">${s.roas}x</div>
+    </div>`;
+  });
+  return h;
+}
+
+// ════════════════════════════════════════════════
+// BUILD KPI CARDS HTML
+// ════════════════════════════════════════════════
+function kpiHTML(){
+  const ps=vp();
+  const tRev=ps.reduce((s,p)=>s+SALES[p].rev,0);
+  const tOld=ps.reduce((s,p)=>s+SALES[p].old_cnt,0);
+  const tNew=ps.reduce((s,p)=>s+SALES[p].new_cnt,0);
+  let h=`<div class="kcard total">
+    <div class="kc-lbl">🏆 รวมทุกสินค้า</div>
+    <div class="kc-val">${fmtM(tRev)}</div>
+    <div class="kc-sub">ลค.เก่า ${tOld} คน | ${fmtM(ps.reduce((s,p)=>s+SALES[p].old_rev,0))}<br>ลค.ใหม่ ${tNew} คน | ${fmtM(ps.reduce((s,p)=>s+SALES[p].new_rev,0))}</div>
+  </div>`;
+  P.filter(p=>ps.includes(p)).forEach(p=>{
+    const s=SALES[p];
+    h+=`<div class="kcard ${CL[p]}">
+      <div class="kc-lbl">${p}</div>
+      <div class="kc-val">${fmtM(s.rev)}</div>
+      <div class="kc-sub">เก่า ${s.old_cnt} คน | ${fmtM(s.old_rev)}<br>ใหม่ ${s.new_cnt} คน | ${fmtM(s.new_rev)}</div>
+    </div>`;
+  });
+  return h;
+}
+
+// ════════════════════════════════════════════════
+// BUILD FB TOP 5 TABLE
+// ════════════════════════════════════════════════
+function fbTop5HTML(ps){
+  const maxSpend=Math.max(...ps.flatMap(p=>FB_TOP5[p].map(r=>r.spend)));
+  let h=`<div class="tbl-wrap"><table class="t">
+    <thead><tr>
+      <th style="width:28px">#</th>
+      ${ps.length>1?'<th>แบรนด์</th>':''}
+      <th>Ad Content</th>
+      <th class="r">Spend (฿)</th>
+      <th class="r">Impressions</th>
+      <th class="r">Reach</th>
+      <th class="r">Msg</th>
+      <th class="r">Purchases</th>
+    </tr></thead><tbody>`;
+  ps.forEach(p=>{
+    FB_TOP5[p].forEach((r,i)=>{
+      h+=`<tr>
+        <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
+        ${ps.length>1?`<td><span class="bc"><span class="dot8 ${CL[p]}"></span>${p}</span></td>`:''}
+        <td>
+          <div class="bar-cell">
+            <div class="mini-bar" style="width:${Math.round(r.spend/maxSpend*80)}px;background:${C[p]};"></div>
+            <span class="ad-name" title="${r.ad}">${r.ad}</span>
+          </div>
+        </td>
+        <td class="r">${fmtF(r.spend)}</td>
+        <td class="r">${r.impr.toLocaleString()}</td>
+        <td class="r">${r.reach.toLocaleString()}</td>
+        <td class="r">${r.msg.toLocaleString()}</td>
+        <td class="r">${r.pur}</td>
+      </tr>`;
+    });
+  });
+  h+=`</tbody></table></div>`;
+  return h;
+}
+
+// ════════════════════════════════════════════════
+// BUILD GOOGLE TOP 10 KEYWORDS TABLE
+// ════════════════════════════════════════════════
+function ggKwHTML(ps){
+  const validP=ps.filter(p=>GG_KW[p].length>0);
+  if(!validP.length) return `<p style="color:var(--text3);font-size:12px;padding:12px 0">ไม่มีข้อมูล Google Ads สำหรับสินค้าที่เลือก</p>`;
+  const useConv=validP.some(p=>GG_KW[p].some(r=>r.clicks===0&&r.conv>0));
+  const sortKey=useConv?'conv':'clicks';
+  const maxVal=Math.max(...validP.flatMap(p=>GG_KW[p].map(r=>r[sortKey]||0)));
+  let h=`<div class="tbl-wrap"><table class="t">
+    <thead><tr>
+      <th style="width:28px">#</th>
+      ${validP.length>1?'<th>แบรนด์</th>':''}
+      <th>Keyword</th>
+      <th class="r">Impressions</th>
+      <th class="r">${sortKey==='clicks'?'Clicks':'Conversions'}</th>
+      ${sortKey==='clicks'?'<th class="r">Conversions</th>':''}
+    </tr></thead><tbody>`;
+
+  validP.forEach(p=>{
+    const kws=[...GG_KW[p]].sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0));
+    kws.forEach((r,i)=>{
+      const mainVal=r[sortKey]||0;
+      h+=`<tr>
+        <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
+        ${validP.length>1?`<td><span class="bc"><span class="dot8 ${CL[p]}"></span>${p}</span></td>`:''}
+        <td>
+          <div class="bar-cell">
+            <div class="mini-bar" style="width:${maxVal>0?Math.round(mainVal/maxVal*80):2}px;background:${C[p]};"></div>
+            <span class="kw-name" title="${r.kw}">${r.kw}</span>
+          </div>
+        </td>
+        <td class="r">${r.impr.toLocaleString()}</td>
+        <td class="r">${mainVal.toLocaleString()}</td>
+        ${sortKey==='clicks'?`<td class="r">${r.conv.toLocaleString()}</td>`:''}
+      </tr>`;
+    });
+  });
+  h+=`</tbody></table></div>`;
+  return h;
+}
+
+// ════════════════════════════════════════════════
+// RENDER MAIN CONTENT
+// ════════════════════════════════════════════════
+function renderMain(){
+  const ps=vp();
+  const main=document.getElementById('main');
+
+  main.innerHTML=`
+    <!-- AD SPEND -->
+    <div class="sh">💰 สรุปค่าโฆษณา (Ad Spend)</div>
+    <div class="adrow" id="adRow"></div>
+
+    <!-- SALES KPI -->
+    <div class="sh">🛒 ยอดขาย (Sales Revenue)</div>
+    <div class="krow" id="kRow"></div>
+
+    <!-- DAILY TREND -->
+    <div class="sh">📈 แนวโน้มรายวัน</div>
+    <div class="g2">
+      <div class="card"><div class="ct">Daily Revenue Trend (THB)</div><canvas id="cTrend"></canvas></div>
+      <div class="card"><div class="ct">ยอดขาย: ลูกค้าเก่า vs ลูกค้าใหม่</div><canvas id="cON"></canvas></div>
+    </div>
+
+    <!-- REV vs SPEND -->
+    <div class="sh">📊 Revenue vs Ad Spend</div>
+    <div class="g2">
+      <div class="card"><div class="ct">ยอดขาย vs งบโฆษณา (THB)</div><canvas id="cRS"></canvas></div>
+      <div class="card"><div class="ct">ROAS per Brand</div><canvas id="cRoas"></canvas></div>
+    </div>
+
+    <!-- ━━ FACEBOOK ━━ -->
+    <div class="sh"><span class="pbadge fb">📘 Facebook Ads</span></div>
+    <div class="g3">
+      <div class="card"><div class="ct">Impressions &amp; Reach</div><canvas id="cFbIR"></canvas></div>
+      <div class="card"><div class="ct">Messaging Contacts</div><canvas id="cFbMsg"></canvas></div>
+      <div class="card"><div class="ct">Ad Spend (THB)</div><canvas id="cFbSpend"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">🏆 Top 5 Ad Contents (by Spend)</div>
+      <div id="fbTop5"></div>
+    </div>
+
+    <!-- ━━ GOOGLE ━━ -->
+    <div class="sh"><span class="pbadge google">🔍 Google Ads</span></div>
+    <div class="g3">
+      <div class="card"><div class="ct">Clicks &amp; Conversions</div><canvas id="cGgCC"></canvas></div>
+      <div class="card"><div class="ct">Ad Cost (THB)</div><canvas id="cGgCost"></canvas></div>
+      <div class="card"><div class="ct">Cost per Conversion</div><canvas id="cGgCPC"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">🔑 Top 10 Keywords</div>
+      <div id="ggKw"></div>
+    </div>
+
+    <!-- ━━ LINE OA ━━ -->
+    <div class="sh"><span class="pbadge line">💬 LINE OA</span></div>
+    <div class="g4">
+      <div class="card"><div class="ct">Impressions</div><canvas id="cLnI"></canvas></div>
+      <div class="card"><div class="ct">Reach (Estimated)</div><canvas id="cLnR"></canvas></div>
+      <div class="card"><div class="ct">Clicks</div><canvas id="cLnC"></canvas></div>
+      <div class="card"><div class="ct">Ad Cost (THB)</div><canvas id="cLnS"></canvas></div>
+    </div>
+
+    <!-- SUMMARY TABLE -->
+    <div class="sh">📋 ตารางสรุปรายสินค้า</div>
+    <div class="card"><div class="tbl-wrap" id="sumTbl"></div></div>
+
+    <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
+  `;
+
+  // fill in HTML blocks
+  document.getElementById('adRow').innerHTML=adCostHTML();
+  document.getElementById('kRow').innerHTML=kpiHTML();
+  document.getElementById('fbTop5').innerHTML=fbTop5HTML(ps);
+  document.getElementById('ggKw').innerHTML=ggKwHTML(ps);
+  renderSumTable(ps);
+
+  // draw charts
+  drawTrend(ps);
+  drawON(ps);
+  drawRS(ps);
+  drawRoas(ps);
+  drawFbIR(ps);
+  drawFbMsg(ps);
+  drawFbSpend(ps);
+  drawGgCC(ps);
+  drawGgCost(ps);
+  drawGgCPC(ps);
+  drawLn(ps);
+}
+
+// ════════════════════════════════════════════════
+// CHARTS
+// ════════════════════════════════════════════════
+function ch(id,type,data,opts){
+  destroyChart(id);
+  const ctx=document.getElementById(id);
+  if(!ctx)return;
+  charts[id]=new Chart(ctx.getContext('2d'),{type,data,options:{...bOpts,...opts}});
+}
+const scY=(fmt='M')=>({ticks:{callback:v=>fmt==='M'?fmtM(v):fmtN(v),font:{size:9}}});
+const scX=()=>({grid:{display:false},ticks:{font:{size:9}}});
+const tt=(fmt)=>({callbacks:{label:c=>`${c.dataset.label||c.label}: ${fmt==='F'?fmtF(c.parsed.y??c.parsed):fmtN(c.parsed.y??c.parsed)}`}});
+
+function drawTrend(ps){
+  ch('cTrend','line',{labels:DAYS,datasets:ps.map(p=>({label:p,data:DAILY[p],borderColor:C[p],backgroundColor:C[p]+'18',borderWidth:2,fill:false,tension:.3,pointRadius:2,pointHoverRadius:5}))},
+    {interaction:{mode:'index',intersect:false},plugins:{...bOpts.plugins,tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmtF(c.parsed.y)}`}}},scales:{x:scX(),y:scY('M')}});
+}
+function drawON(ps){
+  ch('cON','bar',{labels:ps,datasets:[
+    {label:'ลค.เก่า',data:ps.map(p=>SALES[p].old_rev),backgroundColor:ps.map(p=>C[p]+'cc'),borderRadius:3},
+    {label:'ลค.ใหม่',data:ps.map(p=>SALES[p].new_rev),backgroundColor:ps.map(p=>C[p]+'44'),borderRadius:3},
+  ]},{plugins:{...bOpts.plugins,tooltip:tt('F')},scales:{x:{stacked:true,...scX()},y:{stacked:true,...scY('M')}}});
+}
+function drawRS(ps){
+  ch('cRS','bar',{labels:ps,datasets:[
+    {label:'ยอดขาย',data:ps.map(p=>SALES[p].rev),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4},
+    {label:'Ad Spend',data:ps.map(p=>SALES[p].spend),backgroundColor:ps.map(p=>C[p]+'33'),borderRadius:4,borderColor:ps.map(p=>C[p]),borderWidth:1.5},
+  ]},{plugins:{...bOpts.plugins,tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+}
+function drawRoas(ps){
+  ch('cRoas','bar',{labels:ps,datasets:[{label:'ROAS',data:ps.map(p=>SALES[p].roas),backgroundColor:ps.map(p=>C[p]+'cc'),borderRadius:6}]},
+    {indexAxis:'y',plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`ROAS: ${c.parsed.x.toFixed(2)}x`}}},scales:{x:{ticks:{callback:v=>v+'x',font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'bold'}}}}});
+}
+function drawFbIR(ps){
+  ch('cFbIR','bar',{labels:ps,datasets:[
+    {label:'Impressions',data:ps.map(p=>FB[p].impr),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4},
+    {label:'Reach',      data:ps.map(p=>FB[p].reach),backgroundColor:ps.map(p=>C[p]+'44'),borderRadius:4},
+  ]},{plugins:{...bOpts.plugins,tooltip:tt('N')},scales:{x:scX(),y:scY('N')}});
+}
+function drawFbMsg(ps){
+  ch('cFbMsg','bar',{labels:ps,datasets:[{label:'Messaging',data:ps.map(p=>FB[p].msg),backgroundColor:ps.map(p=>C[p]+'cc'),borderRadius:4}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('N')},scales:{x:scX(),y:scY('N')}});
+}
+function drawFbSpend(ps){
+  ch('cFbSpend','bar',{labels:ps,datasets:[{label:'FB Spend',data:ps.map(p=>FB[p].spend),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+}
+function drawGgCC(ps){
+  const vps=ps.filter(p=>GG[p].cost>0||GG[p].clicks>0);
+  if(!vps.length){ch('cGgCC','bar',{labels:['ไม่มีข้อมูล'],datasets:[{data:[0],backgroundColor:'#e2e6f0'}]},{plugins:{legend:{display:false}}});return;}
+  const useConv=vps.every(p=>GG[p].clicks===0);
+  ch('cGgCC','bar',{labels:vps,datasets:[
+    {label:useConv?'Conversions':'Clicks',    data:vps.map(p=>useConv?GG[p].conv:GG[p].clicks), backgroundColor:vps.map(p=>C[p]+'bb'),yAxisID:'y',borderRadius:4},
+    {label:useConv?'Impressions':'Conversions',data:vps.map(p=>useConv?0:GG[p].conv),           backgroundColor:vps.map(p=>C[p]+'33'),yAxisID:'y2',borderRadius:4,borderColor:vps.map(p=>C[p]),borderWidth:1.5},
+  ]},{plugins:{...bOpts.plugins},scales:{x:scX(),y:{position:'left',ticks:{font:{size:9}}},y2:{position:'right',grid:{display:false},ticks:{font:{size:9}}}}});
+}
+function drawGgCost(ps){
+  const vps=ps.filter(p=>GG[p].cost>0);
+  if(!vps.length){ch('cGgCost','bar',{labels:['ไม่มีข้อมูล'],datasets:[{data:[0],backgroundColor:'#e2e6f0'}]},{plugins:{legend:{display:false}}});return;}
+  ch('cGgCost','bar',{labels:vps,datasets:[{label:'Google Cost',data:vps.map(p=>GG[p].cost),backgroundColor:vps.map(p=>C[p]+'bb'),borderRadius:6}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+}
+function drawGgCPC(ps){
+  const vps=ps.filter(p=>GG[p].cost>0);
+  if(!vps.length){ch('cGgCPC','bar',{labels:['ไม่มีข้อมูล'],datasets:[{data:[0],backgroundColor:'#e2e6f0'}]},{plugins:{legend:{display:false}}});return;}
+  ch('cGgCPC','bar',{labels:vps,datasets:[{label:'Cost/Conv',data:vps.map(p=>GG[p].conv>0?Math.round(GG[p].cost/GG[p].conv):0),backgroundColor:vps.map(p=>C[p]+'bb'),borderRadius:6}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`Cost/Conv: ${fmtF(c.parsed.y)}`}}},scales:{x:scX(),y:scY('M')}});
+}
+function drawLn(ps){
+  const lp=ps.filter(p=>LN[p].cost>0);
+  const noData=(id)=>{ch(id,'bar',{labels:['ไม่มีข้อมูล'],datasets:[{data:[0],backgroundColor:'#e2e6f0'}]},{plugins:{legend:{display:false}}});};
+  if(!lp.length){['cLnI','cLnR','cLnC','cLnS'].forEach(noData);return;}
+  ch('cLnI','doughnut',{labels:lp,datasets:[{data:lp.map(p=>LN[p].impr),backgroundColor:lp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+    {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+  ch('cLnR','doughnut',{labels:lp,datasets:[{data:lp.map(p=>LN[p].reach),backgroundColor:lp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+    {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+  ch('cLnC','doughnut',{labels:lp,datasets:[{data:lp.map(p=>LN[p].clicks),backgroundColor:lp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+    {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+  ch('cLnS','doughnut',{labels:lp,datasets:[{data:lp.map(p=>LN[p].cost),backgroundColor:lp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+    {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtF(c.parsed)}`}}}});
+}
+
+// ════════════════════════════════════════════════
+// SUMMARY TABLE
+// ════════════════════════════════════════════════
+function renderSumTable(ps){
+  const tRev=ps.reduce((s,p)=>s+SALES[p].rev,0);
+  let h=`<table class="st"><thead><tr>
+    <th>สินค้า</th>
+    <th>ยอดขายรวม</th><th>ลค.เก่า</th><th>ยอดขายเก่า</th>
+    <th>ลค.ใหม่</th><th>ยอดขายใหม่</th>
+    <th>Ad Spend</th><th>ROAS</th>
+    <th>FB Spend</th><th>G Spend</th><th>LINE Spend</th>
+    <th>FB Msg</th><th>FB Pur.</th><th>G Clicks</th><th>LINE Impr.</th>
+    <th>% Rev</th>
+  </tr></thead><tbody>`;
+  ps.forEach(p=>{
+    const s=SALES[p];
+    const pct=tRev>0?(s.rev/tRev*100).toFixed(1):0;
+    h+=`<tr>
+      <td><span class="bc"><span class="dot8 ${CL[p]}"></span><strong>${p}</strong></span></td>
+      <td class="r"><strong>${fmtF(s.rev)}</strong></td>
+      <td class="r">${s.old_cnt}</td><td class="r">${fmtF(s.old_rev)}</td>
+      <td class="r">${s.new_cnt}</td><td class="r">${fmtF(s.new_rev)}</td>
+      <td class="r">${fmtF(s.spend)}</td><td class="r"><strong>${s.roas}x</strong></td>
+      <td class="r">${fmtF(s.sp_fb)}</td>
+      <td class="r">${s.sp_g?fmtF(s.sp_g):'-'}</td>
+      <td class="r">${s.sp_l?fmtF(s.sp_l):'-'}</td>
+      <td class="r">${FB[p].msg.toLocaleString()}</td>
+      <td class="r">${FB[p].pur}</td>
+      <td class="r">${GG[p].clicks?GG[p].clicks.toLocaleString():'-'}</td>
+      <td class="r">${LN[p].impr?LN[p].impr.toLocaleString():'-'}</td>
+      <td class="r">${pct}%</td>
+    </tr>`;
+  });
+  const totSp=ps.reduce((s,p)=>s+SALES[p].spend,0);
+  h+=`</tbody><tfoot><tr>
+    <td>รวม</td>
+    <td class="r">${fmtF(tRev)}</td>
+    <td class="r">${ps.reduce((s,p)=>s+SALES[p].old_cnt,0)}</td>
+    <td class="r">${fmtF(ps.reduce((s,p)=>s+SALES[p].old_rev,0))}</td>
+    <td class="r">${ps.reduce((s,p)=>s+SALES[p].new_cnt,0)}</td>
+    <td class="r">${fmtF(ps.reduce((s,p)=>s+SALES[p].new_rev,0))}</td>
+    <td class="r">${fmtF(totSp)}</td>
+    <td class="r">${(tRev/totSp).toFixed(2)}x</td>
+    <td class="r">${fmtF(ps.reduce((s,p)=>s+SALES[p].sp_fb,0))}</td>
+    <td class="r">${fmtF(ps.reduce((s,p)=>s+SALES[p].sp_g,0))}</td>
+    <td class="r">${fmtF(ps.reduce((s,p)=>s+SALES[p].sp_l,0))}</td>
+    <td class="r">${ps.reduce((s,p)=>s+FB[p].msg,0).toLocaleString()}</td>
+    <td class="r">${ps.reduce((s,p)=>s+FB[p].pur,0)}</td>
+    <td class="r">${ps.reduce((s,p)=>s+GG[p].clicks,0).toLocaleString()}</td>
+    <td class="r">${ps.reduce((s,p)=>s+LN[p].impr,0).toLocaleString()}</td>
+    <td class="r">100%</td>
+  </tr></tfoot></table>`;
+  document.getElementById('sumTbl').innerHTML=h;
+}
+
+// ════════════════════════════════════════════════
+// BOOT
+// ════════════════════════════════════════════════
+function renderAll(){renderSbStats();renderMain();}
+renderAll();
+</script>
+</body>
+</html>
