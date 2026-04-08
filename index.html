@@ -66,6 +66,42 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;backgrou
 .pbadge.google{background:#fde8e8;color:#ea4335;}
 .pbadge.line{background:#e0faf0;color:#059669;}
 
+/* ── FINDINGS ── */
+.findings-wrap{display:flex;flex-direction:column;gap:16px;}
+.findings-platform{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;}
+.fp-head{padding:11px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.fp-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
+.findings-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fbox{border-radius:8px;padding:12px 14px;}
+.fbox-str{background:#f0fdf4;border:1px solid #86efac;}
+.fbox-sug{background:#fff7ed;border:1px solid #fdba74;}
+.fbox-title{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+.fbox-title.str{color:#15803d;}
+.fbox-title.sug{color:#c2410c;}
+.fbox ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.fbox ul li{font-size:11.5px;line-height:1.55;color:#374151;padding-left:14px;position:relative;}
+.fbox ul li::before{content:'•';position:absolute;left:2px;color:inherit;font-size:14px;line-height:1;}
+.fbox-str ul li::before{color:#16a34a;}
+.fbox-sug ul li::before{color:#ea580c;}
+.fbox ul li strong{color:#111;}
+.pattern-box{background:#f8faff;border:1.5px solid #c7d7fe;border-radius:8px;padding:12px 14px;font-size:11.5px;color:#1e40af;line-height:1.65;}
+.pattern-box b{color:#1d4ed8;}
+.mom-table-wrap{overflow-x:auto;}
+.mom-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+.mom-table th{background:#f1f5f9;padding:7px 12px;text-align:left;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:#475569;}
+.mom-table th.r,.mom-table td.r{text-align:right;}
+.mom-table td{padding:6px 12px;border-bottom:1px solid #f1f5f9;color:#374151;}
+.mom-table tr:last-child td{border-bottom:none;}
+.mom-up{color:#16a34a;font-weight:700;}
+.mom-dn{color:#dc2626;font-weight:700;}
+.mom-neut{color:#6b7280;}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.action-card{border-radius:8px;padding:12px 14px;}
+.action-card-title{font-size:11px;font-weight:800;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.action-card ul{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.action-card ul li{font-size:11px;line-height:1.5;color:#374151;padding-left:12px;position:relative;}
+.action-card ul li::before{content:'→';position:absolute;left:0;font-size:10px;}
+
 /* ── AD COST ROW ── */
 .adrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:var(--gap);}
 .acard{background:var(--card);border-radius:var(--r);padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.06);position:relative;overflow:hidden;}
@@ -343,6 +379,11 @@ const LN_ACCTS={
   'Cancino':  [],
 };
 
+// ── Brand-specific funnel extra data ──
+const FUNNEL_EXTRA={
+  'Mylife100':{lbl:'ลูกค้าใหม่ที่ไม่ได้มาจากการแนะนำ', rev:481776, cnt:86},
+};
+
 // Google Top 10 Keywords
 const GG_KW={
   'BIM-C':[
@@ -497,36 +538,36 @@ function kpiHTML(){
 // BUILD FB TOP 5 TABLE
 // ════════════════════════════════════════════════
 function fbTop5HTML(ps){
-  const maxSpend=Math.max(...ps.flatMap(p=>FB_TOP5[p].map(r=>r.spend)));
+  // Collect all ads across selected brands, sort by purchases desc
+  const allAds=ps.flatMap(p=>FB_TOP5[p].map(r=>({...r,brand:p})));
+  allAds.sort((a,b)=>b.pur-a.pur);
+  const maxPur=Math.max(...allAds.map(r=>r.pur),1);
   let h=`<div class="tbl-wrap"><table class="t">
     <thead><tr>
       <th style="width:28px">#</th>
       ${ps.length>1?'<th>แบรนด์</th>':''}
       <th>Ad Content</th>
-      <th class="r">Spend (฿)</th>
-      <th class="r">Impressions</th>
-      <th class="r">Reach</th>
+      <th class="r">Purchases ⬇</th>
       <th class="r">Msg</th>
-      <th class="r">Purchases</th>
+      <th class="r">Spend (฿)</th>
+      <th class="r">Reach</th>
     </tr></thead><tbody>`;
-  ps.forEach(p=>{
-    FB_TOP5[p].forEach((r,i)=>{
-      h+=`<tr>
-        <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
-        ${ps.length>1?`<td><span class="bc"><span class="dot8 ${CL[p]}"></span>${p}</span></td>`:''}
-        <td>
-          <div class="bar-cell">
-            <div class="mini-bar" style="width:${Math.round(r.spend/maxSpend*80)}px;background:${C[p]};"></div>
-            <span class="ad-name" title="${r.ad}">${r.ad}</span>
-          </div>
-        </td>
-        <td class="r">${fmtF(r.spend)}</td>
-        <td class="r">${r.impr.toLocaleString()}</td>
-        <td class="r">${r.reach.toLocaleString()}</td>
-        <td class="r">${r.msg.toLocaleString()}</td>
-        <td class="r">${r.pur}</td>
-      </tr>`;
-    });
+  allAds.forEach((r,i)=>{
+    const p=r.brand;
+    h+=`<tr>
+      <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
+      ${ps.length>1?`<td><span class="bc"><span class="dot8 ${CL[p]}"></span>${p}</span></td>`:''}
+      <td>
+        <div class="bar-cell">
+          <div class="mini-bar" style="width:${Math.round(r.pur/maxPur*80)}px;background:${C[p]};"></div>
+          <span class="ad-name" title="${r.ad}">${r.ad}</span>
+        </div>
+      </td>
+      <td class="r"><strong>${r.pur}</strong></td>
+      <td class="r">${r.msg.toLocaleString()}</td>
+      <td class="r">${fmtF(r.spend)}</td>
+      <td class="r">${r.reach.toLocaleString()}</td>
+    </tr>`;
   });
   h+=`</tbody></table></div>`;
   return h;
@@ -575,6 +616,636 @@ function ggKwHTML(ps){
 }
 
 // ════════════════════════════════════════════════
+// FINDINGS & SUGGESTIONS
+// ════════════════════════════════════════════════
+function fPlatHead(icon,title,color){
+  return `<div class="fp-head" style="background:${color}18;border-bottom:1px solid ${color}30">
+    <span style="font-size:15px">${icon}</span>
+    <span style="color:${color}">${title}</span>
+  </div>`;
+}
+function fRow(strItems,sugItems){
+  const li=(arr)=>arr.map(t=>`<li>${t}</li>`).join('');
+  return `<div class="findings-row">
+    <div class="fbox fbox-str">
+      <div class="fbox-title str">✅ จุดแข็ง</div>
+      <ul>${li(strItems)}</ul>
+    </div>
+    <div class="fbox fbox-sug">
+      <div class="fbox-title sug">⚠️ แนะนำ &amp; จุดระวัง</div>
+      <ul>${li(sugItems)}</ul>
+    </div>
+  </div>`;
+}
+function fMomRow(metric,feb,mar,trend){
+  const cls=trend==='up'?'mom-up':trend==='dn'?'mom-dn':'mom-neut';
+  const arrow=trend==='up'?'▲':trend==='dn'?'▼':'–';
+  return `<tr><td>${metric}</td><td class="r">${feb}</td><td class="r">${mar}</td><td class="r ${cls}">${arrow} ${mar}</td></tr>`;
+}
+function fMomTable(rows){
+  return `<div class="mom-table-wrap"><table class="mom-table">
+    <thead><tr><th>Metric</th><th class="r">ก.พ. 2026</th><th class="r">มี.ค. 2026</th><th class="r">เปลี่ยนแปลง</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+}
+function fActionGrid(cards){
+  return `<div class="action-grid">${cards.map(c=>`
+    <div class="action-card" style="background:${c.color}12;border:1px solid ${c.color}40">
+      <div class="action-card-title" style="color:${c.color}">${c.icon} ${c.title}</div>
+      <ul>${c.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+    </div>`).join('')}</div>`;
+}
+
+function findingsHTML(brand){
+  const hex=C[brand]||'#4f6ef7';
+
+  // ── BIM-C ──────────────────────────────────────────────
+  if(brand==='BIM-C') return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads Analysis','#1877f2')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>ROAS รวมเพิ่มขึ้น 12% MoM</strong> (5.50x → 6.16x) ขณะที่ Ad Spend ลดลง 3.5% — แสดงถึงประสิทธิภาพที่ดีขึ้นอย่างชัดเจน',
+        '<strong>CPL ลดจาก ฿196 → ฿160/ทัก (-18% MoM)</strong> — เพจ BIM ต้นทุน ฿171/ทัก เพจ Killer T Cell ต้นทุน ฿140/ทัก',
+        'Reach รวม 1.3M (BIM) + 374K (Killer T) = 1.7M Unique Accounts — กว้างกว่าเดือนก่อน',
+        '<strong>Pattern คอนเทนต์ขายดีชัดเจน:</strong> ดร.หน้ากล้อง + งานวิจัย/อัลบั้มวิจัย + ปัญหาโรค = Purchase สูงสุดทุกเดือน',
+        'Purchases 58 ชิ้น — BIM page drive ยอดขายทั้งหมด Killer T Cell ช่วย TOFU'
+      ],[
+        '<strong>เพจ Killer T Cell ใช้งบ ฿135K แต่ Purchase = 0</strong> — Creative ที่ใช้อยู่เน้น Awareness มากกว่า Conversion ต้องทบทวนโครงสร้าง Ad Set',
+        '<strong>ROAS ลูกค้าใหม่ยังติดลบ 0.88x</strong> (ต่ำกว่า Break-even) — Pipeline ลูกค้าใหม่ต้องปรับ TOFU→BOFU ให้ชัดขึ้น',
+        'Close Rate Order ใหม่ 3.9% ยังต่ำ — ลูกค้าใหม่ที่ทักมาต้องการ Nurturing เพิ่ม ควร scale Retarget',
+        'ควรหยุดหรือปรับ Creative ที่ CPL สูงกว่า ฿280 แต่ Conversion ต่ำใน Killer T Cell page ก่อน'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#1877f2')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>Pattern ที่ขายดีสม่ำเสมอ (ยืนยันข้ามเดือน ก.พ.–มี.ค.):</b><br>
+        ทุกชิ้นที่ขายดีมี 3 องค์ประกอบ คือ <b>① ดร.เห็นหน้าชัด</b> (หน้ากล้องหรือเฟรม TV) + <b>② เรื่องโรคที่คนพูดถึงได้ (Pain Language)</b> + <b>③ หลักฐานจากงานวิจัยหรือรายการทีวี</b> — ขาดองค์ประกอบใดองค์ประกอบหนึ่งยอดมักตก
+      </div>
+      ${fRow([
+        '<strong>อันดับ 1: อัลบั้มงานวิจัย Operation BIM</strong> — 11 Purchases, CPL ฿292 — ภาพงานวิจัยจริงสร้าง Trust ระดับลึก เหมาะ Retarget คนที่เคยทักแต่ยังไม่ซื้อ',
+        '<strong>อันดับ 2: วิดีโอดร. + กระตุ้น Stem Cell</strong> — 8 Purchases, CPL ฿280 — ดร.พูดตรงกล้องอธิบาย Stem Cell พร้อมกราฟิกประกอบ ทำงานดีกับคนกังวลสุขภาพ',
+        '<strong>อันดับ 5: ภาพเลือด/เม็ดเลือด + ดร.</strong> — 4 Purchases แต่ทัก 113 ราย CPL ฿223 ถูก — ดึงคนเข้า Funnel ได้กว้าง เหมาะเป็น TOFU ก่อน Retarget ชิ้น 1–2',
+        'ชิ้นที่มี Engagement สูง (comments/shares) มักเป็น TOFU ที่ดี ให้วาง Budget Awareness ก่อน'
+      ],[
+        '<strong>หยุดหรือปรับ Creative ที่ไม่มีดร.หรืองานวิจัย</strong> — ข้อมูลยืนยันชัดว่าไม่มีชิ้นไหนขายดีแบบ Graphic-only',
+        'Testimonial เดี่ยวไม่มีดร.ยืนยัน = Conversion ต่ำ (ดูข้อมูล Low Performer ก.พ.) — ถ้าใช้ Testimonial ต้องมีดร.หรือผลตรวจประกอบ',
+        '<strong>ทำ Series "อัลบั้มวิจัยใหม่"</strong> เน้นตัวเลขผลวิจัยชัดๆ เช่น "Killer T Cell เพิ่มขึ้น X% หลังใช้ BIM 3 เดือน"',
+        'ใช้ชิ้น TOFU (ภาพเลือด) ดึงคนเข้า แล้วต่อด้วย Retarget ด้วยอัลบั้มวิจัย + คลิปดร.เพื่อปิดยอด'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>"รักษา มะเร็ง" — Keyword ปริมาณสูงสุด</strong> 29,081 Impr, 1,387 Clicks, 78 Conversions — High-volume + High-intent ควร Scale',
+        '<strong>"ภูมิคุ้มกัน บำบัด ราคา" — CTR สูงมาก</strong> 4,746 Impr แต่ 1,818 Clicks (CTR ~38%) = คนที่ค้นหา Keyword นี้ตั้งใจจะซื้อจริงๆ',
+        '"มะเร็ง ต้านทาน" 4,735 Impr, 368 Clicks, 25 Conv — Keyword เชิงสุขภาพกลาง สร้าง Awareness ได้กว้าง',
+        'มี 10 Keywords กระจายครอบคลุมหลาย Intent: รักษา + ป้องกัน + สารอาหาร + ราคา — Portfolio ดี'
+      ],[
+        '"มะเร็ง ปอด" 4,641 Impr, 419 Clicks <strong>แต่เพียง 6 Conversions</strong> — Traffic มากแต่ Convert ต่ำ ต้องตรวจ Landing Page ว่า Match กับ Intent ของ Keyword นี้หรือไม่',
+        'G Spend ลดจาก ฿130K → ฿124K แต่ควรวัด Conversion Rate ที่เพิ่มขึ้นตามด้วยเพื่อยืนยัน ROI',
+        'ควรเพิ่ม Negative Keywords สำหรับคำที่ Click สูงแต่ไม่ Convert เพื่อประหยัดงบ'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('💬','LINE OA Analysis','#06c755')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>CPC ฿9/Click</strong> — ถูกมากเมื่อเทียบกับ Facebook (CPL ฿160) และ Google — ต้นทุนต่ำที่สุดในการเข้าถึงกลุ่มเป้าหมาย',
+        '1.5M Impressions, 2.8K Clicks/เดือน — เป็น Traffic ประจำที่เสริม Funnel ด้านบนได้ดี',
+        'LINE OA เหมาะสำหรับ Remarketing กลุ่มที่เคย Add LINE มาแล้ว — ต้นทุนต่ำ Engagement สูง'
+      ],[
+        '<strong>ยังไม่มีข้อมูล Conversion จาก LINE → Order</strong> ชัดเจน — ต้องตั้ง Tracking Tag หรือ UTM เพื่อ Attribute Revenue จาก LINE ได้ถูกต้อง',
+        'ควร A/B Test Creative บน LINE ว่า Rich Message vs Image Message vs Text อะไรทำให้คลิกแล้วปิดได้ดีกว่า',
+        'Budget ฿25K/เดือน เหมาะสมแล้ว แต่ถ้าพิสูจน์ได้ว่า LINE Convert ควรเพิ่ม 20–30%'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    <div class="fp-body">
+      ${fMomTable(`
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿3.36M</td><td class="r">฿3.63M</td><td class="r mom-up">▲ +8.1%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿610.9K</td><td class="r">฿589.6K</td><td class="r mom-up">▼ -3.5% (ดีขึ้น)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">5.50x</td><td class="r">6.16x</td><td class="r mom-up">▲ +12.0%</td></tr>
+        <tr><td>CPL (Cost/ทัก)</td><td class="r">฿196</td><td class="r">฿160</td><td class="r mom-up">▼ -18.4% (ดีขึ้น)</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">588</td><td class="r">640</td><td class="r mom-up">▲ +8.8%</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">128 คน</td><td class="r">108 คน</td><td class="r mom-dn">▼ -15.6%</td></tr>
+        <tr><td>ROAS ลูกค้าใหม่</td><td class="r">1.03x</td><td class="r">0.88x</td><td class="r mom-dn">▼ -14.6% (ต้องแก้)</td></tr>
+        <tr><td>ROAS ลูกค้าเก่า</td><td class="r">4.47x</td><td class="r">5.29x</td><td class="r mom-up">▲ +18.3%</td></tr>
+      `)}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#8b5cf6')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'Scale Winners ทันที',items:[
+          'อัลบั้มงานวิจัย (Purchase 11) → เพิ่ม Budget 30% ยิง Retarget กลุ่มทักแต่ยังไม่ซื้อ',
+          'คลิปดร. + Stem Cell (Purchase 8) → Duplicate Ad Set เพิ่ม Scale',
+          'เป้าหมาย: Purchase +30% ใน 2 สัปดาห์'
+        ]},
+        {color:'#dc2626',icon:'🛑',title:'แก้ปัญหา Killer T Cell Page',items:[
+          'Pause Creative ที่ Purchase = 0 ทั้งหมด (ใช้งบ ฿135K ไม่ได้ผล)',
+          'เปลี่ยน Creative เป็น Format เดียวกับ BIM Page ที่ขายได้',
+          'ทดสอบ Testimonial ดร. + ผลตรวจ + CTA ชัดเจน'
+        ]},
+        {color:'#2563eb',icon:'🎯',title:'ปรับ Strategy ลูกค้าใหม่',items:[
+          'TOFU: ภาพเลือด CPL ฿223 → ดึงคนเข้า Funnel ได้ 113 คน/ชิ้น',
+          'MOFU: คลิปดร. Retarget กลุ่ม TOFU',
+          'BOFU: อัลบั้มวิจัย + ราคา/แพ็กเกจ → ปิดยอด'
+        ]},
+        {color:'#d97706',icon:'📊',title:'Google Ads Optimization',items:[
+          'Scale "รักษา มะเร็ง" (78 Conv) และ "ภูมิคุ้มกัน บำบัด ราคา" (73 Conv)',
+          'ทบทวน "มะเร็ง ปอด" — Clicks 419 แต่ Conv 6 ต้องแก้ Landing Page',
+          'เพิ่ม Negative Keywords เพื่อลด Wasted Spend'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+
+  // ── LIV ────────────────────────────────────────────────
+  if(brand==='LIV') return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads Analysis','#ef4444')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>CPL ลดจาก ฿212 → ฿88/ทัก (-58% MoM)</strong> — การปรับ Creative เป็น Reel + Testimonial จากผู้ติดเชื้อได้ผลชัดเจนมาก',
+        '<strong>ROAS รวมเพิ่มขึ้น 16% MoM</strong> (10.29x → 11.93x) — ROAS สูงอันดับ 2 ของทุกแบรนด์ บ่งชี้ว่า Pipeline ลูกค้าเก่าแข็งแกร่ง',
+        'Reach 620K ลดลงจาก 508K (Feb) — Efficiency ดีขึ้นแม้ Reach น้อยลง',
+        'ROAS ลูกค้าเก่า 11.40x — สูงมาก แสดงว่ากลุ่ม Loyalty ซื้อซ้ำสม่ำเสมอ'
+      ],[
+        '<strong>Close Rate ลดจาก 57.49% → 43.5%</strong> — Lead ที่เข้ามาใหม่มีคุณภาพลดลง ต้องตรวจสอบว่า Targeting กว้างขึ้นหรือไม่',
+        '<strong>ROAS ลูกค้าใหม่ยังติดลบ 0.53x</strong> — ยังไม่คุ้มทุนในการหาลูกค้าใหม่ ต้องวางกลยุทธ์ Retention ให้แข็งขึ้น',
+        'New Orders เพียง 27 คน/เดือน — ฐานลูกค้าใหม่แคบ ถ้า Churn สูงจะกระทบรายได้ระยะยาว',
+        'ควร Scale Winner ทันที ก่อน Audience Fatigue: Reel วิทยาศาสตร์ + Testimonial คุณมุ่มนิม'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#ef4444')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>สูตรกลางที่ขายดีสม่ำเสมอ (ยืนยันจากทั้ง ก.พ. และ มี.ค.):</b><br>
+        <b>① Reel วิทยาศาสตร์ชะลอโรค + เชื่อมโยงกับชีวิตจริง</b> → สร้าง Trust + Purchase ในเวลาเดียว<br>
+        <b>② Testimonial ผู้ติดเชื้อเล่าเรื่องจริง</b> → Social Proof สูง Inbox สูง เหมาะ MOFU/BOFU<br>
+        <b>③ อินโฟ CD4 / วิทยาศาสตร์</b> → CPP ต่ำที่สุด เหมาะ Bridge Content จาก Awareness → Purchase
+      </div>
+      ${fRow([
+        '<strong>อันดับ 1-2: Reel จัดการเซลล์ + Testimonial จากผู้ติดเชื้อ</strong> — 7 Purchases ทั้งคู่ แต่ CPP ต่างกัน (฿1,697 vs ฿2,483) Reel มี ROI ดีกว่า',
+        '<strong>อันดับ 4: CD4 คืออะไร (Info)</strong> — CPP ฿647 ต่ำสุดทั้งกลุ่ม 5 Purchases — Bridge Content ที่มีประสิทธิภาพสูงสุด',
+        'Testimonial คุณมุ่มนิม Inbox 458 ราย — Pipeline ขายรอ Retarget จำนวนมาก ต้องใช้ให้เกิดประโยชน์',
+        'Pattern ลูกค้า HIV ต้องการ "ความเข้าใจ" ก่อน "ข้อมูล" ก่อน "ซื้อ" — Funnel 3 ขั้นนี้ชัดมาก'
+      ],[
+        'ควร <strong>Scale Reel วิทยาศาสตร์ +30%/สัปดาห์</strong> ทันที CPP ฿1,697 ยังคุ้มมาก',
+        'ยิง <strong>Retarget Inbox 458 คน (คุณมุ่มนิม)</strong> ด้วย Reel ปิดการขายทันที — Pipeline พร้อมซื้อ',
+        'ทำ CD4 Series ต่อเนื่อง: CD4 → Viral Load → การดูแลตัวเอง (3–4 ตอน) — Bridge Content ราคาถูก',
+        'ต้องระวัง Audience Fatigue เพราะกลุ่มเป้าหมายแคบ (HIV) ต้อง Rotate Creative ทุก 3–4 สัปดาห์'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>"เพิ่ม cd4" — Keyword หลักที่ขับเคลื่อน 44 Conversions</strong> จาก 2,660 Clicks (Mar) เพิ่มจาก 22 Conv เมื่อ ก.พ. (+100% MoM) — High-Intent สูงมาก',
+        'CTR "เพิ่ม cd4" สูงมาก — คนที่ค้นหา Keyword นี้มีความต้องการชัดเจนและพร้อมซื้อ',
+        'Google ช่วยดึง Traffic ที่มี Intent ชัดเจนมาเสริม Facebook ที่เน้น Awareness'
+      ],[
+        '<strong>Keywords นอกจาก "เพิ่ม cd4" แทบไม่มี Conversion</strong> — ควร Restructure Campaign ให้ Budget โฟกัสที่ "เพิ่ม cd4" และ Variations',
+        'Spend ฿39.5K/เดือน — ถ้า CPA ประมาณ ฿800 ต่อ 1 Conversion ยังสมเหตุสมผล แต่ต้องเพิ่ม Conversion บน cd4 keywords',
+        'ลองเพิ่ม Keywords: "cd4 ต่ำ ทำไง", "วิธีเพิ่ม cd4", "cd4 ปกติ" เพื่อขยาย Volume'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('💬','LINE OA Analysis (2 บัญชี)','#06c755')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>CPC ฿7 ทั้ง 2 บัญชี (Apcocapsules + ByeByeHIV)</strong> — ถูกที่สุดในทุก Platform ของ LIV',
+        'Impressions รวม 1.9M + 1.3M = 3.2M/เดือน — สูงสุดในกลุ่ม APCO',
+        'Clicks รวม 3.6K + 2.3K = 5.9K — Engagement LINE ดีมาก บ่งชี้ว่า Audience ยัง Active',
+        'LINE เป็น Touchpoint ที่มี Trust สูงสำหรับกลุ่ม HIV เพราะ Privacy'
+      ],[
+        'Spend รวม ฿24.6K + ฿15.6K = ฿40.2K — Budget ดี แต่ต้องพิสูจน์ว่า LINE Convert เป็น Order จริงแค่ไหน',
+        'ควรแยก LINE Message Type: ข้อมูล CD4 vs Testimonial vs Offer — วัด CTR และ Conversion แยกกัน',
+        'ลอง Push Broadcast "ข้อเสนอพิเศษ" ไปยัง Contact ที่ Add LINE แล้วแต่ยังไม่ซื้อ — Retarget ราคาถูกมาก'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    <div class="fp-body">
+      ${fMomTable(`
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿2.08M</td><td class="r">฿2.38M</td><td class="r mom-up">▲ +14.5%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿201.9K</td><td class="r">฿199.9K</td><td class="r mom-up">▼ -1.0% (ดีขึ้น)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">10.29x</td><td class="r">11.93x</td><td class="r mom-up">▲ +15.9%</td></tr>
+        <tr><td>CPL (Cost/ทัก)</td><td class="r">฿212</td><td class="r">฿88</td><td class="r mom-up">▼ -58.5% (ดีขึ้นมาก)</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">541</td><td class="r">596</td><td class="r mom-up">▲ +10.2%</td></tr>
+        <tr><td>Close Rate รวม</td><td class="r">57.49%</td><td class="r">43.5%</td><td class="r mom-dn">▼ -13.99pp (ต้องแก้)</td></tr>
+        <tr><td>ROAS ลูกค้าใหม่</td><td class="r">0.55x</td><td class="r">0.53x</td><td class="r mom-dn">▼ ยังติดลบ</td></tr>
+        <tr><td>ROAS ลูกค้าเก่า</td><td class="r">9.73x</td><td class="r">11.40x</td><td class="r mom-up">▲ +17.2%</td></tr>
+      `)}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#ef4444')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'Scale Winners ทันที',items:[
+          'Reel จัดการเซลล์เชื้อ → Scale +30%/สัปดาห์ (CPP ฿1,697)',
+          'CD4 คืออะไร → Duplicate Ad Set ดู Scalability (CPP ฿647)',
+          'เป้าหมาย: Purchase +30–40% ใน 2 สัปดาห์'
+        ]},
+        {color:'#dc2626',icon:'🛑',title:'Pause Low Performers',items:[
+          'ความก้าวหน้างาน → Pause ทันที (CPP ฿9,157)',
+          'มังคุดเสริมฤทธิ์ → Pause Fix Funnel ก่อน (CPP ฿7,035)',
+          'ประหยัด ~฿23K/เดือน โยกไป Winner'
+        ]},
+        {color:'#2563eb',icon:'🎬',title:'Content Series ใหม่',items:[
+          'Reel: Killer T Cell / Viral Load / ภูมิคุ้มกับ (3 ตอน)',
+          'Testimonial ใหม่ 2–3 คน ป้องกัน Audience Fatigue',
+          'Info Series: "Viral Load คืออะไร" → CD4 → การดูแลตัวเอง'
+        ]},
+        {color:'#d97706',icon:'🎯',title:'Funnel & Audience Fix',items:[
+          'TOFU: เมื่อชีวิตต้องเจอ HIV + คุณมุ่มนิม (CPInbox ต่ำ)',
+          'MOFU: Reel + CD4 → Bridge Awareness → Purchase',
+          'BOFU: Retarget Inbox >7 วัน ด้วย Offer ปิดยอด'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+
+  // ── Mylife100 ───────────────────────────────────────────
+  if(brand==='Mylife100') return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads Analysis','#10b981')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>FB Purchases 145 ชิ้น — สูงที่สุดในทุกแบรนด์ APCO</strong> (BIM-C 58, LIV 52, Cancino 11) แสดงว่า Creative และ Targeting ของ Mylife100 มีประสิทธิภาพสูงมาก',
+        '<strong>ROAS เพิ่มขึ้น 11.9% MoM</strong> (7.30x → 8.17x) ด้วย Ad Spend เพิ่มขึ้นเพียง 1.3% — ROI ดีขึ้นอย่างมีนัยสำคัญ',
+        'ยอดขายลูกค้าใหม่฿1.05M (+28% MoM จาก ฿819K ก.พ.) — การเติบโตของ New Customer Revenue น่าประทับใจ',
+        'FB MSG 2,753 ราย — สูงอันดับ 2 รองจาก BIM-C แสดงว่า Creative ดึง Engagement ได้ดี'
+      ],[
+        'ยอดขายลูกค้าเก่า฿2.05M เพิ่มจากฐาน 308 คน แต่ Old Customer ROAS ต้องคำนวณเพื่อตรวจ Retention Rate',
+        '<strong>ลูกค้าใหม่ที่ไม่ได้มาจากการแนะนำ ฿481,776 / 86 คน</strong> — Segment นี้สำคัญมาก ต้องวิเคราะห์ว่า Channel ไหนนำเข้ามา เพื่อ Scale ต่อ',
+        'Close Rate Order ใหม่ต้องตรวจสอบ — ถ้า CPL สูงแต่ Close Rate ต่ำ จะกระทบ ROAS ลูกค้าใหม่',
+        'FB Spend ฿310K/เดือน สูงที่สุดในกลุ่มแบรนด์ — ต้องตรวจ Frequency ว่า Audience ยัง Fresh หรือ Fatigue'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🏆','Top Facebook Content Pattern','#10b981')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>Pattern ที่สังเกตได้จากข้อมูล Mylife100:</b><br>
+        สินค้า Health &amp; Wellness ระดับ Premium มักได้ผลดีกับ Content ที่เน้น <b>① Testimonial ที่น่าเชื่อถือ (ผู้ใช้จริง)</b> + <b>② Social Proof จากผู้เชี่ยวชาญหรือข้อมูลวิทยาศาสตร์</b> + <b>③ ปัญหาที่ชัดเจนก่อนซื้อ</b> — Pattern เดียวกับ BIM-C และ LIV
+      </div>
+      ${fRow([
+        'FB Purchases 145 ชิ้น/เดือนแสดงว่ามี Creative หลายชิ้นที่ทำงานได้ดีพร้อมกัน — Diversified Portfolio ดี',
+        'ยอดขายลูกค้าใหม่ทะลุ ฿1M เป็นครั้งแรก (ตาม Mar data) — Funnel ลูกค้าใหม่กำลังเติบโต',
+        'MSG:Purchase Ratio = 2,753 MSG / 145 Purchase ≈ 19:1 — ดีกว่า BIM-C (2,752/58 ≈ 47:1) แสดงว่า Sales Team ปิดได้มีประสิทธิภาพสูงมาก',
+        'Non-referral Segment (86 คน ฿481K) = AOV ฿5,602/คน — ลูกค้ากลุ่มนี้มีมูลค่าสูง ควร Nurture ต่อเนื่อง'
+      ],[
+        'ควรวิเคราะห์ว่า Content Format ไหน (Video/Image/Reel) ที่ Drive 145 Purchases เพื่อ Scale ต่อ',
+        'ถ้า Audience ใน FB เริ่ม Saturate ให้ขยาย Lookalike จาก Purchasers ที่มีอยู่แล้ว',
+        'ผู้ที่แนะนำ (Referral) vs ไม่แนะนำ — ต้องเข้าใจ Channel Mix เพื่อลงทุน Marketing ได้ถูกต้อง',
+        'ทดสอบ UGC (User Generated Content) จากลูกค้าจริงเพื่อลด CPL และเพิ่ม Authenticity'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>G Clicks 4,268 — สูงสุดในทุกแบรนด์</strong> แสดงว่า Google Keyword Strategy ของ Mylife100 ครอบคลุมและดึง Traffic ได้มาก',
+        'Conversions 145 จาก Google (เท่ากับ FB Purchases) — Google เป็น Channel หลักที่สร้าง Conversion ร่วมกับ FB',
+        'Spend ฿39.4K — ROI ต่อ Conversion ดีมาก ถ้าคำนวณว่า ~฿272/Conversion เท่านั้น'
+      ],[
+        'ควรตรวจสอบว่า Conversion ที่ Google วัดได้ตรงกับ Actual Sale หรือเป็นแค่ Lead — Attribution ต้องชัดเจน',
+        'ลองเพิ่ม Brand Keywords เช่น "Mylife100 ราคา", "Mylife100 ดีไหม" เพื่อ Capture คนที่ค้นหาแบรนด์โดยตรง',
+        'Search Terms Report ควรตรวจ Negative Keywords เพื่อป้องกัน Budget Waste'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('💬','LINE OA Analysis','#06c755')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>Impressions 1.83M</strong> — สูงอันดับ 2 รองจาก LIV แสดงว่า LINE OA ของ Mylife100 ยังคง Active และ Reach กว้าง',
+        'Spend ฿29.8K/เดือน — ต้นทุนต่ำมากเทียบกับ Revenue ที่ได้',
+        'LINE เป็น Channel สำคัญสำหรับ Health Products เพราะ Personal Touch และ Trust สูง'
+      ],[
+        'ต้องวัด Revenue Attribution จาก LINE OA ให้ชัดเจน เพื่อพิสูจน์ ROI',
+        'ทดสอบ LINE Broadcast Segment: แบ่งกลุ่มตาม Purchase History เพื่อ Personalized Message',
+        'เพิ่ม LINE Rich Menu ให้ชัดเจน — Case Study + บทความสุขภาพ + ช่องทางสั่งซื้อ'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    <div class="fp-body">
+      ${fMomTable(`
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿2.73M</td><td class="r">฿3.10M</td><td class="r mom-up">▲ +13.6%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿374.8K</td><td class="r">฿379.5K</td><td class="r mom-dn">▲ +1.3% (เพิ่มเล็กน้อย)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">7.30x</td><td class="r">8.17x</td><td class="r mom-up">▲ +11.9%</td></tr>
+        <tr><td>ยอดขายลูกค้าใหม่</td><td class="r">฿819.6K (175 คน)</td><td class="r">฿1.05M (175 คน)</td><td class="r mom-up">▲ +28.1% AOV</td></tr>
+        <tr><td>ยอดขายลูกค้าเก่า</td><td class="r">฿1.91M</td><td class="r">฿2.05M</td><td class="r mom-up">▲ +7.3%</td></tr>
+        <tr><td>FB Purchases</td><td class="r">~130 (ประมาณ)</td><td class="r">145</td><td class="r mom-up">▲ สูงสุดของกลุ่ม</td></tr>
+      `)}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#10b981')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'Scale FB Winners',items:[
+          'ระบุ Top 3 Creative ที่ Drive Purchase มากที่สุด แล้ว Scale Budget +30%',
+          'สร้าง Lookalike 1–3% จาก Purchasers เพื่อขยาย Quality Audience',
+          'เป้า: Purchase ทะลุ 175/เดือน'
+        ]},
+        {color:'#2563eb',icon:'🎯',title:'Non-Referral Segment',items:[
+          'วิเคราะห์ Channel ที่นำลูกค้า 86 คน (฿481K) เข้ามา',
+          'Scale Channel นั้นโดยตรง — AOV ฿5.6K/คน คุ้มมากกับ ROAS',
+          'สร้าง Remarketing เฉพาะกลุ่มนี้เพื่อ LTV ยาว'
+        ]},
+        {color:'#d97706',icon:'📊',title:'Google Keyword Expansion',items:[
+          'เพิ่ม Brand Keywords: "Mylife100 ราคา/ดีไหม/ซื้อที่ไหน"',
+          'Expand คำที่เกี่ยวกับ Health Condition ของสินค้า',
+          'ตรวจ Search Terms Report เพิ่ม Negative Keywords'
+        ]},
+        {color:'#7c3aed',icon:'💬',title:'LINE OA Optimization',items:[
+          'Segment LINE Contact ตาม Purchase History',
+          'Broadcast Personalized Content รายสัปดาห์',
+          'วัด Revenue Attribution จาก LINE ให้ชัดเจน'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+
+  // ── Cancino ─────────────────────────────────────────────
+  if(brand==='Cancino') return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads Analysis','#f59e0b')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>ROAS 16.19x — สูงที่สุดในทุกแบรนด์ APCO</strong> และเพิ่มขึ้นจาก 14.81x (+9.3% MoM) ด้วย Spend ที่ลดลง ฿33.1K → ฿30K (-9.4%)',
+        '<strong>ใช้งบเพียง ฿30K/เดือน แต่สร้างรายได้ ฿486K</strong> — Efficiency ที่หาได้ยากมาก น่านำเป็น Best Practice',
+        'ลูกค้าใหม่ 46 คน คงที่ MoM — Stable Acquisition แสดงว่า Creative ยังทำงานได้ดีโดยไม่ต้อง Refresh บ่อย',
+        'Old:New Ratio = 99:46 ≈ 68:32 — สัดส่วนลูกค้าใหม่ดีกว่า BIM-C และ LIV มาก'
+      ],[
+        '<strong>Revenue ลดลงเล็กน้อย -0.9% MoM</strong> (฿490.3K → ฿486K) ต้องระวังอย่าให้ลดต่อเนื่อง แม้จะยัง Stable',
+        'ยังไม่มี Google Ads และ LINE OA — ถ้าเพิ่ม 2 Channel นี้อาจขยายรายได้ได้อย่างมีนัยสำคัญ',
+        'FB MSG เพียง 221 ราย + Purchases 11 ชิ้น — ฐานเล็ก ถ้า Creative Fatigue จะ Drop ทันที',
+        'ต้องเตรียม Creative ชุดใหม่ทุก 4–6 สัปดาห์ เพราะ Audience Pool อาจแคบ'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🏆','Facebook Content Strategy','#f59e0b')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>จุดแข็งของ Cancino: "ทำน้อยได้มาก"</b><br>
+        ROAS 16x ด้วย Budget เพียง ฿30K/เดือน บ่งชี้ว่า Creative ที่ใช้อยู่ <b>ตรงกลุ่มเป้าหมายมาก</b> และ <b>Audience ยังไม่ Saturate</b> — โอกาสคือการ Scale อย่างระมัดระวัง ไม่ใช่เพิ่ม Budget แบบ Aggressive
+      </div>
+      ${fRow([
+        '<strong>Efficiency สูงที่สุดในกลุ่ม: ฿30K → ฿486K</strong> — ทุก ฿1 ที่ใช้ได้ยอดขายกลับมา ฿16 ซึ่งหาได้ยากมากในตลาด Health Supplement',
+        'FB Purchases 11 ชิ้น จาก MSG 221 ราย = Conversion Rate ≈ 5% — สูงกว่า Industry Average ที่ ~2-3% อย่างชัดเจน',
+        'AOV ต่อ Purchase ≈ ฿44,000 — ถ้าคิดจาก Revenue ÷ Purchases แสดงว่ากลุ่มลูกค้า Cancino ซื้อปริมาณมาก',
+        'ลูกค้าเก่า 99 คน ยอด ฿371K — Loyalty สูง คนซื้อซ้ำ ระบบ CRM น่าจะแข็งแกร่ง'
+      ],[
+        '<strong>อย่า Scale Budget เร็วเกินไป</strong> — ROAS สูงเพราะ Audience แคบและ Targeting แม่น ถ้า Audience กว้างขึ้น ROAS จะลด',
+        'ทดสอบ Scale +20–30% ก่อน ดูว่า ROAS ยังรักษาระดับ 12x+ ได้ไหม',
+        'ต้องเตรียม Creative ชุดสำรองเสมอ — ถ้า Fatigue แล้วไม่มี Creative ใหม่ รายได้จะหายทันที',
+        'เริ่มทดสอบ Google Search Ads เบาๆ เพื่อ Capture Intent-based Traffic เพิ่มเติม'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google &amp; LINE Opportunity','#ea4335')}
+    <div class="fp-body">
+      <div class="pattern-box" style="background:#fffbeb;border-color:#fcd34d;color:#92400e">
+        <b>⚡ โอกาสที่ยังไม่ได้ใช้:</b> Cancino ยังไม่มี Google Ads และ LINE OA เลย ในขณะที่ 3 แบรนด์อื่นใช้ทั้ง 2 Channel นี้ — การเพิ่ม Channel ใหม่สามารถขยายรายได้ได้โดยไม่กระทบ ROAS ของ Facebook
+      </div>
+      ${fRow([
+        'Google Search Ads เหมาะมากสำหรับ Cancino — คนที่ค้นหา Keyword เฉพาะมี Intent ชัด Close Rate สูงกว่า FB',
+        'LINE OA ช่วย Nurture Leads หลังจาก Inbox FB แล้ว — Cost ต่ำมาก เป็น Retention Channel ที่ดี',
+        'ถ้า Google + LINE เพิ่ม Revenue อีก 20% จาก Base ฿486K = รายได้เพิ่ม ~฿97K/เดือน'
+      ],[
+        'เริ่ม Google ด้วย Budget เล็ก ฿5–10K ทดสอบ Brand + Product Keywords ก่อน',
+        'LINE OA ให้เริ่มสร้าง Official Account และ Rich Menu ก่อน Build Audience ให้ครบ',
+        'ระวัง Cannibalization — ต้องวัด Incrementality ว่า Google/LINE เพิ่ม New Revenue จริงหรือแค่ย้าย Attribution'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    <div class="fp-body">
+      ${fMomTable(`
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿490.3K</td><td class="r">฿486.0K</td><td class="r mom-dn">▼ -0.9% (Stable)</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿33.1K</td><td class="r">฿30.0K</td><td class="r mom-up">▼ -9.4% (ดีขึ้น)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">14.81x</td><td class="r">16.19x</td><td class="r mom-up">▲ +9.3% — สูงสุดทุกแบรนด์!</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">46 คน</td><td class="r">46 คน</td><td class="r mom-neut">– คงที่</td></tr>
+        <tr><td>ลูกค้าเก่า</td><td class="r">~99 คน</td><td class="r">99 คน</td><td class="r mom-neut">– คงที่</td></tr>
+        <tr><td>FB Purchases</td><td class="r">–</td><td class="r">11</td><td class="r mom-neut">–</td></tr>
+      `)}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#f59e0b')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'รักษา ROAS ระดับ 16x',items:[
+          'อย่าเพิ่ม Budget เร็วเกินไป ทดสอบ +20% ก่อนดู ROAS',
+          'Refresh Creative ทุก 4 สัปดาห์ป้องกัน Fatigue',
+          'Scale อย่างช้าๆ เป้าหมาย Revenue ฿550K ต่อเดือน'
+        ]},
+        {color:'#2563eb',icon:'🔍',title:'ทดสอบ Google Search Ads',items:[
+          'Budget ฿5–8K เดือนแรก ทดสอบ Brand + Product Terms',
+          'วัด CPA ก่อน Scale ถ้า CPA < ฿1,000 ให้ Scale ต่อ',
+          'Target: เพิ่มรายได้ 10–15% จาก Google channel ใหม่'
+        ]},
+        {color:'#059669',icon:'💬',title:'เริ่มต้น LINE OA',items:[
+          'สร้าง Official Account + Rich Menu พร้อมใช้',
+          'Build Audience จาก FB Inbox → Add LINE',
+          'ทดสอบ Broadcast ข้อมูลสินค้า + Offer รายเดือน'
+        ]},
+        {color:'#7c3aed',icon:'🤝',title:'Strengthen Retention',items:[
+          'สร้าง Loyalty Program สำหรับลูกค้าเก่า 99 คน',
+          'เพิ่ม AOV ด้วยการ Bundle หรือ Subscription Model',
+          'Target LTV: เพิ่ม Avg Purchase Frequency จาก 1x → 1.5x/ปี'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+
+  return `<div class="card" style="padding:16px;color:var(--text3)">ไม่มีข้อมูล Findings สำหรับแบรนด์นี้</div>`;
+}
+
+// ════════════════════════════════════════════════
+// FINDINGS OVERVIEW (all brands summary)
+// ════════════════════════════════════════════════
+function findingsOverviewHTML(){
+  return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','ภาพรวม APCO — มีนาคม 2026 vs กุมภาพันธ์ 2026','#8b5cf6')}
+    <div class="fp-body">
+      <div class="mom-table-wrap"><table class="mom-table">
+        <thead><tr><th>แบรนด์</th><th class="r">ROAS ก.พ.</th><th class="r">ROAS มี.ค.</th><th class="r">เปลี่ยนแปลง</th><th class="r">Revenue มี.ค.</th><th class="r">สัดส่วน</th></tr></thead>
+        <tbody>
+          <tr><td><strong>BIM-C</strong></td><td class="r">5.50x</td><td class="r">6.16x</td><td class="r mom-up">▲ +12.0%</td><td class="r">฿3.63M</td><td class="r">37.8%</td></tr>
+          <tr><td><strong>LIV</strong></td><td class="r">10.29x</td><td class="r">11.93x</td><td class="r mom-up">▲ +15.9%</td><td class="r">฿2.38M</td><td class="r">24.8%</td></tr>
+          <tr><td><strong>Mylife100</strong></td><td class="r">7.30x</td><td class="r">8.17x</td><td class="r mom-up">▲ +11.9%</td><td class="r">฿3.10M</td><td class="r">32.3%</td></tr>
+          <tr><td><strong>Cancino</strong></td><td class="r">14.81x</td><td class="r">16.19x</td><td class="r mom-up">▲ +9.3%</td><td class="r">฿486K</td><td class="r">5.1%</td></tr>
+          <tr style="background:#f8faff"><td><strong>รวม APCO</strong></td><td class="r"><strong>7.09x</strong></td><td class="r"><strong>8.01x</strong></td><td class="r mom-up"><strong>▲ +13.0%</strong></td><td class="r"><strong>฿9.61M</strong></td><td class="r">100%</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔑','Key Findings — มุมมองนักการตลาดออนไลน์ 10+ ปี','#1e40af')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>ทุกแบรนด์ ROAS ดีขึ้น MoM พร้อมกัน</strong> — บ่งชี้ว่า Platform Algorithm เอื้ออำนวยในช่วง มี.ค. หรือ Creative Quality โดยรวมดีขึ้น ไม่ใช่โชค',
+        '<strong>Revenue รวมเพิ่ม ฿952K (+11% MoM)</strong> ด้วย Ad Spend ที่ลดลง ฿20K — Efficiency Portfolio ดีขึ้นจริง',
+        'Cancino (ROAS 16x) พิสูจน์ว่า "Budget น้อย + Targeting แม่น = ผลลัพธ์ดีได้" — Model นี้น่านำมาใช้กับแบรนด์อื่น',
+        'Mylife100 FB Purchase 145 ชิ้น — Sales Team ปิดได้มีประสิทธิภาพสูงที่สุด MSG:Sale ≈ 19:1 ดีกว่า BIM-C (47:1)',
+        'LIV CPL ลด -58% MoM — การเปลี่ยนเป็น Reel + Testimonial ได้ผลชัดเจน บทเรียนนี้ควรถ่ายทอดให้ BIM-C'
+      ],[
+        '<strong>ลูกค้าใหม่ทุกแบรนด์ยัง ROAS ติดลบ</strong> (BIM-C 0.88x, LIV 0.53x) — กลยุทธ์ CAC ต้องปรับ ต้องวาง Retention Plan ให้ชัดเพื่อ LTV ยาว',
+        'New Orders รวมลดจาก 377 → 356 (-5.6% MoM) แม้ Revenue รวมเพิ่ม — บ่งชี้ว่า Growth มาจาก Old Customer Repeat ไม่ใช่ New Customer Acquisition',
+        'Killer T Cell Page (BIM-C) ใช้ ฿135K แต่ Purchase 0 — Budget Waste ที่ชัดเจนที่สุดใน Portfolio ทั้งหมด',
+        'Cancino ยังไม่มี Google + LINE — โอกาสขยาย Revenue โดยไม่กระทบ ROAS FB ที่ดีอยู่แล้ว'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads — Cross-Brand Analysis','#1877f2')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>Universal Pattern ที่ขายได้ข้ามทุกแบรนด์ Health Supplement/HIV:</b><br>
+        <b>① ผู้เชี่ยวชาญหน้ากล้อง (ดร./ผู้ติดเชื้อจริง)</b> + <b>② Pain Language ที่คนไข้พูดได้เอง</b> + <b>③ หลักฐานทางวิทยาศาสตร์/ผลตรวจ</b> = สูตรที่ขายได้สม่ำเสมอในทุกเดือน
+      </div>
+      ${fRow([
+        'BIM-C: Operation BIM Research Album (11 Pur) — Credibility Content สูงสุด',
+        'LIV: Reel วิทยาศาสตร์ชะลอโรค (7 Pur, CPP ฿1,697) — Educational + Emotional',
+        'Mylife100: Purchase 145 (สูงสุด) — Multiple Winners Portfolio',
+        'Cancino: Budget น้อยสุด แต่ ROAS สูงสุด — Precision Targeting'
+      ],[
+        'แนะนำทุกแบรนด์: สร้าง "Pillar Content" ดร.หน้ากล้อง 1 ชิ้น/เดือน เป็น BOFU หลัก',
+        'Rotate Creative ทุก 3–4 สัปดาห์ป้องกัน Audience Fatigue โดยเฉพาะ LIV และ Cancino ที่ Audience แคบ',
+        'ลงทุน Video Production ดร.เพิ่มขึ้น — ROI ต่อการลงทุนสร้างคอนเทนต์ได้ผลชัดเจนที่สุด',
+        'Test Short-form Reel (30–60 วิ) ทุกแบรนด์ — LIV พิสูจน์แล้วว่าให้ CPP ดีที่สุด'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google Ads — Cross-Brand Analysis','#ea4335')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>LIV: "เพิ่ม cd4" — 44 Conv จาก 2,660 Clicks</strong> — High-Intent Keyword ที่มีประสิทธิภาพสูงสุดทั้งพอร์ต',
+        'BIM-C: "รักษา มะเร็ง" (78 Conv) + "ภูมิคุ้มกัน บำบัด ราคา" (73 Conv) — 2 Keywords หลักที่ควร Maximize',
+        'Mylife100 G Clicks 4,268 — Traffic สูงสุด แสดงว่า Keyword Coverage ดี',
+        'Google รวม 927 Conversions/เดือน — Channel ที่ Complement Facebook ได้ดี (High Intent vs Awareness)'
+      ],[
+        'Cancino ยังไม่มี Google — โอกาสเพิ่ม Revenue ที่ Low-Risk ที่สุด ควรเริ่มทดสอบ',
+        'ทุกแบรนด์ควรตรวจ "Keywords ที่ Click สูงแต่ Convert ต่ำ" และเพิ่ม Negative Keywords',
+        'Landing Page Optimization สำคัญมาก — CTR สูงแต่ Conv ต่ำ = Landing Page ไม่ Match Intent',
+        'Google Search Brand Terms ทุกแบรนด์ควรทำเพื่อ Protect Brand และ Convert High-Intent Traffic'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('💬','LINE OA — Cross-Brand Analysis','#06c755')}
+    <div class="fp-body">
+      ${fRow([
+        'LINE OA ทั้ง 3 แบรนด์มี CPC ต่ำมาก (฿7–9) — Channel ที่ Cost-Effective ที่สุดสำหรับ Retention',
+        'LIV มี Impressions LINE สูงสุด 3.2M/เดือน (รวม 2 บัญชี) — แสดงว่า LINE Audience ของ HIV Product กว้างมาก',
+        'BIM-C LINE 1.5M Impr, Mylife100 1.83M Impr — ทั้งคู่ Active สม่ำเสมอ',
+        'LINE ทำหน้าที่ Retention + Remarketing ที่ Facebook ทำได้ยากกว่าเพราะ CPM สูงกว่า'
+      ],[
+        'ต้องตั้ง Conversion Tracking บน LINE ทุกแบรนด์ — ตอนนี้ยังไม่ชัดว่า LINE สร้าง Revenue เท่าไหร่จริงๆ',
+        'Cancino ไม่มี LINE — เพิ่มและใช้เป็น Retention Tool หลังจาก Facebook Lead เข้ามา',
+        'แนะนำทุกแบรนด์: LINE Broadcast ประจำสัปดาห์ + Content Calendar สม่ำเสมอ'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Portfolio Action Plan — เมษายน 2026','#8b5cf6')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'Quick Wins (1–2 สัปดาห์)',items:[
+          'BIM-C: Pause Killer T Cell Page ชั่วคราว โยก Budget ฿135K ไป BIM Page',
+          'LIV: Scale Reel วิทยาศาสตร์ +30%, Retarget 458 Inbox จาก Testimonial คุณมุ่มนิม',
+          'Mylife100: ระบุ Top 3 Creative แล้ว Scale ทันที',
+          'รวมประหยัดงบ Waste + Scale Winners คาดเพิ่ม Revenue 15–20%'
+        ]},
+        {color:'#2563eb',icon:'🎬',title:'Content Production (เดือน เม.ย.)',items:[
+          'ผลิต คลิปดร.ใหม่ทุกแบรนด์ อย่างน้อยแบรนด์ละ 1–2 ชิ้น',
+          'LIV: Testimonial ใหม่ 2–3 คน ป้องกัน Fatigue',
+          'ทุกแบรนด์: Short-form Reel 30–60 วิ Format ทดสอบ'
+        ]},
+        {color:'#d97706',icon:'📊',title:'Analytics & Attribution (เดือน เม.ย.)',items:[
+          'ตั้ง UTM Tracking บน LINE ทุกแบรนด์',
+          'Setup Google Analytics Goal Tracking ให้ครบ',
+          'Report ROAS per Channel รายสัปดาห์ เพื่อ Optimize Budget Real-time'
+        ]},
+        {color:'#7c3aed',icon:'🆕',title:'New Channel Tests',items:[
+          'Cancino: เริ่ม Google Ads Budget ฿5K ทดสอบ',
+          'Cancino: สร้าง LINE OA เริ่ม Build Audience',
+          'ทุกแบรนด์: ทดสอบ TikTok Ads สำหรับ Health Audience กลุ่มอายุ 35–55'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+}
+
+// ════════════════════════════════════════════════
 // RENDER MAIN CONTENT
 // ════════════════════════════════════════════════
 function renderMain(){
@@ -605,6 +1276,10 @@ function renderMain(){
       <div class="card"><div class="ct">ROAS per Brand</div><canvas id="cRoas"></canvas></div>
     </div>
 
+    <!-- FUNNEL -->
+    <div class="sh">🔄 Marketing → Sales Funnel</div>
+    <div class="card" id="funnelSection" style="padding:18px 16px"></div>
+
     <!-- ━━ FACEBOOK ━━ -->
     <div class="sh"><span class="pbadge fb">📘 Facebook Ads</span></div>
     <div id="fbSection" style="display:flex;flex-direction:column;gap:var(--gap)"></div>
@@ -629,6 +1304,10 @@ function renderMain(){
     <div class="sh">📋 ตารางสรุปรายสินค้า</div>
     <div class="card"><div class="tbl-wrap" id="sumTbl"></div></div>
 
+    <!-- ━━ FINDINGS & SUGGESTIONS ━━ -->
+    <div class="sh">💡 Findings &amp; Suggestions</div>
+    <div id="findingsSection"></div>
+
     <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
   `;
 
@@ -636,9 +1315,11 @@ function renderMain(){
   document.getElementById('adRow').innerHTML=adCostHTML();
   document.getElementById('kRow').innerHTML=kpiHTML();
   document.getElementById('ggKw').innerHTML=ggKwHTML(ps);
+  document.getElementById('funnelSection').innerHTML=funnelSVG(filter);
   renderSumTable(ps);
   renderFbSection(filter);
   renderLnSection(filter);
+  document.getElementById('findingsSection').innerHTML=findingsHTML(filter);
 
   // draw charts
   drawTrend(ps);
@@ -738,23 +1419,24 @@ function drawLn(ps){
 function fbPageAdsHTML(brand, pageIdx, color){
   const pd=FB_TOP5_PAGES[brand]&&FB_TOP5_PAGES[brand][pageIdx];
   if(!pd||!pd.ads||!pd.ads.length) return '<p style="color:var(--text3);font-size:12px;padding:8px 0">ไม่มีข้อมูล Ad</p>';
-  const ads=pd.ads;
-  const maxSpend=Math.max(...ads.map(r=>r.spend));
+  // Sort by purchases desc
+  const ads=[...pd.ads].sort((a,b)=>b.pur-a.pur);
+  const maxPur=Math.max(...ads.map(r=>r.pur),1);
   let h=`<div class="tbl-wrap"><table class="t">
     <thead><tr>
       <th style="width:28px">#</th><th>Ad Content</th>
-      <th class="r">Spend (฿)</th><th class="r">Impressions</th>
-      <th class="r">Reach</th><th class="r">Msg</th><th class="r">Pur.</th>
+      <th class="r">Purchases ⬇</th><th class="r">Msg</th>
+      <th class="r">Spend (฿)</th><th class="r">Reach</th>
     </tr></thead><tbody>`;
   ads.forEach((r,i)=>{
     h+=`<tr>
       <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
       <td><div class="bar-cell">
-        <div class="mini-bar" style="width:${Math.round(r.spend/maxSpend*80)}px;background:${color}"></div>
+        <div class="mini-bar" style="width:${Math.round(r.pur/maxPur*80)}px;background:${color}"></div>
         <span class="ad-name" title="${r.ad}">${r.ad}</span>
       </div></td>
-      <td class="r">${fmtF(r.spend)}</td><td class="r">${r.impr.toLocaleString()}</td>
-      <td class="r">${r.reach.toLocaleString()}</td><td class="r">${r.msg}</td><td class="r">${r.pur}</td>
+      <td class="r"><strong>${r.pur}</strong></td><td class="r">${r.msg}</td>
+      <td class="r">${fmtF(r.spend)}</td><td class="r">${r.reach.toLocaleString()}</td>
     </tr>`;
   });
   h+=`</tbody></table></div>`;
@@ -867,6 +1549,129 @@ function renderLnSection(brand){
     },{cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Clicks: ${fmtN(c.parsed)}`}}}});
   });
 }
+
+// ════════════════════════════════════════════════
+// MARKETING → SALES FUNNEL SVG
+// ════════════════════════════════════════════════
+function funnelSVG(brand){
+  const s=SALES[brand];
+  const fb=FB[brand];
+  const hex=C[brand];
+
+  // ── Metrics ──
+  const totalOrders=s.old_cnt+s.new_cnt;
+  const closeRateAll=fb.msg>0?((totalOrders/fb.msg)*100).toFixed(1)+'%':'-';
+  const closeRateNew=fb.msg>0?((s.new_cnt/fb.msg)*100).toFixed(1)+'%':'-';
+  const costPerMsg=fb.msg>0?fmtF(Math.round(fb.spend/fb.msg)):'-';
+  const roasAll=s.roas+'x';
+  const roasOld=s.spend>0?(s.old_rev/s.spend).toFixed(2)+'x':'-';
+  const roasNew=s.spend>0?(s.new_rev/s.spend).toFixed(2)+'x':'-';
+
+  // ── Color helpers ──
+  const [hr,hg,hb]=[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
+  const dk=(t)=>'#'+[hr,hg,hb].map(v=>Math.round(v*t).toString(16).padStart(2,'0')).join('');
+  const lt=(t)=>'#'+[hr,hg,hb].map(v=>Math.round(255+(v-255)*t).toString(16).padStart(2,'0')).join('');
+  const autoTxt=(h)=>{
+    const[r,g,b]=[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+    return (0.299*r+0.587*g+0.114*b)/255>0.46?dk(0.28):'#fff';
+  };
+
+  // ── Card builders ──
+  // Dark card (solid brand shade) — always white text
+  const darkCard=(lbl,val,bg,sub='',valSz=20)=>`
+    <div style="background:${bg};border-radius:10px;padding:13px 14px;text-align:center;">
+      <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7);margin-bottom:4px">${lbl}</div>
+      <div style="font-size:${valSz}px;font-weight:800;color:#fff;line-height:1.1">${val}</div>
+      ${sub?`<div style="font-size:9px;color:rgba(255,255,255,.65);margin-top:3px">${sub}</div>`:''}
+    </div>`;
+  // Light card (pastel tint) — auto dark text
+  const lightCard=(lbl,val,sub='',valSz=18)=>{
+    const bg=lt(0.12); const tc=dk(0.38);
+    return `<div style="background:${bg};border:1px solid ${lt(0.35)};border-radius:10px;padding:13px 14px;text-align:center;">
+      <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:${tc};opacity:.75;margin-bottom:4px">${lbl}</div>
+      <div style="font-size:${valSz}px;font-weight:800;color:${tc};line-height:1.1">${val}</div>
+      ${sub?`<div style="font-size:9px;color:${tc};opacity:.6;margin-top:3px">${sub}</div>`:''}
+    </div>`;
+  };
+  // Arrow connector
+  const arrow=`<div style="font-size:16px;color:${lt(0.45)};align-self:center;flex-shrink:0;padding:0 2px">▶</div>`;
+  const arrowDown=`<div style="font-size:13px;color:${lt(0.45)};text-align:center;line-height:1;padding:2px 0">▼</div>`;
+
+  // ── MARKETING FUNNEL (4 steps horizontal) ──
+  const mktSteps=[
+    {lbl:'ค่า Ads รวม',         val:fmtM(s.spend),   sub:'Total Spend',       bg:dk(0.52)},
+    {lbl:'การเข้าถึง',          val:fmtN(fb.reach),  sub:'FB Reach',          bg:dk(0.68)},
+    {lbl:'การมีส่วนร่วม',       val:fmtN(fb.impr),   sub:'Impressions',       bg:hex},
+    {lbl:'จำนวนทัก',            val:fmtN(fb.msg),    sub:'ต้นทุน/ทัก: '+costPerMsg, bg:lt(0.75)},
+  ];
+  const mktRow=mktSteps.map((st,i)=>{
+    const tc=autoTxt(st.bg);
+    return `<div style="flex:1;min-width:0;background:${st.bg};border-radius:10px;padding:13px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:${tc};opacity:.75;margin-bottom:4px">${st.lbl}</div>
+      <div style="font-size:20px;font-weight:800;color:${tc};line-height:1.1;margin-bottom:3px">${st.val}</div>
+      <div style="font-size:9px;color:${tc};opacity:.65">${st.sub}</div>
+    </div>${i<mktSteps.length-1?arrow:''}`;
+  }).join('');
+
+  // ── SALES FUNNEL (3-col: left metrics | center flow | right metrics) ──
+  const salesLeft=`
+    <div style="display:flex;flex-direction:column;gap:8px;width:120px;flex-shrink:0;padding-top:6px">
+      ${lightCard('Order ใหม่',s.new_cnt.toLocaleString())}
+      ${lightCard('Close Rate ใหม่',closeRateNew)}
+    </div>`;
+
+  // Extra brand-specific box (e.g. Mylife100 non-referral new customers)
+  const extra=FUNNEL_EXTRA[brand];
+  const extraBox=extra?`
+    <div style="margin-top:6px;background:${lt(0.10)};border:1.5px solid ${lt(0.35)};border-radius:10px;padding:14px 16px;text-align:center;">
+      <div style="font-size:10px;font-weight:700;color:${dk(0.40)};margin-bottom:6px">${extra.lbl}</div>
+      <div style="font-size:22px;font-weight:800;color:${dk(0.38)};letter-spacing:-0.5px">฿ ${extra.rev.toLocaleString('th-TH')}</div>
+      <div style="font-size:11px;color:${dk(0.45)};margin-top:4px;font-weight:600">${extra.cnt} คน</div>
+    </div>`:'';
+
+  const salesCenter=`
+    <div style="flex:1;display:flex;flex-direction:column;gap:0">
+      ${darkCard('จำนวน Order ทั้งหมด',totalOrders.toLocaleString()+' orders',dk(0.50))}
+      ${arrowDown}
+      ${darkCard('ยอดขายทั้งหมด',fmtM(s.rev),dk(0.65))}
+      ${arrowDown}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        ${darkCard('ยอดขายลูกค้าเก่า',fmtM(s.old_rev),dk(0.78),s.old_cnt+' คน',15)}
+        ${darkCard('ยอดขายลูกค้าใหม่',fmtM(s.new_rev),hex,s.new_cnt+' คน',15)}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+        ${lightCard('ROAS ลูกค้าเก่า',roasOld,'',20)}
+        ${lightCard('ROAS ลูกค้าใหม่',roasNew,'',20)}
+      </div>
+      ${extraBox}
+    </div>`;
+
+  const salesRight=`
+    <div style="display:flex;flex-direction:column;gap:8px;width:120px;flex-shrink:0;padding-top:6px">
+      ${lightCard('Close Rate รวม',closeRateAll)}
+      ${darkCard('ROAS รวม',roasAll,hex,'Overall',22)}
+    </div>`;
+
+  const divider=`<div style="position:relative;margin:16px 0 14px;">
+    <div style="height:1px;background:var(--border)"></div>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:var(--card);padding:0 12px;
+      font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2)">🛒 Sales Funnel</div>
+  </div>`;
+
+  return `
+  <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:10px">📣 Marketing Funnel</div>
+  <div style="display:flex;gap:4px;align-items:stretch">${mktRow}</div>
+  ${divider}
+  <div style="display:flex;gap:10px;align-items:flex-start">
+    ${salesLeft}
+    <div style="font-size:13px;color:${lt(0.5)};align-self:flex-start;padding-top:20px;flex-shrink:0">◀</div>
+    ${salesCenter}
+    <div style="font-size:13px;color:${lt(0.5)};align-self:flex-start;padding-top:20px;flex-shrink:0">▶</div>
+    ${salesRight}
+  </div>`;
+}
+
 
 // ════════════════════════════════════════════════
 // OVERVIEW PAGE (filter==='all')
@@ -1029,6 +1834,10 @@ function renderOverview(){
   <div class="sh">📋 ตารางสรุปรายสินค้า</div>
   <div class="card"><div class="tbl-wrap" id="sumTbl"></div></div>
 
+  <!-- ━━ FINDINGS OVERVIEW ━━ -->
+  <div class="sh">💡 Findings &amp; Suggestions — ภาพรวมทั้ง 4 แบรนด์</div>
+  <div id="ovFindingsSection"></div>
+
   <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
   `;
 
@@ -1077,6 +1886,7 @@ function renderOverview(){
   }
 
   renderSumTable(ps);
+  document.getElementById('ovFindingsSection').innerHTML=findingsOverviewHTML();
 }
 
 // ════════════════════════════════════════════════
