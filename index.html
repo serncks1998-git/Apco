@@ -149,6 +149,22 @@ table.st tfoot td:first-child{text-align:left;}
 .footer{font-size:10px;color:var(--text3);text-align:center;padding:8px;}
 
 @media(max-width:900px){.sidebar{display:none;}.g2,.g3{grid-template-columns:1fr;}}
+
+/* ── OVERVIEW PAGE ── */
+.ov-section{background:var(--card);border-radius:var(--r);box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:visible;}
+.ov-head{padding:12px 18px;font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;border-radius:var(--r) var(--r) 0 0;}
+.ov-head.summary,.ov-head.sales{background:linear-gradient(90deg,#0d9488,#0f766e);}
+.ov-head.fb-head{background:linear-gradient(90deg,#1877f2,#1565d8);}
+.ov-head.gg-head{background:linear-gradient(90deg,#ea4335,#c62828);}
+.ov-head.ln-head{background:linear-gradient(90deg,#06c755,#04a544);}
+.ov-body{padding:16px 18px;}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:14px;}
+.ov-stat{background:var(--bg);border-radius:8px;padding:16px 12px;text-align:center;}
+.ov-lbl{font-size:10px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;line-height:1.5;}
+.ov-val{font-size:22px;font-weight:800;line-height:1.2;color:var(--text);}
+.ov-sub{font-size:10px;color:var(--text3);margin-top:5px;line-height:1.4;}
+.ov-divider{height:1px;background:var(--border);margin:16px 0;}
+.ov-subhead{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin-bottom:10px;}
 </style>
 </head>
 <body>
@@ -262,6 +278,69 @@ const FB_TOP5={
     {ad:'9 ม.ค. 69 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง (B)',spend:2585,impr:20633,reach:8371,msg:18,pur:1},
     {ad:'19 ม.ค. 69 ดูแลสุขภาพ...ให้แข็งแรง',spend:2478,impr:9350,reach:3406,msg:17,pur:3},
   ],
+};
+
+// ── Facebook per-page data ──
+const FB_PAGES={
+  'BIM-C':[
+    {page:'เพจภูมิสมดุล BIM',      spend:305072,impr:2028083,reach:929348,msg:1785,pur:58},
+    {page:'เพจภูมิคุ้มกันบำบัด',   spend:135466,impr:829546, reach:373954,msg:967, pur:0},
+  ],
+  'LIV':      [{page:'เพจ LEARN HIV',          spend:120148,impr:1336692,reach:620721,msg:1369,pur:52}],
+  'Mylife100':[{page:'เพจชีวี100ปีมีสุข',     spend:310368,impr:1680381,reach:964747,msg:2753,pur:145}],
+  'Cancino':  [{page:'เพจภูมิสมดุล (Cancino)',spend:30014, impr:136938, reach:44166, msg:221, pur:11}],
+};
+
+// ── Facebook Top 5 Ads per page ──
+const FB_TOP5_PAGES={
+  'BIM-C':[
+    {page:'เพจภูมิสมดุล BIM', ads:[
+      {ad:'11 พ.ย. 68 ตรวจพบถุงน้ำที่เต้านม ไม่ใช่ #เนื้อร้าย',    spend:25243,impr:74461, reach:32895,msg:113,pur:4},
+      {ad:'26 พ.ย. 68 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell',          spend:19583,impr:101726,reach:30166,msg:67, pur:11},
+      {ad:'16 ม.ค. 69 ยิ่งสูงวัย ยิ่งเสี่ยงเนื้อร้าย มากขึ้น',     spend:19132,impr:182168,reach:75028,msg:165,pur:2},
+      {ad:'30 ม.ค. 69 ภูมิคุ้มกันที่ดี คือเกราะป้องกันเนื้อร้าย',  spend:17966,impr:41302, reach:20631,msg:75, pur:6},
+      {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',               spend:17925,impr:121629,reach:44951,msg:129,pur:3},
+    ]},
+    {page:'เพจภูมิคุ้มกันบำบัด', ads:[
+      {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต (A)',           spend:18222,impr:123488,reach:46402,msg:134,pur:12},
+      {ad:'4 ก.ค. 68 #มังคุดเสริมฤทธิ์ สร้าง #stemcell',            spend:15434,impr:77901, reach:28645,msg:171,pur:5},
+      {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต (B)',           spend:13820,impr:50119, reach:15294,msg:59, pur:2},
+      {ad:'21 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด (A)',            spend:12558,impr:94260, reach:35830,msg:69, pur:7},
+      {ad:'21 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด (B)',            spend:11914,impr:27054, reach:10387,msg:83, pur:0},
+    ]},
+  ],
+  'LIV':[{page:'เพจ LEARN HIV', ads:[
+    {ad:'19 ก.พ. 69 เมื่อชีวิตต้องเจอกับ HIV',spend:12664,impr:167198,reach:98621,msg:207,pur:7},
+    {ad:'4 มี.ค. 68 จัดการเซลติดเชื้อ reel',  spend:11878,impr:92629, reach:23619,msg:100,pur:7},
+    {ad:'9 ม.ค. 69 วินัย คือจุดเริ่มต้น',     spend:8677, impr:93559, reach:50413,msg:83, pur:4},
+    {ad:'27 ต.ค. 68 คุณปีเตอร์ เป็น AIDS',    spend:7046, impr:71356, reach:32276,msg:48, pur:4},
+    {ad:'4 ก.พ. 69 คุณแพทไม่ปล่อยให้ HIV',   spend:5677, impr:86294, reach:49951,msg:49, pur:4},
+  ]}],
+  'Mylife100':[{page:'เพจชีวี100ปีมีสุข', ads:[
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (A)',spend:26026,impr:98997, reach:63553,msg:366,pur:1},
+    {ad:'27 มิ.ย. 68 ไม่มีใครอยากแก่',              spend:15146,impr:32958, reach:15032,msg:150,pur:7},
+    {ad:'11 ก.ย. 68 เปิดใจครั้งแรก',               spend:15100,impr:55023, reach:31955,msg:168,pur:2},
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (B)',spend:14183,impr:54289, reach:37634,msg:204,pur:3},
+    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (C)',spend:13947,impr:60114, reach:42319,msg:183,pur:2},
+  ]}],
+  'Cancino':[{page:'เพจภูมิสมดุล (Cancino)', ads:[
+    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell (A)',        spend:6606,impr:24914,reach:10428,msg:52,pur:2},
+    {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด', spend:6420,impr:39266,reach:14072,msg:39,pur:2},
+    {ad:'24 ต.ค. 68 เป็น #ก้อนเนื้อเต้านม',         spend:5854,impr:19007,reach:6935, msg:57,pur:1},
+    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell (B)',        spend:2585,impr:20633,reach:8371, msg:18,pur:1},
+    {ad:'19 ม.ค. 69 ดูแลสุขภาพ...ให้แข็งแรง',       spend:2478,impr:9350, reach:3406, msg:17,pur:3},
+  ]}],
+};
+
+// ── LINE per-account data ──
+const LN_ACCTS={
+  'BIM-C':[    {acct:'bim100callcenter',cost:25014,impr:1524119,reach:0,clicks:2764}],
+  'LIV':[
+    {acct:'apcocapsules',cost:24633,impr:1930366,reach:0,clicks:3579},
+    {acct:'ByeByeHIV',   cost:15599,impr:1291414,reach:0,clicks:2260},
+  ],
+  'Mylife100':[{acct:'mylife100society',cost:29780,impr:1831582,reach:0,clicks:3661}],
+  'Cancino':  [],
 };
 
 // Google Top 10 Keywords
@@ -499,6 +578,7 @@ function ggKwHTML(ps){
 // RENDER MAIN CONTENT
 // ════════════════════════════════════════════════
 function renderMain(){
+  if(filter==='all'){renderOverview();return;}
   const ps=vp();
   const main=document.getElementById('main');
 
@@ -527,15 +607,7 @@ function renderMain(){
 
     <!-- ━━ FACEBOOK ━━ -->
     <div class="sh"><span class="pbadge fb">📘 Facebook Ads</span></div>
-    <div class="g3">
-      <div class="card"><div class="ct">Impressions &amp; Reach</div><canvas id="cFbIR"></canvas></div>
-      <div class="card"><div class="ct">Messaging Contacts</div><canvas id="cFbMsg"></canvas></div>
-      <div class="card"><div class="ct">Ad Spend (THB)</div><canvas id="cFbSpend"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ct">🏆 Top 5 Ad Contents (by Spend)</div>
-      <div id="fbTop5"></div>
-    </div>
+    <div id="fbSection" style="display:flex;flex-direction:column;gap:var(--gap)"></div>
 
     <!-- ━━ GOOGLE ━━ -->
     <div class="sh"><span class="pbadge google">🔍 Google Ads</span></div>
@@ -551,12 +623,7 @@ function renderMain(){
 
     <!-- ━━ LINE OA ━━ -->
     <div class="sh"><span class="pbadge line">💬 LINE OA</span></div>
-    <div class="g4">
-      <div class="card"><div class="ct">Impressions</div><canvas id="cLnI"></canvas></div>
-      <div class="card"><div class="ct">Reach (Estimated)</div><canvas id="cLnR"></canvas></div>
-      <div class="card"><div class="ct">Clicks</div><canvas id="cLnC"></canvas></div>
-      <div class="card"><div class="ct">Ad Cost (THB)</div><canvas id="cLnS"></canvas></div>
-    </div>
+    <div id="lnSection" style="display:flex;flex-direction:column;gap:var(--gap)"></div>
 
     <!-- SUMMARY TABLE -->
     <div class="sh">📋 ตารางสรุปรายสินค้า</div>
@@ -568,22 +635,19 @@ function renderMain(){
   // fill in HTML blocks
   document.getElementById('adRow').innerHTML=adCostHTML();
   document.getElementById('kRow').innerHTML=kpiHTML();
-  document.getElementById('fbTop5').innerHTML=fbTop5HTML(ps);
   document.getElementById('ggKw').innerHTML=ggKwHTML(ps);
   renderSumTable(ps);
+  renderFbSection(filter);
+  renderLnSection(filter);
 
   // draw charts
   drawTrend(ps);
   drawON(ps);
   drawRS(ps);
   drawRoas(ps);
-  drawFbIR(ps);
-  drawFbMsg(ps);
-  drawFbSpend(ps);
   drawGgCC(ps);
   drawGgCost(ps);
   drawGgCPC(ps);
-  drawLn(ps);
 }
 
 // ════════════════════════════════════════════════
@@ -666,6 +730,353 @@ function drawLn(ps){
     {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
   ch('cLnS','doughnut',{labels:lp,datasets:[{data:lp.map(p=>LN[p].cost),backgroundColor:lp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
     {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtF(c.parsed)}`}}}});
+}
+
+// ════════════════════════════════════════════════
+// FB TOP5 ADS TABLE (for a specific page)
+// ════════════════════════════════════════════════
+function fbPageAdsHTML(brand, pageIdx, color){
+  const pd=FB_TOP5_PAGES[brand]&&FB_TOP5_PAGES[brand][pageIdx];
+  if(!pd||!pd.ads||!pd.ads.length) return '<p style="color:var(--text3);font-size:12px;padding:8px 0">ไม่มีข้อมูล Ad</p>';
+  const ads=pd.ads;
+  const maxSpend=Math.max(...ads.map(r=>r.spend));
+  let h=`<div class="tbl-wrap"><table class="t">
+    <thead><tr>
+      <th style="width:28px">#</th><th>Ad Content</th>
+      <th class="r">Spend (฿)</th><th class="r">Impressions</th>
+      <th class="r">Reach</th><th class="r">Msg</th><th class="r">Pur.</th>
+    </tr></thead><tbody>`;
+  ads.forEach((r,i)=>{
+    h+=`<tr>
+      <td><span class="rank ${i<3?'top3':''}">${i+1}</span></td>
+      <td><div class="bar-cell">
+        <div class="mini-bar" style="width:${Math.round(r.spend/maxSpend*80)}px;background:${color}"></div>
+        <span class="ad-name" title="${r.ad}">${r.ad}</span>
+      </div></td>
+      <td class="r">${fmtF(r.spend)}</td><td class="r">${r.impr.toLocaleString()}</td>
+      <td class="r">${r.reach.toLocaleString()}</td><td class="r">${r.msg}</td><td class="r">${r.pur}</td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div>`;
+  return h;
+}
+
+// ════════════════════════════════════════════════
+// RENDER FB SECTION — per-page breakdown
+// ════════════════════════════════════════════════
+function renderFbSection(brand){
+  const sec=document.getElementById('fbSection');
+  if(!sec) return;
+  const pages=FB_PAGES[brand]||[];
+  const color=C[brand]||'#4f6ef7';
+  const cl=CL[brand]||'';
+
+  if(!pages.length){
+    sec.innerHTML='<div class="card"><p style="color:var(--text3);font-size:12px;padding:10px 0">ไม่มีข้อมูล Facebook Ads</p></div>';
+    return;
+  }
+
+  let html='';
+  pages.forEach((pg,idx)=>{
+    const cIR=`cFbP${idx}IR`, cMsg=`cFbP${idx}Msg`;
+    const cpm=pg.impr>0?fmtF(pg.spend/pg.impr*1000):'-';
+    const cpm2=pg.msg>0?fmtF(pg.spend/pg.msg):'-';
+    html+=`
+    <div class="card" style="border-top:3px solid ${color}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="background:${color}18;color:${color};padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700">📘 ${pg.page}</span>
+      </div>
+      <div class="pstat-grid" style="margin-bottom:14px">
+        <div class="pstat"><div class="pst-lbl">Ad Spend</div><div class="pst-val" style="color:${color}">${fmtF(pg.spend)}</div></div>
+        <div class="pstat"><div class="pst-lbl">Impressions</div><div class="pst-val">${fmtN(pg.impr)}</div></div>
+        <div class="pstat"><div class="pst-lbl">Reach</div><div class="pst-val">${fmtN(pg.reach)}</div></div>
+        <div class="pstat"><div class="pst-lbl">CPM</div><div class="pst-val">${cpm}</div></div>
+        <div class="pstat"><div class="pst-lbl">Messaging</div><div class="pst-val">${fmtN(pg.msg)}</div></div>
+        <div class="pstat"><div class="pst-lbl">Cost/Msg</div><div class="pst-val">${cpm2}</div></div>
+        <div class="pstat"><div class="pst-lbl">Purchases</div><div class="pst-val">${pg.pur}</div></div>
+      </div>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="card"><div class="ct">Impressions &amp; Reach</div><canvas id="${cIR}"></canvas></div>
+        <div class="card"><div class="ct">Messaging Contacts</div><canvas id="${cMsg}"></canvas></div>
+      </div>
+      <div class="ct" style="margin-bottom:8px">🏆 Top 5 Ad Contents (by Spend)</div>
+      ${fbPageAdsHTML(brand,idx,color)}
+    </div>`;
+  });
+  sec.innerHTML=html;
+
+  // Draw charts per page
+  pages.forEach((pg,idx)=>{
+    ch(`cFbP${idx}IR`,'bar',{
+      labels:['Impressions','Reach'],
+      datasets:[{data:[pg.impr,pg.reach],backgroundColor:[color+'bb',color+'44'],borderRadius:4}]
+    },{plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed.y)}`}}},scales:{x:scX(),y:scY('N')}});
+    ch(`cFbP${idx}Msg`,'bar',{
+      labels:['Messaging'],
+      datasets:[{data:[pg.msg],backgroundColor:[color+'cc'],borderRadius:6}]
+    },{plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`Messaging: ${c.parsed.y.toLocaleString()}`}}},scales:{x:scX(),y:scY('N')}});
+  });
+}
+
+// ════════════════════════════════════════════════
+// RENDER LINE SECTION — per-account breakdown
+// ════════════════════════════════════════════════
+function renderLnSection(brand){
+  const sec=document.getElementById('lnSection');
+  if(!sec) return;
+  const accts=LN_ACCTS[brand]||[];
+  const color=C[brand]||'#06c755';
+
+  if(!accts.length){
+    sec.innerHTML='<div class="card"><p style="color:var(--text3);font-size:12px;padding:10px 0">ไม่มีข้อมูล LINE OA Ads</p></div>';
+    return;
+  }
+
+  let html='';
+  accts.forEach((ac,idx)=>{
+    const cI=`cLnP${idx}I`, cC=`cLnP${idx}C`;
+    const cpc=ac.clicks>0?fmtF(ac.cost/ac.clicks):'-';
+    html+=`
+    <div class="card" style="border-top:3px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="background:#e0faf0;color:#059669;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700">💬 ${ac.acct}</span>
+      </div>
+      <div class="pstat-grid" style="margin-bottom:14px">
+        <div class="pstat"><div class="pst-lbl">Ad Spend</div><div class="pst-val" style="color:var(--line)">${fmtF(ac.cost)}</div></div>
+        <div class="pstat"><div class="pst-lbl">Impressions</div><div class="pst-val">${fmtN(ac.impr)}</div></div>
+        <div class="pstat"><div class="pst-lbl">Clicks</div><div class="pst-val">${fmtN(ac.clicks)}</div></div>
+        <div class="pstat"><div class="pst-lbl">CPC</div><div class="pst-val">${cpc}</div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="ct">Impressions</div><canvas id="${cI}"></canvas></div>
+        <div class="card"><div class="ct">Clicks</div><canvas id="${cC}"></canvas></div>
+      </div>
+    </div>`;
+  });
+  sec.innerHTML=html;
+
+  // Draw charts per account
+  accts.forEach((ac,idx)=>{
+    ch(`cLnP${idx}I`,'doughnut',{
+      labels:[ac.acct],
+      datasets:[{data:[ac.impr],backgroundColor:['#06c755cc'],borderColor:'#fff',borderWidth:2}]
+    },{cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Impressions: ${fmtN(c.parsed)}`}}}});
+    ch(`cLnP${idx}C`,'doughnut',{
+      labels:[ac.acct],
+      datasets:[{data:[ac.clicks],backgroundColor:['#06c755cc'],borderColor:'#fff',borderWidth:2}]
+    },{cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Clicks: ${fmtN(c.parsed)}`}}}});
+  });
+}
+
+// ════════════════════════════════════════════════
+// OVERVIEW PAGE (filter==='all')
+// ════════════════════════════════════════════════
+function renderOverview(){
+  const ps=P;
+  const main=document.getElementById('main');
+
+  // ── AGGREGATES ──
+  const T={
+    rev:    ps.reduce((s,p)=>s+SALES[p].rev,0),
+    oldRev: ps.reduce((s,p)=>s+SALES[p].old_rev,0),
+    newRev: ps.reduce((s,p)=>s+SALES[p].new_rev,0),
+    fbRev:  ps.reduce((s,p)=>s+SALES[p].fb_rev,0),
+    lnRev:  ps.reduce((s,p)=>s+SALES[p].line_rev,0),
+    otRev:  ps.reduce((s,p)=>s+SALES[p].other_rev,0),
+    oldCnt: ps.reduce((s,p)=>s+SALES[p].old_cnt,0),
+    newCnt: ps.reduce((s,p)=>s+SALES[p].new_cnt,0),
+    spend:  ps.reduce((s,p)=>s+SALES[p].spend,0),
+    spFb:   ps.reduce((s,p)=>s+SALES[p].sp_fb,0),
+    spG:    ps.reduce((s,p)=>s+SALES[p].sp_g,0),
+    spL:    ps.reduce((s,p)=>s+SALES[p].sp_l,0),
+    fbImpr: ps.reduce((s,p)=>s+FB[p].impr,0),
+    fbReach:ps.reduce((s,p)=>s+FB[p].reach,0),
+    fbMsg:  ps.reduce((s,p)=>s+FB[p].msg,0),
+    fbPur:  ps.reduce((s,p)=>s+FB[p].pur,0),
+    ggClk:  ps.reduce((s,p)=>s+GG[p].clicks,0),
+    ggConv: ps.reduce((s,p)=>s+GG[p].conv,0),
+    spGg:   ps.reduce((s,p)=>s+GG[p].cost,0),
+    lnImpr: ps.reduce((s,p)=>s+LN[p].impr,0),
+    lnReach:ps.reduce((s,p)=>s+LN[p].reach,0),
+    lnClk:  ps.reduce((s,p)=>s+LN[p].clicks,0),
+    lnCost: ps.reduce((s,p)=>s+LN[p].cost,0),
+  };
+  const totCnt=T.oldCnt+T.newCnt;
+  const roas=(T.rev/T.spend).toFixed(2);
+  const fbCPM=T.fbImpr>0?(T.spFb/T.fbImpr*1000):0;
+  const fbCPMsg=T.fbMsg>0?T.spFb/T.fbMsg:0;
+  const ggCPC=T.ggClk>0?T.spGg/T.ggClk:0;
+  const ggCPA=T.ggConv>0?T.spGg/T.ggConv:0;
+  const lnCPC=T.lnClk>0?T.lnCost/T.lnClk:0;
+  const vgp=ps.filter(p=>GG[p].cost>0);
+  const lnp=ps.filter(p=>LN[p].cost>0);
+
+  const st=(lbl,val,sub='',col='')=>
+    `<div class="ov-stat"><div class="ov-lbl">${lbl}</div><div class="ov-val"${col?` style="color:${col}"`:''}>${val}</div>${sub?`<div class="ov-sub">${sub}</div>`:''}</div>`;
+
+  main.innerHTML=`
+  <!-- ① SUMMARY -->
+  <div class="ov-section">
+    <div class="ov-head summary">📊 สรุปภาพรวม — มีนาคม 2026</div>
+    <div class="ov-body">
+      <div class="ov-grid">
+        ${st('ค่าโฆษณารวม',fmtM(T.spend),'FB + Google + LINE','#8b5cf6')}
+        ${st('ยอดขายรวม',fmtM(T.rev),'4 สินค้า')}
+        ${st('ROAS รวม',roas+'x','ผลตอบแทนโฆษณา','#2db67d')}
+        ${st('Impressions รวม',fmtN(T.fbImpr+T.lnImpr),'FB + LINE OA')}
+        ${st('FB Reach',fmtN(T.fbReach),'Unique Accounts')}
+        ${st('Messaging (FB)',fmtN(T.fbMsg),'ทัก Inbox')}
+        ${st('LINE Clicks',fmtN(T.lnClk),'LINE OA ทุกบัญชี')}
+        ${st('Google Conv.',fmtN(T.ggConv),'ทุก Campaign')}
+      </div>
+    </div>
+  </div>
+
+  <!-- ② SALES -->
+  <div class="ov-section">
+    <div class="ov-head sales">🛒 ยอดขาย (รวมทุกสินค้า)</div>
+    <div class="ov-body">
+      <div class="ov-subhead">📦 จำนวน Order</div>
+      <div class="ov-grid" style="grid-template-columns:repeat(3,1fr);max-width:560px;margin-bottom:14px;">
+        ${st('Order ทั้งหมด',totCnt.toLocaleString(),'เก่า + ใหม่','#8b5cf6')}
+        ${st('ลูกค้าเก่า',T.oldCnt.toLocaleString(),((T.oldCnt/totCnt)*100).toFixed(1)+'% ของทั้งหมด','#3b82f6')}
+        ${st('ลูกค้าใหม่',T.newCnt.toLocaleString(),((T.newCnt/totCnt)*100).toFixed(1)+'% ของทั้งหมด','#10b981')}
+      </div>
+      <div class="ov-divider"></div>
+      <div class="ov-subhead">💰 ยอดขาย (รายได้)</div>
+      <div class="ov-grid">
+        ${st('ยอดขายรวม',fmtM(T.rev),'ทุกสินค้า','#8b5cf6')}
+        ${st('ยอดขายลูกค้าเก่า',fmtM(T.oldRev),((T.oldRev/T.rev)*100).toFixed(1)+'% ของยอดรวม','#3b82f6')}
+        ${st('ยอดขายลูกค้าใหม่',fmtM(T.newRev),((T.newRev/T.rev)*100).toFixed(1)+'% ของยอดรวม','#10b981')}
+        ${st('ใหม่จาก Facebook',fmtM(T.fbRev),((T.fbRev/T.newRev)*100).toFixed(1)+'% ของลค.ใหม่','#1877f2')}
+        ${st('ใหม่จาก LINE',fmtM(T.lnRev),((T.lnRev/T.newRev)*100).toFixed(1)+'% ของลค.ใหม่','#06c755')}
+        ${st('ใหม่จากอื่นๆ',fmtM(T.otRev),((T.otRev/T.newRev)*100).toFixed(1)+'% ของลค.ใหม่','#6b7694')}
+      </div>
+      <div class="ov-divider"></div>
+      <div class="ov-subhead">📊 เปรียบเทียบรายสินค้า</div>
+      <div class="g2">
+        <div class="card"><div class="ct">ยอดขาย vs งบโฆษณา (THB)</div><canvas id="cOvRS"></canvas></div>
+        <div class="card"><div class="ct">ROAS per Brand</div><canvas id="cOvRoas"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ FACEBOOK -->
+  <div class="ov-section">
+    <div class="ov-head fb-head">📘 Facebook Ads (BIM-C, LIV, Mylife100 และ Cancino)</div>
+    <div class="ov-body">
+      <div class="ov-grid">
+        ${st('ค่า Ads Facebook',fmtM(T.spFb),'','#1877f2')}
+        ${st('Impressions',fmtN(T.fbImpr),'')}
+        ${st('Reach',fmtN(T.fbReach),'')}
+        ${st('CPM',fmtF(fbCPM),'ต่อ 1,000 Impr.')}
+        ${st('Messaging',fmtN(T.fbMsg),'ทัก inbox')}
+        ${st('Cost / Msg',fmtF(fbCPMsg),'ต้นทุนต่อทัก')}
+        ${st('Purchases',T.fbPur.toLocaleString(),'รวมทุก Campaign')}
+      </div>
+      <div class="g3" style="margin-bottom:14px">
+        <div class="card"><div class="ct">Impressions & Reach</div><canvas id="cOvFbIR"></canvas></div>
+        <div class="card"><div class="ct">Messaging Contacts</div><canvas id="cOvFbMsg"></canvas></div>
+        <div class="card"><div class="ct">Ad Spend (THB)</div><canvas id="cOvFbSp"></canvas></div>
+      </div>
+      <div class="ct" style="margin-bottom:8px">🏆 Top 5 Ad Contents (by Spend)</div>
+      ${fbTop5HTML(ps)}
+    </div>
+  </div>
+
+  <!-- ④ GOOGLE -->
+  <div class="ov-section">
+    <div class="ov-head gg-head">🔍 Google Ads (BIM-C, LIV และ Mylife100)</div>
+    <div class="ov-body">
+      <div class="ov-grid">
+        ${st('ค่า Ads Google',fmtM(T.spGg),'','#ea4335')}
+        ${st('Clicks',fmtN(T.ggClk),'')}
+        ${st('Conversions',fmtN(T.ggConv),'')}
+        ${st('CPC (Cost/Click)',fmtF(ggCPC),'')}
+        ${st('CPA (Cost/Conv.)',fmtF(ggCPA),'')}
+      </div>
+      <div class="g3" style="margin-bottom:14px">
+        <div class="card"><div class="ct">Clicks & Conversions</div><canvas id="cOvGgCC"></canvas></div>
+        <div class="card"><div class="ct">Ad Cost (THB)</div><canvas id="cOvGgCost"></canvas></div>
+        <div class="card"><div class="ct">Cost per Conversion</div><canvas id="cOvGgCPA"></canvas></div>
+      </div>
+      <div class="ct" style="margin-bottom:8px">🔑 Top 10 Keywords</div>
+      ${ggKwHTML(ps)}
+    </div>
+  </div>
+
+  <!-- ⑤ LINE OA -->
+  <div class="ov-section">
+    <div class="ov-head ln-head">💬 LINE OA (BIM-C, LIV และ Mylife100)</div>
+    <div class="ov-body">
+      <div class="ov-grid">
+        ${st('ค่า Ads LINE',fmtM(T.lnCost),'','#06c755')}
+        ${st('Impressions',fmtN(T.lnImpr),'')}
+        ${st('Reach',fmtN(T.lnReach),'')}
+        ${st('Clicks',fmtN(T.lnClk),'')}
+        ${st('Cost per Click',fmtF(lnCPC),'CPC')}
+      </div>
+      <div class="g4">
+        <div class="card"><div class="ct">Impressions</div><canvas id="cOvLnI"></canvas></div>
+        <div class="card"><div class="ct">Reach</div><canvas id="cOvLnR"></canvas></div>
+        <div class="card"><div class="ct">Clicks</div><canvas id="cOvLnC"></canvas></div>
+        <div class="card"><div class="ct">Ad Cost (THB)</div><canvas id="cOvLnS"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="sh">📋 ตารางสรุปรายสินค้า</div>
+  <div class="card"><div class="tbl-wrap" id="sumTbl"></div></div>
+
+  <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
+  `;
+
+  // ── DRAW CHARTS ──
+  // Revenue vs Spend
+  ch('cOvRS','bar',{labels:ps,datasets:[
+    {label:'ยอดขาย',data:ps.map(p=>SALES[p].rev),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4},
+    {label:'Ad Spend',data:ps.map(p=>SALES[p].spend),backgroundColor:ps.map(p=>C[p]+'33'),borderRadius:4,borderColor:ps.map(p=>C[p]),borderWidth:1.5},
+  ]},{plugins:{...bOpts.plugins,tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+
+  ch('cOvRoas','bar',{labels:ps,datasets:[{label:'ROAS',data:ps.map(p=>SALES[p].roas),backgroundColor:ps.map(p=>C[p]+'cc'),borderRadius:6}]},
+    {indexAxis:'y',plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`ROAS: ${c.parsed.x.toFixed(2)}x`}}},scales:{x:{ticks:{callback:v=>v+'x',font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'bold'}}}}});
+
+  // FB
+  ch('cOvFbIR','bar',{labels:ps,datasets:[
+    {label:'Impressions',data:ps.map(p=>FB[p].impr),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4},
+    {label:'Reach',data:ps.map(p=>FB[p].reach),backgroundColor:ps.map(p=>C[p]+'44'),borderRadius:4},
+  ]},{plugins:{...bOpts.plugins,tooltip:tt('N')},scales:{x:scX(),y:scY('N')}});
+  ch('cOvFbMsg','bar',{labels:ps,datasets:[{label:'Messaging',data:ps.map(p=>FB[p].msg),backgroundColor:ps.map(p=>C[p]+'cc'),borderRadius:4}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('N')},scales:{x:scX(),y:scY('N')}});
+  ch('cOvFbSp','bar',{labels:ps,datasets:[{label:'FB Spend',data:ps.map(p=>FB[p].spend),backgroundColor:ps.map(p=>C[p]+'bb'),borderRadius:4}]},
+    {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+
+  // Google
+  if(vgp.length){
+    ch('cOvGgCC','bar',{labels:vgp,datasets:[
+      {label:'Clicks',data:vgp.map(p=>GG[p].clicks),backgroundColor:vgp.map(p=>C[p]+'bb'),borderRadius:4},
+      {label:'Conversions',data:vgp.map(p=>GG[p].conv),backgroundColor:vgp.map(p=>C[p]+'33'),borderRadius:4,borderColor:vgp.map(p=>C[p]),borderWidth:1.5},
+    ]},{plugins:{...bOpts.plugins},scales:{x:scX(),y:{ticks:{font:{size:9}}}}});
+    ch('cOvGgCost','bar',{labels:vgp,datasets:[{label:'Google Cost',data:vgp.map(p=>GG[p].cost),backgroundColor:vgp.map(p=>C[p]+'bb'),borderRadius:6}]},
+      {plugins:{...bOpts.plugins,legend:{display:false},tooltip:tt('F')},scales:{x:scX(),y:scY('M')}});
+    ch('cOvGgCPA','bar',{labels:vgp,datasets:[{label:'CPA',data:vgp.map(p=>GG[p].conv>0?Math.round(GG[p].cost/GG[p].conv):0),backgroundColor:vgp.map(p=>C[p]+'bb'),borderRadius:6}]},
+      {plugins:{...bOpts.plugins,legend:{display:false},tooltip:{callbacks:{label:c=>`CPA: ${fmtF(c.parsed.y)}`}}},scales:{x:scX(),y:scY('M')}});
+  }
+
+  // LINE
+  if(lnp.length){
+    ch('cOvLnI','doughnut',{labels:lnp,datasets:[{data:lnp.map(p=>LN[p].impr),backgroundColor:lnp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+      {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+    ch('cOvLnR','doughnut',{labels:lnp,datasets:[{data:lnp.map(p=>LN[p].reach),backgroundColor:lnp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+      {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+    ch('cOvLnC','doughnut',{labels:lnp,datasets:[{data:lnp.map(p=>LN[p].clicks),backgroundColor:lnp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+      {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtN(c.parsed)}`}}}});
+    ch('cOvLnS','doughnut',{labels:lnp,datasets:[{data:lnp.map(p=>LN[p].cost),backgroundColor:lnp.map(p=>C[p]+'cc'),borderColor:'#fff',borderWidth:2}]},
+      {cutout:'62%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmtF(c.parsed)}`}}}});
+  }
+
+  renderSumTable(ps);
 }
 
 // ════════════════════════════════════════════════
