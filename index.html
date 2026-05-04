@@ -209,12 +209,12 @@ table.st tfoot td:first-child{text-align:left;}
   <div class="logo">AO<span>MEDIA</span></div>
   <div class="report-lbl">Ads &amp; Sales Report</div>
   <div class="spacer"></div>
-  <div class="updated">Updated: 6 April 2026</div>
+  <div class="updated">Updated: 4 May 2026</div>
 </header>
 
 <nav class="monthtabs">
-  <div class="mtab active" onclick="setMonth(this)">มีนาคม 2026</div>
-  <div class="mtab future">เมษายน 2026</div>
+  <div class="mtab" onclick="setMonth(this)">มีนาคม 2026</div>
+  <div class="mtab active" onclick="setMonth(this)">เมษายน 2026</div>
   <div class="mtab future">พฤษภาคม 2026</div>
 </nav>
 
@@ -232,7 +232,7 @@ table.st tfoot td:first-child{text-align:left;}
     <div class="sb-divider"></div>
     <div class="sb-section">
       <div class="sb-label">Quick Stats</div>
-      <div class="sb-stat"><div class="ss-lbl">Total Revenue</div><div class="ss-val" id="qs-rev">-</div><div class="ss-sub">มีนาคม 2026</div></div>
+      <div class="sb-stat"><div class="ss-lbl">Total Revenue</div><div class="ss-val" id="qs-rev">-</div><div class="ss-sub">เมษายน 2026</div></div>
       <div class="sb-stat"><div class="ss-lbl">Total Ad Spend</div><div class="ss-val" id="qs-spend">-</div><div class="ss-sub" id="qs-roas">-</div></div>
       <div class="sb-stat"><div class="ss-lbl">New Customers</div><div class="ss-val" id="qs-new">-</div><div class="ss-sub" id="qs-old">-</div></div>
     </div>
@@ -253,177 +253,174 @@ const C = {'BIM-C':'#3b82f6','LIV':'#ef4444','Mylife100':'#10b981','Cancino':'#f
 const CL= {'BIM-C':'bim','LIV':'liv','Mylife100':'mylife','Cancino':'cancino'};
 
 const SALES={
-  'BIM-C':    {rev:3632922,old_rev:3116072,new_rev:516851,old_cnt:532,new_cnt:108,fb_rev:80019, line_rev:341399,other_rev:95433, spend:589586, sp_fb:440538,sp_g:124034,sp_l:25014, roas:6.16},
-  'LIV':      {rev:2384723,old_rev:2278938,new_rev:105785,old_cnt:569,new_cnt:27, fb_rev:11673, line_rev:62075, other_rev:32037, spend:199897, sp_fb:120148,sp_g:39517, sp_l:40232, roas:11.93},
-  'Mylife100':{rev:3103271,old_rev:2053738,new_rev:1049533,old_cnt:308,new_cnt:175,fb_rev:257009,line_rev:266748,other_rev:525776,spend:379530, sp_fb:310368,sp_g:39382, sp_l:29780, roas:8.17},
-  'Cancino':  {rev:486045, old_rev:371792, new_rev:114252, old_cnt:99, new_cnt:46, fb_rev:63000, line_rev:42000, other_rev:9252,  spend:30014,  sp_fb:30014, sp_g:0,     sp_l:0,    roas:16.19},
+  'BIM-C':    {rev:2982335,old_rev:2574195,new_rev:408140, old_cnt:460,new_cnt:78, fb_rev:62131, line_rev:268907,other_rev:77102, spend:609127, sp_fb:460698,sp_g:124553,sp_l:23876, roas:4.90},
+  'LIV':      {rev:1951989,old_rev:1911952,new_rev:40037,  old_cnt:475,new_cnt:14, fb_rev:0,     line_rev:35365, other_rev:4672,  spend:194951, sp_fb:116866,sp_g:39527, sp_l:38558, roas:10.01},
+  'Mylife100':{rev:2726168,old_rev:1930374,new_rev:795794, old_cnt:287,new_cnt:135,fb_rev:167757,line_rev:206542,other_rev:421495,spend:351997, sp_fb:293215,sp_g:29266, sp_l:29516, roas:7.74},
+  'Cancino':  {rev:379271, old_rev:321373, new_rev:57898,  old_cnt:86, new_cnt:27, fb_rev:20383, line_rev:23383, other_rev:14132, spend:30078,  sp_fb:30078, sp_g:0,     sp_l:0,    roas:12.61},
 };
 const FB={
-  'BIM-C':    {spend:440538,impr:2857629,reach:1303302,msg:2752,pur:58},
-  'LIV':      {spend:120148,impr:1336692,reach:620721, msg:1369,pur:52},
-  'Mylife100':{spend:310368,impr:1680381,reach:964747, msg:2753,pur:145},
-  'Cancino':  {spend:30014, impr:136938, reach:44166,  msg:221, pur:11},
+  'BIM-C':    {spend:460698,impr:6951889,reach:3451192,msg:2647,pur:96},
+  'LIV':      {spend:116866,impr:1862187,reach:1186723,msg:610, pur:9},
+  'Mylife100':{spend:293215,impr:1875212,reach:1098543,msg:2379,pur:66},
+  'Cancino':  {spend:30078, impr:162443, reach:73152,  msg:319, pur:23},
 };
 const GG={
-  'BIM-C':    {cost:124034,clicks:12181,conv:698},
-  'LIV':      {cost:39517, clicks:3377, conv:48},
-  'Mylife100':{cost:39382, clicks:4268, conv:181},
+  'BIM-C':    {cost:124553,clicks:13957,conv:699},
+  'LIV':      {cost:39527, clicks:4021, conv:58},
+  'Mylife100':{cost:29266, clicks:2435, conv:128},
   'Cancino':  {cost:0,     clicks:0,    conv:0},
 };
 const LN={
-  'BIM-C':    {cost:25014, reach:763514,  impr:1524119,clicks:2764},
-  'LIV':      {cost:40232, reach:1857822, impr:3221780,clicks:5839},
-  'Mylife100':{cost:29780, reach:1062321, impr:1831582,clicks:3661},
-  'Cancino':  {cost:0,     reach:0,       impr:0,      clicks:0},
+  'BIM-C':    {cost:23876, reach:0, impr:1711927,clicks:2395},
+  'LIV':      {cost:38558, reach:0, impr:3250069,clicks:6111},
+  'Mylife100':{cost:29516, reach:0, impr:2464444,clicks:3883},
+  'Cancino':  {cost:0,     reach:0, impr:0,      clicks:0},
 };
 const DAILY={
-  'BIM-C':   [11201,162011,9925,176741,177164,115196,154907,22318,243066,179954,89221,128592,129828,87184,14636,157950,109100,109600,123442,135195,60932,16991,140032,155100,80906,78646,121370,101685,19803,164600,355627],
-  'LIV':     [4206,66230,13551,152214,86557,142965,70090,6156,97757,84037,88156,84903,74975,94931,8645,111417,104715,100015,85336,109797,54507,4673,103941,76776,69046,123887,61819,43757,900,139357,119407],
-  'Mylife100':[82710,122897,0,141589,101869,67290,160748,94393,107009,126636,128972,106542,95327,68692,88785,121028,68692,142056,88785,77103,107477,67290,103271,136449,129907,64019,51869,96729,114019,123364,117757],
-  'Cancino': [0,22346,0,28506,35439,729,23383,0,36477,6757,23295,10598,2495,4292,0,19963,7794,14972,5299,8743,7065,0,20647,17664,11992,16626,15701,22963,1766,39280,81252],
+  'BIM-C':   [36380,109509,107369,61007,50374,13607,148678,182136,124770,74828,48342,4206,0,0,0,118127,190292,75275,26411,178972,136436,140043,156080,148874,32375,28935,144686,191402,193760,259464],
+  'LIV':     [29918,107347,131068,95997,0,0,144472,92635,74935,67011,20131,5206,0,0,0,74090,136835,76230,0,121402,91143,104177,33799,91738,1000,5623,125788,96435,110600,114411],
+  'Mylife100':[129907,125701,115421,92056,87850,0,152336,106542,84579,128037,61215,43925,0,0,0,191589,126635,83178,93925,137850,99065,113551,123364,108411,84112,28505,85981,90654,78505,153271],
+  'Cancino': [1766,12364,9252,21617,5299,0,28682,34842,18393,7486,17664,3533,0,0,0,25061,17664,12785,0,19430,10598,19850,4682,13734,0,0,33208,28085,18723,14551],
 };
-const DAYS = Array.from({length:31},(_,i)=>`${String(i+1).padStart(2,'0')}`);
+const DAYS = Array.from({length:30},(_,i)=>`${String(i+1).padStart(2,'0')}`);
 
 // FB Top 5 Ads
 const FB_TOP5={
   'BIM-C':[
-    {ad:'11 พ.ย. 68 ตรวจพบถุงน้ำที่เต้านม ไม่ใช่ #เนื้อร้าย',spend:25243,impr:74461,reach:32895,msg:128,pur:4},
-    {ad:'26 พ.ย. 68 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell',spend:19583,impr:101726,reach:30166,msg:78,pur:11},
-    {ad:'16 ม.ค. 69 ยิ่งสูงวัย ยิ่งเสี่ยงเนื้อร้าย มากขึ้น',spend:19132,impr:182168,reach:75028,msg:178,pur:2},
-    {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต',spend:18222,impr:123488,reach:46402,msg:148,pur:12},
-    {ad:'30 ม.ค. 69 ภูมิคุ้มกันที่ดี คือเกราะป้องกันเนื้อร้าย',spend:17966,impr:41302,reach:20631,msg:86,pur:6},
+    {ad:'4 ก.ค.2568 #มังคุดเสริมฤทธิ์ สร้าง #stemcell (เพจ1)',spend:28744,impr:207804,reach:70287,msg:260,pur:18},
+    {ad:'26 พ.ย. 2568 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell (เพจ2)',spend:38592,impr:309894,reach:104466,msg:133,pur:12},
+    {ad:'9 ม.ค. 2569 จากผู้ป่วยเนื้อร้ายปอดระยะเริ่มต้น',spend:10549,impr:57630,reach:23043,msg:14,pur:7},
+    {ad:'10 ม.ค. 2569 กระตุ้น Stem Cell ด้วยนวัตกรรมมังคุดเสริม',spend:21146,impr:74377,reach:24228,msg:95,pur:7},
+    {ad:'04 เม.ย. 2569 | (Reel) จากวันที่เจอเนื้อร้าย…สู่วันที่กลับมา',spend:7050,impr:28234,reach:9871,msg:20,pur:5},
   ],
   'LIV':[
-    {ad:'19 ก.พ. 69 เมื่อชีวิตต้องเจอกับ HIV',spend:12664,impr:167198,reach:98621,msg:207,pur:7},
-    {ad:'4 มี.ค. 68 จัดการเซลติดเชื้อ reel',spend:11878,impr:92629,reach:23619,msg:100,pur:7},
-    {ad:'9 ม.ค. 69 วินัย คือจุดเริ่มต้น',spend:8677,impr:93559,reach:50413,msg:83,pur:4},
-    {ad:'27 ต.ค. 68 คุณปีเตอร์ เป็น AIDS',spend:7046,impr:71356,reach:32276,msg:48,pur:4},
-    {ad:'4 ก.พ. 69 คุณแพทไม่ปล่อยให้ HIV',spend:5677,impr:86294,reach:49951,msg:49,pur:4},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v1)',spend:6342,impr:85000,reach:50000,msg:55,pur:2},
+    {ad:'8 เม.ย. 2569 "คุณกล้ารู้ผล…หรือกลัวความจริง?"',spend:6165,impr:75000,reach:45000,msg:48,pur:2},
+    {ad:'10 เม.ย. 2569 25 ปี…กับความทรมานจาก HIV',spend:3288,impr:50000,reach:30000,msg:32,pur:2},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v2)',spend:5944,impr:60000,reach:35000,msg:35,pur:1},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v3)',spend:1941,impr:30000,reach:18000,msg:26,pur:1},
   ],
   'Mylife100':[
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (A)',spend:26026,impr:98997,reach:63553,msg:366,pur:1},
-    {ad:'27 มิ.ย. 68 ไม่มีใครอยากแก่',spend:15146,impr:32958,reach:15032,msg:150,pur:7},
-    {ad:'11 ก.ย. 68 เปิดใจครั้งแรก',spend:15100,impr:55023,reach:31955,msg:168,pur:2},
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (B)',spend:14183,impr:54289,reach:37634,msg:204,pur:3},
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (C)',spend:13947,impr:60114,reach:42319,msg:183,pur:2},
+    {ad:'13 มี.ค. 2569 Promotion เพื่อคนรักสุขภาพ (A)',spend:28911,impr:316661,reach:160840,msg:94,pur:12},
+    {ad:'13 มี.ค. 2569 Promotion เพื่อคนรักสุขภาพ (B)',spend:26998,impr:127085,reach:45130,msg:64,pur:10},
+    {ad:'9 ม.ค. 2569 จากประสบการณ์จริง',spend:16341,impr:120659,reach:69015,msg:39,pur:8},
+    {ad:'27 มิ.ย. 2568 ไม่มีใครอยากแก่',spend:13408,impr:28165,reach:14174,msg:62,pur:4},
+    {ad:'4 ก.ย. 2568 อายุเพิ่ม…แต่ความอ่อนเยาว์',spend:6655,impr:28938,reach:14928,msg:23,pur:3},
   ],
   'Cancino':[
-    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง (A)',spend:6606,impr:24914,reach:10428,msg:52,pur:2},
-    {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',spend:6420,impr:39266,reach:14072,msg:39,pur:2},
-    {ad:'24 ต.ค. 68 เป็น #ก้อนเนื้อเต้านม ใช้ #มังคุดเสริมฤทธิ์',spend:5854,impr:19007,reach:6935,msg:57,pur:1},
-    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง (B)',spend:2585,impr:20633,reach:8371,msg:18,pur:1},
-    {ad:'19 ม.ค. 69 ดูแลสุขภาพ...ให้แข็งแรง',spend:2478,impr:9350,reach:3406,msg:17,pur:3},
+    {ad:'20 ส.ค. 2567 พลังสารสกัดจากธรรมชาติ',spend:6832,impr:37928,reach:25614,msg:34,pur:8},
+    {ad:'20 พ.ย. 2568 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',spend:3710,impr:20695,reach:7842,msg:17,pur:3},
+    {ad:'09 เม.ย. 2569 | 3 Free 1 (Promo)',spend:708,impr:3006,reach:1512,msg:1,pur:3},
+    {ad:'9 ม.ค. 2569 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง',spend:1737,impr:9054,reach:5357,msg:3,pur:2},
+    {ad:'19 ม.ค. 2569 ดูแลสุขภาพ…ให้แข็งแรง',spend:3218,impr:18209,reach:7974,msg:12,pur:2},
   ],
 };
 
 // ── Facebook per-page data ──
 const FB_PAGES={
   'BIM-C':[
-    {page:'เพจภูมิสมดุล BIM',      spend:305072,impr:2028083,reach:929348,msg:1785,pur:58},
-    {page:'เพจภูมิคุ้มกันบำบัด',   spend:135466,impr:829546, reach:373954,msg:967, pur:0},
+    {page:'เพจภูมิคุ้มกันบำบัด มะเร็ง โดยเซลล์ T พิฆาต',spend:151469,impr:1099639,reach:600000,msg:805,pur:53},
+    {page:'เพจภูมิสมดุล BIM',                            spend:309230,impr:5852250,reach:2851192,msg:1265,pur:43},
   ],
-  'LIV':      [{page:'เพจ LEARN HIV',          spend:120148,impr:1336692,reach:620721,msg:1369,pur:52}],
-  'Mylife100':[{page:'เพจชีวี100ปีมีสุข',     spend:310368,impr:1680381,reach:964747,msg:2753,pur:145}],
-  'Cancino':  [{page:'เพจภูมิสมดุล (Cancino)',spend:30014, impr:136938, reach:44166, msg:221, pur:11}],
+  'LIV':      [{page:'เพจ LEARN HIV',         spend:116866,impr:1862187,reach:1186723,msg:610, pur:9}],
+  'Mylife100':[{page:'เพจชีวี100ปีมีสุข',    spend:293215,impr:1875212,reach:1098543,msg:2379,pur:66}],
+  'Cancino':  [{page:'เพจภูมิสมดุล (Cancino)',spend:30078, impr:162443, reach:73152, msg:319, pur:23}],
 };
 
 // ── Facebook Top 5 Ads per page ──
 const FB_TOP5_PAGES={
   'BIM-C':[
-    {page:'เพจภูมิสมดุล BIM', ads:[
-      {ad:'11 พ.ย. 68 ตรวจพบถุงน้ำที่เต้านม ไม่ใช่ #เนื้อร้าย',    spend:25243,impr:74461, reach:32895,msg:113,pur:4},
-      {ad:'26 พ.ย. 68 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell',          spend:19583,impr:101726,reach:30166,msg:67, pur:11},
-      {ad:'16 ม.ค. 69 ยิ่งสูงวัย ยิ่งเสี่ยงเนื้อร้าย มากขึ้น',     spend:19132,impr:182168,reach:75028,msg:165,pur:2},
-      {ad:'30 ม.ค. 69 ภูมิคุ้มกันที่ดี คือเกราะป้องกันเนื้อร้าย',  spend:17966,impr:41302, reach:20631,msg:75, pur:6},
-      {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',               spend:17925,impr:121629,reach:44951,msg:129,pur:3},
+    {page:'เพจภูมิคุ้มกันบำบัด มะเร็ง โดยเซลล์ T พิฆาต', ads:[
+      {ad:'4 ก.ค.2568 #มังคุดเสริมฤทธิ์ สร้าง #stemcell',       spend:28744,impr:207804,reach:70287, msg:260,pur:18},
+      {ad:'9 ม.ค. 2569 จากผู้ป่วยเนื้อร้ายปอดระยะเริ่มต้น',    spend:10549,impr:57630, reach:23043, msg:14, pur:7},
+      {ad:'04 เม.ย. 2569 | (Reel) จากวันที่เจอเนื้อร้าย…',      spend:7050, impr:28234, reach:9871,  msg:20, pur:5},
+      {ad:'16 เม.ย. 2569 | ตรวจสุขภาพทุกปี…แต่ยังเจอความเสี่ยง',spend:3499,impr:11261, reach:3126,  msg:6,  pur:4},
+      {ad:'20 ม.ค. 2569 บอกเล่าประสบการณ์ ต่อมน้ำเหลืองระยะสุดท้าย',spend:4312,impr:84532,reach:44797,msg:22,pur:3},
     ]},
-    {page:'เพจภูมิคุ้มกันบำบัด', ads:[
-      {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต (A)',           spend:18222,impr:123488,reach:46402,msg:134,pur:12},
-      {ad:'4 ก.ค. 68 #มังคุดเสริมฤทธิ์ สร้าง #stemcell',            spend:15434,impr:77901, reach:28645,msg:171,pur:5},
-      {ad:'25 ก.ย. 68 #ผู้นำการกระตุ้นเซลล์ T พิฆาต (B)',           spend:13820,impr:50119, reach:15294,msg:59, pur:2},
-      {ad:'21 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด (A)',            spend:12558,impr:94260, reach:35830,msg:69, pur:7},
-      {ad:'21 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด (B)',            spend:11914,impr:27054, reach:10387,msg:83, pur:0},
+    {page:'เพจภูมิสมดุล BIM', ads:[
+      {ad:'26 พ.ย. 2568 มังคุดเสริมฤทธิ์ ในการเพิ่ม T cell',    spend:38592,impr:309894,reach:104466,msg:133,pur:12},
+      {ad:'10 ม.ค. 2569 กระตุ้น Stem Cell ด้วยนวัตกรรมมังคุดเสริม',spend:21146,impr:74377,reach:24228,msg:95,pur:7},
+      {ad:'13 ก.พ. 2569 Killer T Cell ทำงานอย่างไร',              spend:18633,impr:52921,reach:28143, msg:169,pur:5},
+      {ad:'30 ม.ค. 2569 ภูมิคุ้มกันที่ดี คือเกราะป้องกันเนื้อร้าย',spend:9624,impr:17765,reach:9333,msg:35,pur:4},
+      {ad:'8 ม.ค. 2569 กระตุ้น Stem Cell ด้วยพลังธรรมชาติ',      spend:13682,impr:21251,reach:8348, msg:44, pur:3},
     ]},
   ],
   'LIV':[{page:'เพจ LEARN HIV', ads:[
-    {ad:'19 ก.พ. 69 เมื่อชีวิตต้องเจอกับ HIV',spend:12664,impr:167198,reach:98621,msg:207,pur:7},
-    {ad:'4 มี.ค. 68 จัดการเซลติดเชื้อ reel',  spend:11878,impr:92629, reach:23619,msg:100,pur:7},
-    {ad:'9 ม.ค. 69 วินัย คือจุดเริ่มต้น',     spend:8677, impr:93559, reach:50413,msg:83, pur:4},
-    {ad:'27 ต.ค. 68 คุณปีเตอร์ เป็น AIDS',    spend:7046, impr:71356, reach:32276,msg:48, pur:4},
-    {ad:'4 ก.พ. 69 คุณแพทไม่ปล่อยให้ HIV',   spend:5677, impr:86294, reach:49951,msg:49, pur:4},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v1)',spend:6342,impr:85000,reach:50000,msg:55,pur:2},
+    {ad:'8 เม.ย. 2569 "คุณกล้ารู้ผล…หรือกลัวความจริง?"',spend:6165,impr:75000,reach:45000,msg:48,pur:2},
+    {ad:'10 เม.ย. 2569 25 ปี…กับความทรมานจาก HIV',spend:3288,impr:50000,reach:30000,msg:32,pur:2},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v2)',spend:5944,impr:60000,reach:35000,msg:35,pur:1},
+    {ad:'1 เม.ย. 2569 ถ้าคุณกำลังมองหา "ทางออก" (v3)',spend:1941,impr:30000,reach:18000,msg:26,pur:1},
   ]}],
   'Mylife100':[{page:'เพจชีวี100ปีมีสุข', ads:[
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (A)',spend:26026,impr:98997, reach:63553,msg:366,pur:1},
-    {ad:'27 มิ.ย. 68 ไม่มีใครอยากแก่',              spend:15146,impr:32958, reach:15032,msg:150,pur:7},
-    {ad:'11 ก.ย. 68 เปิดใจครั้งแรก',               spend:15100,impr:55023, reach:31955,msg:168,pur:2},
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (B)',spend:14183,impr:54289, reach:37634,msg:204,pur:3},
-    {ad:'19 ธ.ค. 68 เทโลเมียร์ ทำให้อายุยืนได้ (C)',spend:13947,impr:60114, reach:42319,msg:183,pur:2},
+    {ad:'13 มี.ค. 2569 Promotion เพื่อคนรักสุขภาพ (A)',spend:28911,impr:316661,reach:160840,msg:94,pur:12},
+    {ad:'13 มี.ค. 2569 Promotion เพื่อคนรักสุขภาพ (B)',spend:26998,impr:127085,reach:45130,msg:64,pur:10},
+    {ad:'9 ม.ค. 2569 จากประสบการณ์จริง',spend:16341,impr:120659,reach:69015,msg:39,pur:8},
+    {ad:'27 มิ.ย. 2568 ไม่มีใครอยากแก่',spend:13408,impr:28165,reach:14174,msg:62,pur:4},
+    {ad:'4 ก.ย. 2568 อายุเพิ่ม…แต่ความอ่อนเยาว์',spend:6655,impr:28938,reach:14928,msg:23,pur:3},
   ]}],
   'Cancino':[{page:'เพจภูมิสมดุล (Cancino)', ads:[
-    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell (A)',        spend:6606,impr:24914,reach:10428,msg:52,pur:2},
-    {ad:'20 พ.ย. 68 สเต็มเซลล์หรือเซลล์ต้นกำเนิด', spend:6420,impr:39266,reach:14072,msg:39,pur:2},
-    {ad:'24 ต.ค. 68 เป็น #ก้อนเนื้อเต้านม',         spend:5854,impr:19007,reach:6935, msg:57,pur:1},
-    {ad:'9 ม.ค. 69 รู้จัก Killer T Cell (B)',        spend:2585,impr:20633,reach:8371, msg:18,pur:1},
-    {ad:'19 ม.ค. 69 ดูแลสุขภาพ...ให้แข็งแรง',       spend:2478,impr:9350, reach:3406, msg:17,pur:3},
+    {ad:'20 ส.ค. 2567 พลังสารสกัดจากธรรมชาติ',spend:6832,impr:37928,reach:25614,msg:34,pur:8},
+    {ad:'20 พ.ย. 2568 สเต็มเซลล์หรือเซลล์ต้นกำเนิด',spend:3710,impr:20695,reach:7842,msg:17,pur:3},
+    {ad:'09 เม.ย. 2569 | 3 Free 1 (Promo)',spend:708,impr:3006,reach:1512,msg:1,pur:3},
+    {ad:'9 ม.ค. 2569 รู้จัก Killer T Cell ก่อนภูมิคุ้มกันอ่อนแรง',spend:1737,impr:9054,reach:5357,msg:3,pur:2},
+    {ad:'19 ม.ค. 2569 ดูแลสุขภาพ…ให้แข็งแรง',spend:3218,impr:18209,reach:7974,msg:12,pur:2},
   ]}],
 };
 
 // ── LINE per-account data ──
 const LN_ACCTS={
-  'BIM-C':[    {acct:'bim100callcenter',cost:25014,impr:1524119,reach:0,clicks:2764}],
+  'BIM-C':[    {acct:'bim100callcenter',cost:23876,impr:1711927,reach:0,clicks:2395}],
   'LIV':[
-    {acct:'apcocapsules',cost:24633,impr:1930366,reach:0,clicks:3579},
-    {acct:'ByeByeHIV',   cost:15599,impr:1291414,reach:0,clicks:2260},
+    {acct:'apcocapsules',cost:23971,impr:2047899,reach:0,clicks:3807},
+    {acct:'ByeByeHIV',   cost:14587,impr:1202170,reach:0,clicks:2304},
   ],
-  'Mylife100':[{acct:'mylife100society',cost:29780,impr:1831582,reach:0,clicks:3661}],
+  'Mylife100':[{acct:'mylife100society',cost:29516,impr:2464444,reach:0,clicks:3883}],
   'Cancino':  [],
 };
 
 // ── Brand-specific funnel extra data ──
 const FUNNEL_EXTRA={
-  'Mylife100':{lbl:'ลูกค้าใหม่ที่ไม่ได้มาจากการแนะนำ', rev:481776, cnt:86},
+  'Mylife100':{lbl:'ลูกค้าใหม่ที่ไม่ได้มาจากการแนะนำ', rev:389207, cnt:67},
 };
 
 // Google Top 10 Keywords
 const GG_KW={
   'BIM-C':[
-    {kw:'ภูมิคุ้มกัน บำบัด ราคา',clicks:1818,conv:73,impr:4746},
-    {kw:'รักษา มะเร็ง',clicks:1387,conv:78,impr:29081},
-    {kw:'มังคุด สกัด',clicks:437,conv:29,impr:2211},
-    {kw:'มะเร็ง ปอด',clicks:419,conv:6,impr:4641},
-    {kw:'มะเร็ง เต้านม',clicks:368,conv:25,impr:4735},
-    {kw:'ภูมิสมดุล มะเร็ง',clicks:289,conv:22,impr:1779},
-    {kw:'น้ำมังคุด bim',clicks:274,conv:16,impr:1219},
-    {kw:'มะเร็ง เม็ดเลือดขาว',clicks:214,conv:10,impr:1962},
-    {kw:'ภูมิคุ้มกัน บำบัด',clicks:146,conv:14,impr:1216},
-    {kw:'ประโยชน์ของน้ำมังคุด',clicks:135,conv:12,impr:849},
+    {kw:'รักษา มะเร็ง',clicks:1365,conv:92,impr:37847},
+    {kw:'ภูมิสมดุล มะเร็ง',clicks:548,conv:38,impr:2162},
+    {kw:'มังคุด สกัด',clicks:447,conv:34,impr:2054},
+    {kw:'อาหารเสริม เม็ดเลือด',clicks:63,conv:25,impr:559},
+    {kw:'น้ำมังคุด bim',clicks:255,conv:25,impr:1088},
+    {kw:'ภูมิคุ้มกัน บำบัด ราคา',clicks:192,conv:13,impr:1826},
+    {kw:'มะเร็ง เต้านม',clicks:357,conv:12,impr:5539},
+    {kw:'การรักษามะเร็ง',clicks:66,conv:11,impr:866},
+    {kw:'สาร สกัด มังคุด',clicks:88,conv:10,impr:513},
+    {kw:'น้ำ มังคุด',clicks:90,conv:8,impr:967},
   ],
   'LIV':[
-    {kw:'เพิ่ม cd4',clicks:2660,conv:44,impr:17373},
-    {kw:'hiv อาการ',clicks:69,conv:0,impr:993},
-    {kw:'ยาต้าน hiv',clicks:39,conv:1,impr:385},
-    {kw:'โรคเอดส์',clicks:17,conv:0,impr:47},
-    {kw:'รักษา hiv',clicks:8,conv:0,impr:167},
-    {kw:'ยาต้าน เอดส์',clicks:2,conv:0,impr:72},
-    {kw:'ไวรัส ยาต้าน',clicks:2,conv:0,impr:99},
-    {kw:'ยารักษาโรคเอดส์',clicks:1,conv:0,impr:4},
+    {kw:'เพิ่ม cd4',clicks:2772,conv:43,impr:10520},
+    {kw:'hiv อาการ',clicks:28,conv:0,impr:620},
+    {kw:'ยาต้าน hiv',clicks:14,conv:0,impr:254},
+    {kw:'รักษา hiv',clicks:8,conv:0,impr:125},
+    {kw:'ไวรัส ยาต้าน',clicks:3,conv:0,impr:68},
+    {kw:'รักษาhivที่ไหนดี',clicks:1,conv:0,impr:2},
   ],
   'Mylife100':[
-    {kw:'telomere',clicks:0,conv:30,impr:8740,cost:4195},
-    {kw:'ความเสื่อมของร่างกาย',clicks:0,conv:18,impr:3843,cost:5451},
-    {kw:'ชะลอวัย',clicks:0,conv:10,impr:3978,cost:2381},
-    {kw:'ริ้ว รอย',clicks:0,conv:6,impr:2910,cost:1680},
-    {kw:'Telomere คือ',clicks:0,conv:7,impr:2609,cost:2525},
-    {kw:'age skin care',clicks:0,conv:5,impr:2452,cost:3092},
-    {kw:'antiaging',clicks:0,conv:19,impr:1938,cost:2542},
-    {kw:'เทโลเมีย',clicks:0,conv:14,impr:1526,cost:2096},
-    {kw:'anti wrinkle treatment',clicks:0,conv:8,impr:1265,cost:1416},
-    {kw:'ยาแก้วัยทอง',clicks:0,conv:7,impr:776,cost:1977},
+    {kw:'telomere',clicks:0,conv:20,impr:3199},
+    {kw:'Telomere คือ',clicks:0,conv:11,impr:1368},
+    {kw:'ชะลอวัย',clicks:0,conv:10,impr:3392},
+    {kw:'facial rejuvenation',clicks:0,conv:8,impr:94},
+    {kw:'วัยหมดประจำเดือน',clicks:0,conv:7,impr:1243},
+    {kw:'ยาปรับฮอร์โมนวัยทอง',clicks:0,conv:7,impr:648},
+    {kw:'aging anti',clicks:0,conv:7,impr:288},
+    {kw:'เทโลเมียร์',clicks:0,conv:5,impr:555},
+    {kw:'อาหารชะลอความแก่',clicks:0,conv:5,impr:944},
+    {kw:'age skin care',clicks:0,conv:5,impr:607},
   ],
   'Cancino':[],
 };
 
-// ════════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════════
 let filter='all';
@@ -644,7 +641,7 @@ function fMomRow(metric,feb,mar,trend){
 }
 function fMomTable(rows){
   return `<div class="mom-table-wrap"><table class="mom-table">
-    <thead><tr><th>Metric</th><th class="r">ก.พ. 2026</th><th class="r">มี.ค. 2026</th><th class="r">เปลี่ยนแปลง</th></tr></thead>
+    <thead><tr><th>Metric</th><th class="r">มี.ค. 2026</th><th class="r">เม.ย. 2026</th><th class="r">เปลี่ยนแปลง</th></tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
 }
@@ -666,16 +663,15 @@ function findingsHTML(brand){
     ${fPlatHead('📘','Facebook Ads Analysis','#1877f2')}
     <div class="fp-body">
       ${fRow([
-        '<strong>ROAS รวมเพิ่มขึ้น 12% MoM</strong> (5.50x → 6.16x) ขณะที่ Ad Spend ลดลง 3.5% — แสดงถึงประสิทธิภาพที่ดีขึ้นอย่างชัดเจน',
-        '<strong>CPL ลดจาก ฿196 → ฿160/ทัก (-18% MoM)</strong> — เพจ BIM ต้นทุน ฿171/ทัก เพจ Killer T Cell ต้นทุน ฿140/ทัก',
-        'Reach รวม 1.3M (BIM) + 374K (Killer T) = 1.7M Unique Accounts — กว้างกว่าเดือนก่อน',
-        '<strong>Pattern คอนเทนต์ขายดีชัดเจน:</strong> ดร.หน้ากล้อง + งานวิจัย/อัลบั้มวิจัย + ปัญหาโรค = Purchase สูงสุดทุกเดือน',
-        'Purchases 58 ชิ้น — BIM page drive ยอดขายทั้งหมด Killer T Cell ช่วย TOFU'
+        '<strong>เพจ1 (Killer T Cell) กลับมา Drive Purchase ได้ 53 ชิ้น</strong> จาก 0 ใน March (+∞) — ผลจากการปรับ Campaign Objective ที่ถูกทิศทาง',
+        '<strong>Top Ad: มังคุดเสริมฤทธิ์ Stem Cell = 18 Purchases, CPP ฿1,597</strong> — Pattern Stem Cell + มังคุด ยังแข็งแกร่งข้ามเดือน',
+        'BIM-C รวม <strong>96 Purchases เพิ่มจาก 58 ใน March (+65.5%)</strong> — FB Funnel ทำงานดีขึ้นมาก',
+        'CPL ฿174/ทัก คงเดิม — ต้นทุนต่อ Lead ไม่เพิ่ม แสดงถึง Audience Quality ที่สม่ำเสมอ'
       ],[
-        '<strong>เพจ Killer T Cell ใช้งบ ฿135K แต่ Purchase = 0</strong> — Creative ที่ใช้อยู่เน้น Awareness มากกว่า Conversion ต้องทบทวนโครงสร้าง Ad Set',
-        '<strong>ROAS ลูกค้าใหม่ยังติดลบ 0.88x</strong> (ต่ำกว่า Break-even) — Pipeline ลูกค้าใหม่ต้องปรับ TOFU→BOFU ให้ชัดขึ้น',
-        'Close Rate Order ใหม่ 3.9% ยังต่ำ — ลูกค้าใหม่ที่ทักมาต้องการ Nurturing เพิ่ม ควร scale Retarget',
-        'ควรหยุดหรือปรับ Creative ที่ CPL สูงกว่า ฿280 แต่ Conversion ต่ำใน Killer T Cell page ก่อน'
+        '<strong>Revenue ลดจาก ฿3.63M → ฿2.98M (-17.9%)</strong> แม้ FB Purchase เพิ่ม 65% — Songkran Holiday (13–15 เม.ย.) ทำให้สูญเสียรายได้ ~3 วัน',
+        'ROAS รวมลดจาก 6.16x → 4.90x — Spend เพิ่ม ฿20K แต่ Revenue ลด ฿650K ต้องเฝ้าระวัง',
+        'เพจ2 (ภูมิสมดุล BIM) ใช้งบ ฿309K, CPP ฿7,193 — สูงกว่า Target มาก ต้องทบทวน Budget Allocation',
+        '<strong>ลูกค้าใหม่ลดจาก 108 → 78 (-27.8%)</strong> — Pipeline ลูกค้าใหม่น่ากังวล ต้องเร่ง TOFU'
       ])}
     </div>
   </div>
@@ -684,19 +680,19 @@ function findingsHTML(brand){
     ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#1877f2')}
     <div class="fp-body">
       <div class="pattern-box">
-        <b>Pattern ที่ขายดีสม่ำเสมอ (ยืนยันข้ามเดือน ก.พ.–มี.ค.):</b><br>
-        ทุกชิ้นที่ขายดีมี 3 องค์ประกอบ คือ <b>① ดร.เห็นหน้าชัด</b> (หน้ากล้องหรือเฟรม TV) + <b>② เรื่องโรคที่คนพูดถึงได้ (Pain Language)</b> + <b>③ หลักฐานจากงานวิจัยหรือรายการทีวี</b> — ขาดองค์ประกอบใดองค์ประกอบหนึ่งยอดมักตก
+        <b>Pattern ที่ขายดีสม่ำเสมอ (ยืนยัน 3 เดือน ก.พ.–เม.ย.):</b><br>
+        ① <b>Stem Cell + มังคุดเสริมฤทธิ์</b> (กราฟิก/คลิปเชิงวิทยาศาสตร์) + ② <b>ดร.หรือผลงานวิจัยประกอบ</b> + ③ <b>ปัญหาโรคที่คนกลัว (Pain Language)</b> = Conversion สูงสุดทุกเดือน — ชิ้นที่ขาดองค์ประกอบเหล่านี้มักไม่ Convert
       </div>
       ${fRow([
-        '<strong>อันดับ 1: อัลบั้มงานวิจัย Operation BIM</strong> — 11 Purchases, CPL ฿292 — ภาพงานวิจัยจริงสร้าง Trust ระดับลึก เหมาะ Retarget คนที่เคยทักแต่ยังไม่ซื้อ',
-        '<strong>อันดับ 2: วิดีโอดร. + กระตุ้น Stem Cell</strong> — 8 Purchases, CPL ฿280 — ดร.พูดตรงกล้องอธิบาย Stem Cell พร้อมกราฟิกประกอบ ทำงานดีกับคนกังวลสุขภาพ',
-        '<strong>อันดับ 5: ภาพเลือด/เม็ดเลือด + ดร.</strong> — 4 Purchases แต่ทัก 113 ราย CPL ฿223 ถูก — ดึงคนเข้า Funnel ได้กว้าง เหมาะเป็น TOFU ก่อน Retarget ชิ้น 1–2',
-        'ชิ้นที่มี Engagement สูง (comments/shares) มักเป็น TOFU ที่ดี ให้วาง Budget Awareness ก่อน'
+        '<strong>อันดับ 1: #มังคุดเสริมฤทธิ์ สร้าง Stem Cell (เพจ1)</strong> — 18 Purchase, CPP ฿1,597 — Pattern "ชื่อสาร + กลไก + หลักฐาน" ทำงานดีที่สุดตลอดปี',
+        '<strong>อันดับ 2: มังคุดเสริมฤทธิ์ T cell (เพจ2)</strong> — 12 Purchase, CPP ฿3,216 — เนื้อหาเดียวกับ #1 แต่ Version ยาว โดย เพจ2 ต้นทุนสูงกว่า 2x',
+        'Reel ใหม่ (04 เม.ย. 2569) = 5 Purchase, CPP ฿1,410 ถูกที่สุด — Short Reel + Testimonial เป็น Format ที่ต้องลงทุนเพิ่ม',
+        'แนวโน้มชัด: <strong>เพจ1 CPP ฿1,400–1,700 ถูกกว่าเพจ2 CPP ฿3,000–7,000</strong> อย่างมีนัยสำคัญ'
       ],[
-        '<strong>หยุดหรือปรับ Creative ที่ไม่มีดร.หรืองานวิจัย</strong> — ข้อมูลยืนยันชัดว่าไม่มีชิ้นไหนขายดีแบบ Graphic-only',
-        'Testimonial เดี่ยวไม่มีดร.ยืนยัน = Conversion ต่ำ (ดูข้อมูล Low Performer ก.พ.) — ถ้าใช้ Testimonial ต้องมีดร.หรือผลตรวจประกอบ',
-        '<strong>ทำ Series "อัลบั้มวิจัยใหม่"</strong> เน้นตัวเลขผลวิจัยชัดๆ เช่น "Killer T Cell เพิ่มขึ้น X% หลังใช้ BIM 3 เดือน"',
-        'ใช้ชิ้น TOFU (ภาพเลือด) ดึงคนเข้า แล้วต่อด้วย Retarget ด้วยอัลบั้มวิจัย + คลิปดร.เพื่อปิดยอด'
+        '<strong>เพจ2 ใช้ Budget ฿309K แต่ CPP ฿7,193 — ควรลด Budget เพจ2 แล้วโอนมาเพจ1</strong> ซึ่งมี Efficiency ดีกว่า 3–4 เท่า',
+        'ชิ้นที่ไม่มี Stem Cell / มังคุด Keyword ใน Creative ยังขายได้น้อยกว่าอย่างเห็นได้ชัด',
+        'ควรผลิต Reel ใหม่อย่างน้อย 2 ชิ้น/เดือน แล้ว A/B Test กับ Image Ad เพื่อยืนยัน Format ที่ดีกว่า',
+        'ลูกค้าใหม่ FB เพียง 16 คน ฿62K Revenue — ROAS ใหม่ต่ำกว่า 1x ต้องเพิ่ม Retarget'
       ])}
     </div>
   </div>
@@ -705,14 +701,14 @@ function findingsHTML(brand){
     ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
     <div class="fp-body">
       ${fRow([
-        '<strong>"รักษา มะเร็ง" — Keyword ปริมาณสูงสุด</strong> 29,081 Impr, 1,387 Clicks, 78 Conversions — High-volume + High-intent ควร Scale',
-        '<strong>"ภูมิคุ้มกัน บำบัด ราคา" — CTR สูงมาก</strong> 4,746 Impr แต่ 1,818 Clicks (CTR ~38%) = คนที่ค้นหา Keyword นี้ตั้งใจจะซื้อจริงๆ',
-        '"มะเร็ง ต้านทาน" 4,735 Impr, 368 Clicks, 25 Conv — Keyword เชิงสุขภาพกลาง สร้าง Awareness ได้กว้าง',
-        'มี 10 Keywords กระจายครอบคลุมหลาย Intent: รักษา + ป้องกัน + สารอาหาร + ราคา — Portfolio ดี'
+        '<strong>"รักษา มะเร็ง" — Conv เพิ่มจาก 78 → 92 (+17.9%)</strong> ขณะ Spend คงที่ — Search Intent Keyword นี้แข็งแกร่งขึ้นเรื่อยๆ',
+        '<strong>Keyword ใหม่แรงมาก: "ภูมิสมดุล มะเร็ง" 38 Conv, "มังคุด สกัด" 34 Conv</strong> — Branded Adjacent Keywords มี Intent สูง',
+        'Total Conv 699 คงเดิมจาก March — Google Efficiency ดีมาก ไม่ต้องปรับอะไร',
+        'Portfolio 10 Keywords ครอบคลุมทั้ง Functional (มังคุด สกัด) + Disease (รักษา มะเร็ง) + Commercial (ราคา)'
       ],[
-        '"มะเร็ง ปอด" 4,641 Impr, 419 Clicks <strong>แต่เพียง 6 Conversions</strong> — Traffic มากแต่ Convert ต่ำ ต้องตรวจ Landing Page ว่า Match กับ Intent ของ Keyword นี้หรือไม่',
-        'G Spend ลดจาก ฿130K → ฿124K แต่ควรวัด Conversion Rate ที่เพิ่มขึ้นตามด้วยเพื่อยืนยัน ROI',
-        'ควรเพิ่ม Negative Keywords สำหรับคำที่ Click สูงแต่ไม่ Convert เพื่อประหยัดงบ'
+        '<strong>Spend ฿124,553 แต่ Revenue ลด ฿650K MoM</strong> — Google Conv Quality อาจเปลี่ยน หรือ Seasonality ทำให้ Close Rate ลด',
+        '"มะเร็ง เต้านม" 357 Clicks, 12 Conv — Conv Rate ต่ำกว่า Avg ควรตรวจ Landing Page ว่า Match กับ Intent หรือไม่',
+        'G Spend ฿124K vs ลูกค้าใหม่ที่ Track ได้จาก Google เพียงไม่กี่ราย — ต้องปรับ Conversion Tracking ให้ครบ'
       ])}
     </div>
   </div>
@@ -721,56 +717,60 @@ function findingsHTML(brand){
     ${fPlatHead('💬','LINE OA Analysis','#06c755')}
     <div class="fp-body">
       ${fRow([
-        '<strong>CPC ฿9/Click</strong> — ถูกมากเมื่อเทียบกับ Facebook (CPL ฿160) และ Google — ต้นทุนต่ำที่สุดในการเข้าถึงกลุ่มเป้าหมาย',
-        '1.5M Impressions, 2.8K Clicks/เดือน — เป็น Traffic ประจำที่เสริม Funnel ด้านบนได้ดี',
-        'LINE OA เหมาะสำหรับ Remarketing กลุ่มที่เคย Add LINE มาแล้ว — ต้นทุนต่ำ Engagement สูง'
+        'CPC ฿9.97 — ยังเป็น Channel ที่ถูกที่สุด ดี 15–17 เท่าเมื่อเทียบกับ FB CPL',
+        'Top Ad: กำจัดเนื้อร้ายอย่างมุ่งเป้า — 622 Clicks, ฿5,922 — Message ตรง Pain Point',
+        '2,395 Clicks/เดือน — ยอด Traffic ประจำที่เสถียร สนับสนุน Funnel ด้านล่าง'
       ],[
-        '<strong>ยังไม่มีข้อมูล Conversion จาก LINE → Order</strong> ชัดเจน — ต้องตั้ง Tracking Tag หรือ UTM เพื่อ Attribute Revenue จาก LINE ได้ถูกต้อง',
-        'ควร A/B Test Creative บน LINE ว่า Rich Message vs Image Message vs Text อะไรทำให้คลิกแล้วปิดได้ดีกว่า',
-        'Budget ฿25K/เดือน เหมาะสมแล้ว แต่ถ้าพิสูจน์ได้ว่า LINE Convert ควรเพิ่ม 20–30%'
+        '<strong>New Customer จาก LINE ลดจาก 60 → 47 Orders</strong> (-21.7%) — ต้องทบทวน Creative ว่า Funnel ยังทำงานอยู่ไหม',
+        'ยังไม่มี Attribution ที่ชัดเจน — ตั้ง UTM + CRM Tag สำหรับลูกค้าที่มาจาก LINE',
+        'Budget ฿23,876 เหมาะสม แต่ควรทดสอบ Rich Message (Card Type) เพื่อเพิ่ม Click Rate'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    ${fPlatHead('📊','Month-over-Month Comparison (มี.ค. → เม.ย. 2026)','#6366f1')}
     <div class="fp-body">
       ${fMomTable(`
-        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿3.36M</td><td class="r">฿3.63M</td><td class="r mom-up">▲ +8.1%</td></tr>
-        <tr><td>Ad Spend รวม</td><td class="r">฿610.9K</td><td class="r">฿589.6K</td><td class="r mom-up">▼ -3.5% (ดีขึ้น)</td></tr>
-        <tr><td><strong>ROAS รวม</strong></td><td class="r">5.50x</td><td class="r">6.16x</td><td class="r mom-up">▲ +12.0%</td></tr>
-        <tr><td>CPL (Cost/ทัก)</td><td class="r">฿196</td><td class="r">฿160</td><td class="r mom-up">▼ -18.4% (ดีขึ้น)</td></tr>
-        <tr><td>จำนวน Orders</td><td class="r">588</td><td class="r">640</td><td class="r mom-up">▲ +8.8%</td></tr>
-        <tr><td>ลูกค้าใหม่</td><td class="r">128 คน</td><td class="r">108 คน</td><td class="r mom-dn">▼ -15.6%</td></tr>
-        <tr><td>ROAS ลูกค้าใหม่</td><td class="r">1.03x</td><td class="r">0.88x</td><td class="r mom-dn">▼ -14.6% (ต้องแก้)</td></tr>
-        <tr><td>ROAS ลูกค้าเก่า</td><td class="r">4.47x</td><td class="r">5.29x</td><td class="r mom-up">▲ +18.3%</td></tr>
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿3.63M</td><td class="r">฿2.98M</td><td class="r mom-dn">▼ -17.9%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿589.6K</td><td class="r">฿609.1K</td><td class="r mom-dn">▲ +3.3% (เพิ่มขึ้น)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">6.16x</td><td class="r">4.90x</td><td class="r mom-dn">▼ -20.5%</td></tr>
+        <tr><td>FB Purchases</td><td class="r">58</td><td class="r">96</td><td class="r mom-up">▲ +65.5% (ดีขึ้น)</td></tr>
+        <tr><td>CPL (Cost/ทัก)</td><td class="r">฿174</td><td class="r">฿174</td><td class="r mom-neut">– คงเดิม</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">640</td><td class="r">538</td><td class="r mom-dn">▼ -15.9%</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">108 คน</td><td class="r">78 คน</td><td class="r mom-dn">▼ -27.8%</td></tr>
+        <tr><td>หมายเหตุ Seasonal</td><td class="r">31 วัน</td><td class="r">30 วัน + Songkran</td><td class="r mom-neut">– ผลกระทบสูง</td></tr>
       `)}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#8b5cf6')}
+    ${fPlatHead('🚀','Action Plan พฤษภาคม 2026','#7c3aed')}
     <div class="fp-body">
       ${fActionGrid([
-        {color:'#16a34a',icon:'🏆',title:'Scale Winners ทันที',items:[
-          'อัลบั้มงานวิจัย (Purchase 11) → เพิ่ม Budget 30% ยิง Retarget กลุ่มทักแต่ยังไม่ซื้อ',
-          'คลิปดร. + Stem Cell (Purchase 8) → Duplicate Ad Set เพิ่ม Scale',
-          'เป้าหมาย: Purchase +30% ใน 2 สัปดาห์'
+        {color:'#16a34a',icon:'🏆',title:'Quick Wins (1–2 สัปดาห์)',items:[
+          'โอน Budget ฿100K จากเพจ2 → เพจ1 (BIM) ที่มี CPP ดีกว่า 4 เท่า',
+          'Scale Ad #มังคุดเสริมฤทธิ์ Stem Cell เพิ่ม 30% Budget',
+          'Pause Campaign เพจ2 ที่ CPP สูงกว่า ฿5,000 ทันที',
+          'เพิ่ม Retarget Budget สำหรับกลุ่มที่เคยทักแต่ไม่ซื้อ'
         ]},
-        {color:'#dc2626',icon:'🛑',title:'แก้ปัญหา Killer T Cell Page',items:[
-          'Pause Creative ที่ Purchase = 0 ทั้งหมด (ใช้งบ ฿135K ไม่ได้ผล)',
-          'เปลี่ยน Creative เป็น Format เดียวกับ BIM Page ที่ขายได้',
-          'ทดสอบ Testimonial ดร. + ผลตรวจ + CTA ชัดเจน'
+        {color:'#2563eb',icon:'🎬',title:'Content Production (พ.ค.)',items:[
+          'ผลิต Reel ใหม่ 2–3 ชิ้น: Stem Cell Story + ผลวิจัยใหม่',
+          'Testimonial ผู้ป่วยใหม่ 2 คน — สร้าง Trust Signal',
+          'Short Video 30 วิ: "3 สัญญาณเตือน + แนวทางรักษา"',
+          'ทดสอบ UGC (User Generated Content) เพื่อลด CPP'
         ]},
-        {color:'#2563eb',icon:'🎯',title:'ปรับ Strategy ลูกค้าใหม่',items:[
-          'TOFU: ภาพเลือด CPL ฿223 → ดึงคนเข้า Funnel ได้ 113 คน/ชิ้น',
-          'MOFU: คลิปดร. Retarget กลุ่ม TOFU',
-          'BOFU: อัลบั้มวิจัย + ราคา/แพ็กเกจ → ปิดยอด'
+        {color:'#d97706',icon:'📊',title:'Tracking & Analytics',items:[
+          'ตั้ง UTM Tracking บน LINE ทุก Ad',
+          'Setup Micro-Conversion Events ใน FB Pixel',
+          'Report ROAS แยก New vs Returning Customer รายสัปดาห์',
+          'Monitor Post-Songkran Recovery Trend พ.ค. สัปดาห์ 1'
         ]},
-        {color:'#d97706',icon:'📊',title:'Google Ads Optimization',items:[
-          'Scale "รักษา มะเร็ง" (78 Conv) และ "ภูมิคุ้มกัน บำบัด ราคา" (73 Conv)',
-          'ทบทวน "มะเร็ง ปอด" — Clicks 419 แต่ Conv 6 ต้องแก้ Landing Page',
-          'เพิ่ม Negative Keywords เพื่อลด Wasted Spend'
+        {color:'#7c3aed',icon:'🔬',title:'Test & Optimize',items:[
+          'A/B Test เพจ1 vs เพจ2 ด้วย Creative เดียวกัน',
+          'ทดสอบ Google Keyword ใหม่: "ภูมิสมดุล ราคา", "มังคุด capsule"',
+          'LINE Rich Message vs Image Format — วัด CTR ต่างกันไหม',
+          'เพิ่ม Google Spend ฿20K ทดสอบ Performance Max Campaign'
         ]}
       ])}
     </div>
@@ -778,45 +778,43 @@ function findingsHTML(brand){
 
   </div>`;
 
-  // ── LIV ────────────────────────────────────────────────
+  // ── LIV ──────────────────────────────────────────────
   if(brand==='LIV') return `<div class="findings-wrap">
 
   <div class="findings-platform">
-    ${fPlatHead('📘','Facebook Ads Analysis','#ef4444')}
+    ${fPlatHead('📘','Facebook Ads Analysis','#1877f2')}
     <div class="fp-body">
       ${fRow([
-        '<strong>CPL ลดจาก ฿212 → ฿88/ทัก (-58% MoM)</strong> — การปรับ Creative เป็น Reel + Testimonial จากผู้ติดเชื้อได้ผลชัดเจนมาก',
-        '<strong>ROAS รวมเพิ่มขึ้น 16% MoM</strong> (10.29x → 11.93x) — ROAS สูงอันดับ 2 ของทุกแบรนด์ บ่งชี้ว่า Pipeline ลูกค้าเก่าแข็งแกร่ง',
-        'Reach 620K ลดลงจาก 508K (Feb) — Efficiency ดีขึ้นแม้ Reach น้อยลง',
-        'ROAS ลูกค้าเก่า 11.40x — สูงมาก แสดงว่ากลุ่ม Loyalty ซื้อซ้ำสม่ำเสมอ'
+        'เปลี่ยน Creative ทั้งหมดใหม่สำหรับ April — แสดงถึงความพร้อมในการทดสอบและ Refresh Funnel',
+        '<strong>Top 3 Ads ทั้งหมดได้ 2 Purchase ต่อชิ้น</strong> — Pattern "Pain Language" ยังทำงาน: "ทางออก" + "กล้ารู้ผล" + "25 ปีทรมาน"',
+        'Budget ฿116,866 ควบคุมได้ดี — ไม่เพิ่ม Spend แต่ทดสอบ Creative ใหม่ทั้งหมด',
+        'Impressions 1.86M, Reach 1.19M — Coverage ยังกว้าง แสดงถึงการ Expand Audience ใหม่'
       ],[
-        '<strong>Close Rate ลดจาก 57.49% → 43.5%</strong> — Lead ที่เข้ามาใหม่มีคุณภาพลดลง ต้องตรวจสอบว่า Targeting กว้างขึ้นหรือไม่',
-        '<strong>ROAS ลูกค้าใหม่ยังติดลบ 0.53x</strong> — ยังไม่คุ้มทุนในการหาลูกค้าใหม่ ต้องวางกลยุทธ์ Retention ให้แข็งขึ้น',
-        'New Orders เพียง 27 คน/เดือน — ฐานลูกค้าใหม่แคบ ถ้า Churn สูงจะกระทบรายได้ระยะยาว',
-        'ควร Scale Winner ทันที ก่อน Audience Fatigue: Reel วิทยาศาสตร์ + Testimonial คุณมุ่มนิม'
+        '<strong>FB Purchase ลดจาก 52 → 9 ชิ้น (-82.7%)</strong> — การเปลี่ยน Creative พร้อมกันทั้งหมดทำให้ Funnel Reset อย่างรุนแรง ควร Phase ใน Creative ใหม่ทีละ 20–30%',
+        '<strong>ลูกค้าใหม่จาก FB = 0 คน, Revenue ฿0</strong> — เป็นเดือนแรกในปีที่ FB ไม่สร้าง New Customer เลย',
+        'Revenue รวมลดจาก ฿2.38M → ฿1.95M (-18.2%) — ผลจากทั้ง Songkran และ FB Funnel Reset',
+        'ลูกค้าใหม่ลดจาก 27 → 14 (-48.1%) — ต้องเร่งฟื้นฟู TOFU Campaign โดยเร็ว'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#ef4444')}
+    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#1877f2')}
     <div class="fp-body">
       <div class="pattern-box">
-        <b>สูตรกลางที่ขายดีสม่ำเสมอ (ยืนยันจากทั้ง ก.พ. และ มี.ค.):</b><br>
-        <b>① Reel วิทยาศาสตร์ชะลอโรค + เชื่อมโยงกับชีวิตจริง</b> → สร้าง Trust + Purchase ในเวลาเดียว<br>
-        <b>② Testimonial ผู้ติดเชื้อเล่าเรื่องจริง</b> → Social Proof สูง Inbox สูง เหมาะ MOFU/BOFU<br>
-        <b>③ อินโฟ CD4 / วิทยาศาสตร์</b> → CPP ต่ำที่สุด เหมาะ Bridge Content จาก Awareness → Purchase
+        <b>เดือน เม.ย. 2569 — LIV เริ่ม Creative Set ใหม่ทั้งหมด:</b><br>
+        3 Theme หลักที่ทดสอบ: <b>① "ทางออก" (Pain + Hope)</b> + <b>② "กล้ารู้ผล" (Fear Appeal)</b> + <b>③ "25 ปีทรมาน" (Long Testimonial)</b> — ทุก Theme ได้ 1–2 Purchase แต่ Volume ยังน้อยเกินที่จะ Conclude ได้
       </div>
       ${fRow([
-        '<strong>อันดับ 1-2: Reel จัดการเซลล์ + Testimonial จากผู้ติดเชื้อ</strong> — 7 Purchases ทั้งคู่ แต่ CPP ต่างกัน (฿1,697 vs ฿2,483) Reel มี ROI ดีกว่า',
-        '<strong>อันดับ 4: CD4 คืออะไร (Info)</strong> — CPP ฿647 ต่ำสุดทั้งกลุ่ม 5 Purchases — Bridge Content ที่มีประสิทธิภาพสูงสุด',
-        'Testimonial คุณมุ่มนิม Inbox 458 ราย — Pipeline ขายรอ Retarget จำนวนมาก ต้องใช้ให้เกิดประโยชน์',
-        'Pattern ลูกค้า HIV ต้องการ "ความเข้าใจ" ก่อน "ข้อมูล" ก่อน "ซื้อ" — Funnel 3 ขั้นนี้ชัดมาก'
+        '<strong>Theme "ทางออก" (3 versions) รวม 4 Purchase</strong> — เป็น Theme ที่ได้ผลดีที่สุดในเดือนนี้ ควร Scale ต่อ',
+        '"คุณกล้ารู้ผล…หรือกลัวความจริง?" — Fear Appeal + Curiosity Hook ได้ 2 Purchase CPP ฿3,082 — แนวทางนี้น่าสนใจ',
+        '"25 ปี…กับความทรมานจาก HIV" — Long-form Testimonial ได้ 2 Purchase — เหมาะสำหรับ Warm Audience',
+        'Pattern ที่ยังไม่ได้ทดสอบ: ดร.หน้ากล้อง + งานวิจัย CD4 + Pain Language — ควรทดสอบใน พ.ค.'
       ],[
-        'ควร <strong>Scale Reel วิทยาศาสตร์ +30%/สัปดาห์</strong> ทันที CPP ฿1,697 ยังคุ้มมาก',
-        'ยิง <strong>Retarget Inbox 458 คน (คุณมุ่มนิม)</strong> ด้วย Reel ปิดการขายทันที — Pipeline พร้อมซื้อ',
-        'ทำ CD4 Series ต่อเนื่อง: CD4 → Viral Load → การดูแลตัวเอง (3–4 ตอน) — Bridge Content ราคาถูก',
-        'ต้องระวัง Audience Fatigue เพราะกลุ่มเป้าหมายแคบ (HIV) ต้อง Rotate Creative ทุก 3–4 สัปดาห์'
+        '<strong>ยังขาด Pattern ที่พิสูจน์ได้ชัดเจน</strong> — March มี 5 Ads ที่ได้ 4–7 Purchase แต่เดือนนี้ยังไม่มีแม้แต่ชิ้นเดียวที่ได้มากกว่า 2',
+        'ควรรีบ Reactivate Creative ที่ทำงานดีใน March (คุณมุ่มนิม, วินัยคือจุดเริ่มต้น) แทนการ Retire ทั้งหมด',
+        'CPP ฿1,644–฿5,944 — ความแปรปรวนสูงมาก แสดงถึง Ad Fatigue ที่ยังไม่ Stabilize',
+        'ควรผลิต Reel รูปแบบ CD4 ขึ้น/ลง ประกอบ Testimonial เพื่อสร้าง Trust Signal ที่แข็งแกร่งขึ้น'
       ])}
     </div>
   </div>
@@ -825,131 +823,13 @@ function findingsHTML(brand){
     ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
     <div class="fp-body">
       ${fRow([
-        '<strong>"เพิ่ม cd4" — Keyword หลักที่ขับเคลื่อน 44 Conversions</strong> จาก 2,660 Clicks (Mar) เพิ่มจาก 22 Conv เมื่อ ก.พ. (+100% MoM) — High-Intent สูงมาก',
-        'CTR "เพิ่ม cd4" สูงมาก — คนที่ค้นหา Keyword นี้มีความต้องการชัดเจนและพร้อมซื้อ',
-        'Google ช่วยดึง Traffic ที่มี Intent ชัดเจนมาเสริม Facebook ที่เน้น Awareness'
+        '<strong>"เพิ่ม cd4" — Keyword หลักยังแข็งแกร่ง: 2,772 Clicks, 43 Conversions</strong> — เสถียรจาก March (2,772 vs 2,660 Clicks)',
+        'Spend ฿39,527 คงเดิม — Google บริหารงบได้ดีมาก ไม่เพิ่มงบแต่ Conversion สม่ำเสมอ',
+        'CPA = ฿681 — ยังต่ำและสมเหตุสมผลสำหรับ High-ticket Product เช่น LIV'
       ],[
-        '<strong>Keywords นอกจาก "เพิ่ม cd4" แทบไม่มี Conversion</strong> — ควร Restructure Campaign ให้ Budget โฟกัสที่ "เพิ่ม cd4" และ Variations',
-        'Spend ฿39.5K/เดือน — ถ้า CPA ประมาณ ฿800 ต่อ 1 Conversion ยังสมเหตุสมผล แต่ต้องเพิ่ม Conversion บน cd4 keywords',
-        'ลองเพิ่ม Keywords: "cd4 ต่ำ ทำไง", "วิธีเพิ่ม cd4", "cd4 ปกติ" เพื่อขยาย Volume'
-      ])}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('💬','LINE OA Analysis (2 บัญชี)','#06c755')}
-    <div class="fp-body">
-      ${fRow([
-        '<strong>CPC ฿7 ทั้ง 2 บัญชี (Apcocapsules + ByeByeHIV)</strong> — ถูกที่สุดในทุก Platform ของ LIV',
-        'Impressions รวม 1.9M + 1.3M = 3.2M/เดือน — สูงสุดในกลุ่ม APCO',
-        'Clicks รวม 3.6K + 2.3K = 5.9K — Engagement LINE ดีมาก บ่งชี้ว่า Audience ยัง Active',
-        'LINE เป็น Touchpoint ที่มี Trust สูงสำหรับกลุ่ม HIV เพราะ Privacy'
-      ],[
-        'Spend รวม ฿24.6K + ฿15.6K = ฿40.2K — Budget ดี แต่ต้องพิสูจน์ว่า LINE Convert เป็น Order จริงแค่ไหน',
-        'ควรแยก LINE Message Type: ข้อมูล CD4 vs Testimonial vs Offer — วัด CTR และ Conversion แยกกัน',
-        'ลอง Push Broadcast "ข้อเสนอพิเศษ" ไปยัง Contact ที่ Add LINE แล้วแต่ยังไม่ซื้อ — Retarget ราคาถูกมาก'
-      ])}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
-    <div class="fp-body">
-      ${fMomTable(`
-        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿2.08M</td><td class="r">฿2.38M</td><td class="r mom-up">▲ +14.5%</td></tr>
-        <tr><td>Ad Spend รวม</td><td class="r">฿201.9K</td><td class="r">฿199.9K</td><td class="r mom-up">▼ -1.0% (ดีขึ้น)</td></tr>
-        <tr><td><strong>ROAS รวม</strong></td><td class="r">10.29x</td><td class="r">11.93x</td><td class="r mom-up">▲ +15.9%</td></tr>
-        <tr><td>CPL (Cost/ทัก)</td><td class="r">฿212</td><td class="r">฿88</td><td class="r mom-up">▼ -58.5% (ดีขึ้นมาก)</td></tr>
-        <tr><td>จำนวน Orders</td><td class="r">541</td><td class="r">596</td><td class="r mom-up">▲ +10.2%</td></tr>
-        <tr><td>Close Rate รวม</td><td class="r">57.49%</td><td class="r">43.5%</td><td class="r mom-dn">▼ -13.99pp (ต้องแก้)</td></tr>
-        <tr><td>ROAS ลูกค้าใหม่</td><td class="r">0.55x</td><td class="r">0.53x</td><td class="r mom-dn">▼ ยังติดลบ</td></tr>
-        <tr><td>ROAS ลูกค้าเก่า</td><td class="r">9.73x</td><td class="r">11.40x</td><td class="r mom-up">▲ +17.2%</td></tr>
-      `)}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#ef4444')}
-    <div class="fp-body">
-      ${fActionGrid([
-        {color:'#16a34a',icon:'🏆',title:'Scale Winners ทันที',items:[
-          'Reel จัดการเซลล์เชื้อ → Scale +30%/สัปดาห์ (CPP ฿1,697)',
-          'CD4 คืออะไร → Duplicate Ad Set ดู Scalability (CPP ฿647)',
-          'เป้าหมาย: Purchase +30–40% ใน 2 สัปดาห์'
-        ]},
-        {color:'#dc2626',icon:'🛑',title:'Pause Low Performers',items:[
-          'ความก้าวหน้างาน → Pause ทันที (CPP ฿9,157)',
-          'มังคุดเสริมฤทธิ์ → Pause Fix Funnel ก่อน (CPP ฿7,035)',
-          'ประหยัด ~฿23K/เดือน โยกไป Winner'
-        ]},
-        {color:'#2563eb',icon:'🎬',title:'Content Series ใหม่',items:[
-          'Reel: Killer T Cell / Viral Load / ภูมิคุ้มกับ (3 ตอน)',
-          'Testimonial ใหม่ 2–3 คน ป้องกัน Audience Fatigue',
-          'Info Series: "Viral Load คืออะไร" → CD4 → การดูแลตัวเอง'
-        ]},
-        {color:'#d97706',icon:'🎯',title:'Funnel & Audience Fix',items:[
-          'TOFU: เมื่อชีวิตต้องเจอ HIV + คุณมุ่มนิม (CPInbox ต่ำ)',
-          'MOFU: Reel + CD4 → Bridge Awareness → Purchase',
-          'BOFU: Retarget Inbox >7 วัน ด้วย Offer ปิดยอด'
-        ]}
-      ])}
-    </div>
-  </div>
-
-  </div>`;
-
-  // ── Mylife100 ───────────────────────────────────────────
-  if(brand==='Mylife100') return `<div class="findings-wrap">
-
-  <div class="findings-platform">
-    ${fPlatHead('📘','Facebook Ads Analysis','#10b981')}
-    <div class="fp-body">
-      ${fRow([
-        '<strong>FB Purchases 145 ชิ้น — สูงที่สุดในทุกแบรนด์ APCO</strong> (BIM-C 58, LIV 52, Cancino 11) แสดงว่า Creative และ Targeting ของ Mylife100 มีประสิทธิภาพสูงมาก',
-        '<strong>ROAS เพิ่มขึ้น 11.9% MoM</strong> (7.30x → 8.17x) ด้วย Ad Spend เพิ่มขึ้นเพียง 1.3% — ROI ดีขึ้นอย่างมีนัยสำคัญ',
-        'ยอดขายลูกค้าใหม่฿1.05M (+28% MoM จาก ฿819K ก.พ.) — การเติบโตของ New Customer Revenue น่าประทับใจ',
-        'FB MSG 2,753 ราย — สูงอันดับ 2 รองจาก BIM-C แสดงว่า Creative ดึง Engagement ได้ดี'
-      ],[
-        'ยอดขายลูกค้าเก่า฿2.05M เพิ่มจากฐาน 308 คน แต่ Old Customer ROAS ต้องคำนวณเพื่อตรวจ Retention Rate',
-        '<strong>ลูกค้าใหม่ที่ไม่ได้มาจากการแนะนำ ฿481,776 / 86 คน</strong> — Segment นี้สำคัญมาก ต้องวิเคราะห์ว่า Channel ไหนนำเข้ามา เพื่อ Scale ต่อ',
-        'Close Rate Order ใหม่ต้องตรวจสอบ — ถ้า CPL สูงแต่ Close Rate ต่ำ จะกระทบ ROAS ลูกค้าใหม่',
-        'FB Spend ฿310K/เดือน สูงที่สุดในกลุ่มแบรนด์ — ต้องตรวจ Frequency ว่า Audience ยัง Fresh หรือ Fatigue'
-      ])}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('🏆','Top Facebook Content Pattern','#10b981')}
-    <div class="fp-body">
-      <div class="pattern-box">
-        <b>Pattern ที่สังเกตได้จากข้อมูล Mylife100:</b><br>
-        สินค้า Health &amp; Wellness ระดับ Premium มักได้ผลดีกับ Content ที่เน้น <b>① Testimonial ที่น่าเชื่อถือ (ผู้ใช้จริง)</b> + <b>② Social Proof จากผู้เชี่ยวชาญหรือข้อมูลวิทยาศาสตร์</b> + <b>③ ปัญหาที่ชัดเจนก่อนซื้อ</b> — Pattern เดียวกับ BIM-C และ LIV
-      </div>
-      ${fRow([
-        'FB Purchases 145 ชิ้น/เดือนแสดงว่ามี Creative หลายชิ้นที่ทำงานได้ดีพร้อมกัน — Diversified Portfolio ดี',
-        'ยอดขายลูกค้าใหม่ทะลุ ฿1M เป็นครั้งแรก (ตาม Mar data) — Funnel ลูกค้าใหม่กำลังเติบโต',
-        'MSG:Purchase Ratio = 2,753 MSG / 145 Purchase ≈ 19:1 — ดีกว่า BIM-C (2,752/58 ≈ 47:1) แสดงว่า Sales Team ปิดได้มีประสิทธิภาพสูงมาก',
-        'Non-referral Segment (86 คน ฿481K) = AOV ฿5,602/คน — ลูกค้ากลุ่มนี้มีมูลค่าสูง ควร Nurture ต่อเนื่อง'
-      ],[
-        'ควรวิเคราะห์ว่า Content Format ไหน (Video/Image/Reel) ที่ Drive 145 Purchases เพื่อ Scale ต่อ',
-        'ถ้า Audience ใน FB เริ่ม Saturate ให้ขยาย Lookalike จาก Purchasers ที่มีอยู่แล้ว',
-        'ผู้ที่แนะนำ (Referral) vs ไม่แนะนำ — ต้องเข้าใจ Channel Mix เพื่อลงทุน Marketing ได้ถูกต้อง',
-        'ทดสอบ UGC (User Generated Content) จากลูกค้าจริงเพื่อลด CPL และเพิ่ม Authenticity'
-      ])}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
-    <div class="fp-body">
-      ${fRow([
-        '<strong>G Clicks 4,268 — สูงสุดในทุกแบรนด์</strong> แสดงว่า Google Keyword Strategy ของ Mylife100 ครอบคลุมและดึง Traffic ได้มาก',
-        'Conversions 145 จาก Google (เท่ากับ FB Purchases) — Google เป็น Channel หลักที่สร้าง Conversion ร่วมกับ FB',
-        'Spend ฿39.4K — ROI ต่อ Conversion ดีมาก ถ้าคำนวณว่า ~฿272/Conversion เท่านั้น'
-      ],[
-        'ควรตรวจสอบว่า Conversion ที่ Google วัดได้ตรงกับ Actual Sale หรือเป็นแค่ Lead — Attribution ต้องชัดเจน',
-        'ลองเพิ่ม Brand Keywords เช่น "Mylife100 ราคา", "Mylife100 ดีไหม" เพื่อ Capture คนที่ค้นหาแบรนด์โดยตรง',
-        'Search Terms Report ควรตรวจ Negative Keywords เพื่อป้องกัน Budget Waste'
+        '<strong>พึ่ง Keyword เดียว "เพิ่ม cd4" มากกว่า 74% ของ Clicks</strong> — Single Point of Failure ถ้า Google ปรับ Algorithm หรือ CPC เพิ่ม',
+        'Keyword รอง ทั้งหมดได้ 0 Conversion — ต้องเพิ่ม Keyword ใหม่กลุ่ม "hiv ดูแลตัวเอง", "อาหาร hiv", "cd4 ต่ำ" เพื่อ Diversify',
+        'Conv 58 ลดจาก March (conv=58 เท่าเดิม) — Google Stable แต่ไม่ Growth ต้องขยาย'
       ])}
     </div>
   </div>
@@ -958,54 +838,60 @@ function findingsHTML(brand){
     ${fPlatHead('💬','LINE OA Analysis','#06c755')}
     <div class="fp-body">
       ${fRow([
-        '<strong>Impressions 1.83M</strong> — สูงอันดับ 2 รองจาก LIV แสดงว่า LINE OA ของ Mylife100 ยังคง Active และ Reach กว้าง',
-        'Spend ฿29.8K/เดือน — ต้นทุนต่ำมากเทียบกับ Revenue ที่ได้',
-        'LINE เป็น Channel สำคัญสำหรับ Health Products เพราะ Personal Touch และ Trust สูง'
+        '<strong>apcocapsules: 3,807 Clicks, CPC ฿6.30</strong> — Top Ad "ByeByeHIVได้" = 1,922 Clicks คิดเป็น 50% ของ Clicks ทั้งหมด — Pattern ที่ได้ผลชัดเจน',
+        'ByeByeHIV: 2,304 Clicks, CPC ฿6.33 — สม่ำเสมอกับ apcocapsules — LINE สองช่องทางทำงานได้ดีร่วมกัน',
+        'Total LINE: 6,111 Clicks, ฿38,558 — ถูกมากเมื่อเทียบกับ FB ที่ ฿116K สำหรับ 9 Purchase'
       ],[
-        'ต้องวัด Revenue Attribution จาก LINE OA ให้ชัดเจน เพื่อพิสูจน์ ROI',
-        'ทดสอบ LINE Broadcast Segment: แบ่งกลุ่มตาม Purchase History เพื่อ Personalized Message',
-        'เพิ่ม LINE Rich Menu ให้ชัดเจน — Case Study + บทความสุขภาพ + ช่องทางสั่งซื้อ'
+        '<strong>ลูกค้าใหม่จาก LINE เพียง 13 คน ฿35,365</strong> — LINE ยังเป็น Awareness Channel ไม่ใช่ Conversion Channel',
+        '"ByeByeHIVได้" เป็น 50% ของ Clicks แต่ถ้า Fatigue เมื่อไหร่ทั้ง Channel จะกระทบ — ต้องเตรียม Backup Creative',
+        'ควรทำ Retarget ผ่าน LINE ไปยังคนที่เคย Click แต่ไม่ทัก — ตั้ง Custom Audience แยก'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    ${fPlatHead('📊','Month-over-Month Comparison (มี.ค. → เม.ย. 2026)','#6366f1')}
     <div class="fp-body">
       ${fMomTable(`
-        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿2.73M</td><td class="r">฿3.10M</td><td class="r mom-up">▲ +13.6%</td></tr>
-        <tr><td>Ad Spend รวม</td><td class="r">฿374.8K</td><td class="r">฿379.5K</td><td class="r mom-dn">▲ +1.3% (เพิ่มเล็กน้อย)</td></tr>
-        <tr><td><strong>ROAS รวม</strong></td><td class="r">7.30x</td><td class="r">8.17x</td><td class="r mom-up">▲ +11.9%</td></tr>
-        <tr><td>ยอดขายลูกค้าใหม่</td><td class="r">฿819.6K (175 คน)</td><td class="r">฿1.05M (175 คน)</td><td class="r mom-up">▲ +28.1% AOV</td></tr>
-        <tr><td>ยอดขายลูกค้าเก่า</td><td class="r">฿1.91M</td><td class="r">฿2.05M</td><td class="r mom-up">▲ +7.3%</td></tr>
-        <tr><td>FB Purchases</td><td class="r">~130 (ประมาณ)</td><td class="r">145</td><td class="r mom-up">▲ สูงสุดของกลุ่ม</td></tr>
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿2.38M</td><td class="r">฿1.95M</td><td class="r mom-dn">▼ -18.2%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿199.9K</td><td class="r">฿194.9K</td><td class="r mom-up">▼ -2.5% (ดีขึ้น)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">11.93x</td><td class="r">10.01x</td><td class="r mom-dn">▼ -16.1%</td></tr>
+        <tr><td>FB Purchases</td><td class="r">52</td><td class="r">9</td><td class="r mom-dn">▼ -82.7% (วิกฤต)</td></tr>
+        <tr><td>CPL FB (ต่อ Contact)</td><td class="r">฿192</td><td class="r">฿192</td><td class="r mom-neut">– คงเดิม</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">596</td><td class="r">489</td><td class="r mom-dn">▼ -17.9%</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">27 คน</td><td class="r">14 คน</td><td class="r mom-dn">▼ -48.1%</td></tr>
+        <tr><td>G Conv (เพิ่ม cd4)</td><td class="r">44</td><td class="r">43</td><td class="r mom-neut">– คงเดิม (Stable)</td></tr>
       `)}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#10b981')}
+    ${fPlatHead('🚀','Action Plan พฤษภาคม 2026','#7c3aed')}
     <div class="fp-body">
       ${fActionGrid([
-        {color:'#16a34a',icon:'🏆',title:'Scale FB Winners',items:[
-          'ระบุ Top 3 Creative ที่ Drive Purchase มากที่สุด แล้ว Scale Budget +30%',
-          'สร้าง Lookalike 1–3% จาก Purchasers เพื่อขยาย Quality Audience',
-          'เป้า: Purchase ทะลุ 175/เดือน'
+        {color:'#dc2626',icon:'🚨',title:'เร่งด่วน — FB Funnel Recovery',items:[
+          'Reactivate Top Ads จาก March: คุณมุ่มนิม, วินัยคือจุดเริ่มต้น, คุณปีเตอร์ AIDS',
+          'อย่า Retire Creative เก่าทั้งหมดพร้อมกัน — Phase ใน Creative ใหม่ทีละ 20%',
+          'Scale "ทางออก" Theme ที่ได้ผลดีที่สุดเดือนนี้ +50% Budget',
+          'ตั้ง Retarget Campaign สำหรับคนที่เคยทักแต่ไม่ซื้อตลอด 3 เดือน'
         ]},
-        {color:'#2563eb',icon:'🎯',title:'Non-Referral Segment',items:[
-          'วิเคราะห์ Channel ที่นำลูกค้า 86 คน (฿481K) เข้ามา',
-          'Scale Channel นั้นโดยตรง — AOV ฿5.6K/คน คุ้มมากกับ ROAS',
-          'สร้าง Remarketing เฉพาะกลุ่มนี้เพื่อ LTV ยาว'
+        {color:'#2563eb',icon:'🎬',title:'Content Production (พ.ค.)',items:[
+          'ผลิต Testimonial ใหม่ 2–3 คน: เน้น CD4 ขึ้น + ชีวิตดีขึ้น หลังใช้ LIV',
+          'Reel รูปแบบ "ผลตรวจ CD4 ก่อน–หลัง" — สร้าง Trust Signal เชิงตัวเลข',
+          'ทดสอบ Pattern ดร.หน้ากล้อง + งานวิจัย (ยังไม่เคยทดสอบกับ LIV)',
+          'Video Series "Bye Bye HIV" ตอนใหม่ — Build on Existing Concept ที่ชอบ'
         ]},
-        {color:'#d97706',icon:'📊',title:'Google Keyword Expansion',items:[
-          'เพิ่ม Brand Keywords: "Mylife100 ราคา/ดีไหม/ซื้อที่ไหน"',
-          'Expand คำที่เกี่ยวกับ Health Condition ของสินค้า',
-          'ตรวจ Search Terms Report เพิ่ม Negative Keywords'
+        {color:'#d97706',icon:'🔍',title:'Google Expansion',items:[
+          'เพิ่ม Keyword ใหม่: "hiv ดูแลตัวเอง", "cd4 ต่ำ อาการ", "อาหาร hiv"',
+          'ทดสอบ Broad Match "hiv" + Negative Keywords เพื่อ Expand Reach',
+          'เพิ่ม Google Spend ฿10K/เดือน — CPA ฿681 ยังคุ้มค่ามาก',
+          'ตั้ง Remarketing Google Ads สำหรับ Website Visitors'
         ]},
-        {color:'#7c3aed',icon:'💬',title:'LINE OA Optimization',items:[
-          'Segment LINE Contact ตาม Purchase History',
-          'Broadcast Personalized Content รายสัปดาห์',
-          'วัด Revenue Attribution จาก LINE ให้ชัดเจน'
+        {color:'#7c3aed',icon:'💬',title:'LINE Optimization',items:[
+          'สร้าง Backup Creative สำหรับ "ByeByeHIV" ป้องกัน Fatigue',
+          'ทดสอบ Rich Message Format: Card + Call-to-Action Button',
+          'ตั้ง LINE Retarget ไปยังคนที่ Click Ad แต่ไม่เพิ่มเพื่อน',
+          'เชื่อม UTM Tracking จาก LINE → CRM เพื่อ Measure Revenue ได้แม่นยำ'
         ]}
       ])}
     </div>
@@ -1013,102 +899,211 @@ function findingsHTML(brand){
 
   </div>`;
 
-  // ── Cancino ─────────────────────────────────────────────
+  // ── Mylife100 ──────────────────────────────────────────────
+  if(brand==='Mylife100') return `<div class="findings-wrap">
+
+  <div class="findings-platform">
+    ${fPlatHead('📘','Facebook Ads Analysis','#1877f2')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>Top 2 Ads: "Promotion เพื่อคนรักสุขภาพ" = 12 + 10 = 22 Purchases รวม</strong> — Promo Creative ทำงานได้ดีที่สุดในรอบหลายเดือน',
+        '"จากประสบการณ์จริง" — 8 Purchases, CPP ฿2,043 — Testimonial Evergreen ยังทำงานสม่ำเสมอ',
+        'Total FB Purchase 66 ชิ้น — แม้จะลดจาก March แต่ยังมากที่สุดในกลุ่ม 4 แบรนด์',
+        'New Contacts 1,493/เดือน, CPL ฿123/Contact — ต้นทุนดีที่สุดในกลุ่ม'
+      ],[
+        '<strong>FB Purchase ลดจาก 145 → 66 (-54.5%) MoM</strong> — การ Reset Creative ร่วมกับ Songkran ส่งผลชัดเจน',
+        'CPP ฿2,043–฿2,700 สูงกว่า Target ฿1,500 — ต้องปรับ Audience Targeting หรือ Creative',
+        '<strong>ลูกค้าใหม่ลดจาก 175 → 135 (-22.9%)</strong> — อาจเป็น Mylife100 ที่ "ดูดลูกค้าใหม่" ออกมาได้ถึง Saturation Point แล้วในบาง Segment',
+        'Revenue ลดจาก ฿3.10M → ฿2.73M (-12.2%) — ลดน้อยที่สุดในบรรดา 4 แบรนด์ แสดง Base ที่แข็งแกร่ง'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#1877f2')}
+    <div class="fp-body">
+      <div class="pattern-box">
+        <b>April 2026 — Pattern "Promotion + Testimonial" โดดเด่นที่สุด:</b><br>
+        <b>① Promotion/ส่วนลดชัดเจน</b> + <b>② Pain Language วัยทอง/ชะลอวัย</b> + <b>③ Testimonial จริง</b> = สูตรที่ได้ผลดีสุด — Creative ที่ขาด Promotion หรือ Social Proof มักได้ Purchase น้อยกว่าครึ่ง
+      </div>
+      ${fRow([
+        '<strong>Promotion Creative ดีที่สุด:</strong> "Promotion เพื่อคนรักสุขภาพ" 2 Version รวม 22 Purchase — แสดงว่าตลาดยังไวต่อ Promotional Offer มาก',
+        '"จากประสบการณ์จริง" — 8 Purchase, CPP ฿2,043 — Testimonial Format เป็น "Old Reliable" ที่ทำงานได้ทุกเดือน',
+        '"ไม่มีใครอยากแก่" — 4 Purchase แม้ Spend ฿13,408 ถูกเปรียบ — Emotional Hook ยังใช้ได้ดีสำหรับ TOFU',
+        'Creative ทั้ง Top 5 ล้วนเป็น Image format — ยังไม่มี Video/Reel ติด Top 5 = โอกาสขยายตลาด'
+      ],[
+        '<strong>ขาด Video/Reel ใน Top 5</strong> — ทดลอง Reel Format "จากประสบการณ์จริง" version อาจได้ CPP ต่ำกว่า',
+        'Ad "ไม่มีใครอยากแก่" (ก.ค. 68) ยังทำงานได้ทั้งที่เก่ามาก — ควรผลิต Version ใหม่เพื่อ Refresh',
+        'CPP ทุกชิ้นอยู่ที่ ฿2,000–฿3,400 — ถ้าลด CPP ลงสู่ ฿1,500 จะ Double Revenue ได้โดยไม่เพิ่ม Budget',
+        'ลูกค้าใหม่จาก "อื่นๆ" มีมาก (68 Orders ฿392K) — ต้องสอบถาม Source ว่ามาจาก Organic, Referral หรือ Partner'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🔍','Google Ads Analysis','#ea4335')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>Keyword Portfolio ครอบคลุม Anti-aging + Hormonal + Skin Care</strong> — ครอบคลุม Customer Journey หลายจุด',
+        '"telomere" = 20 Conv, "ชะลอวัย" = 10 Conv — Branded Keywords แสดงถึง Awareness ที่เพิ่มขึ้น',
+        'CPA รวม ≈ ฿229/Conv — ถูกมากสำหรับ High-ticket Health Supplement'
+      ],[
+        '<strong>G Spend ลดจาก ฿39,382 → ฿29,266 (-25.7%)</strong> — มีบาง Campaign ถูก Pause — ต้องตรวจว่าเป็นการตัดสินใจที่ถูกต้องหรือไม่',
+        'Total Conv 128 ลดจาก 181 ใน March (-29.3%) — สอดคล้องกับ Spend ที่ลด แต่ควรรักษาระดับ',
+        'Keyword "facial rejuvenation", "aging anti" = Conv แต่ Clicks ต่ำมาก — ต้องเพิ่ม Bid เพื่อให้ได้ Traffic มากขึ้น'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('💬','LINE OA Analysis','#06c755')}
+    <div class="fp-body">
+      ${fRow([
+        '<strong>Top Ad: จัดการต้นเหตุของเนื้อร้าย = 2,724 Clicks</strong> — Message เชิง Problem-Solving ทำงานได้ดีที่สุด',
+        'Total 3,883 Clicks, CPC ฿7.60 — เสถียรดี เป็น Traffic Source ที่ predict ได้',
+        'New Customer จาก LINE 32 Orders ฿207K — LINE สร้าง Revenue จริงได้ดีกว่า BIM-C'
+      ],[
+        'CPC ฿7.60 สูงกว่า LIV (฿6.30) เล็กน้อย — ทดสอบ Audience ใหม่เพื่อลด CPC ลง',
+        'Spend ฿29,516 — เหมาะสม แต่ถ้า Conv Tracking พิสูจน์ได้ชัดขึ้นควรเพิ่ม 20–30%',
+        'Clicks ลดจาก 3,661 (March) → 3,883 (April) ดีขึ้น +6% — สัญญาณดี แต่ยังน้อยกว่าก่อน Songkran'
+      ])}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('📊','Month-over-Month Comparison (มี.ค. → เม.ย. 2026)','#6366f1')}
+    <div class="fp-body">
+      ${fMomTable(`
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿3.10M</td><td class="r">฿2.73M</td><td class="r mom-dn">▼ -12.2%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿379.5K</td><td class="r">฿352.0K</td><td class="r mom-up">▼ -7.2% (ลดลง = ดี)</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">8.17x</td><td class="r">7.74x</td><td class="r mom-dn">▼ -5.3%</td></tr>
+        <tr><td>FB Purchases</td><td class="r">145</td><td class="r">66</td><td class="r mom-dn">▼ -54.5%</td></tr>
+        <tr><td>CPL FB (ต่อ Contact)</td><td class="r">฿123</td><td class="r">฿123</td><td class="r mom-neut">– คงเดิม (ดี)</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">483</td><td class="r">422</td><td class="r mom-dn">▼ -12.6%</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">175 คน</td><td class="r">135 คน</td><td class="r mom-dn">▼ -22.9%</td></tr>
+        <tr><td>G Spend</td><td class="r">฿39,382</td><td class="r">฿29,266</td><td class="r mom-dn">▼ -25.7% (ต้องตรวจสอบ)</td></tr>
+      `)}
+    </div>
+  </div>
+
+  <div class="findings-platform">
+    ${fPlatHead('🚀','Action Plan พฤษภาคม 2026','#7c3aed')}
+    <div class="fp-body">
+      ${fActionGrid([
+        {color:'#16a34a',icon:'🏆',title:'Quick Wins (1–2 สัปดาห์)',items:[
+          'Scale "Promotion เพื่อคนรักสุขภาพ" ทันที +50% Budget',
+          'Restore G Spend กลับสู่ ฿39K — Conv 128 → 181 คาดว่าได้กลับมา',
+          'Retarget คนที่ Engage กับ "ไม่มีใครอยากแก่" ในช่วง 90 วัน',
+          'ทดสอบ Promo "Buy 3 Get 1" เดือน พ.ค. ก่อน Mother\'s Day'
+        ]},
+        {color:'#2563eb',icon:'🎬',title:'Content Production (พ.ค.)',items:[
+          'Reel ใหม่ของ "จากประสบการณ์จริง" — Version วิดีโอ 60 วิ',
+          'ผลิต Testimonial วัยทอง 2 คน — เน้น Before/After ที่วัดผลได้',
+          'ทดสอบ Reel Viral Format: "สิ่งที่ฉันอยากรู้ตอนอายุ 50"',
+          'Short Video: Telomere Science in 30 วิ — สร้าง Credibility'
+        ]},
+        {color:'#d97706',icon:'🔍',title:'Google Optimization',items:[
+          'เพิ่ม Bid บน "facial rejuvenation" และ "aging anti" — High Conv Low Click',
+          'เพิ่ม Keyword ใหม่: "ฮอร์โมนวัยทอง ผู้หญิง", "อาหารต้านวัย"',
+          'ตั้ง Google Display Remarketing ไปยัง Website Visitors',
+          'ทดสอบ Smart Campaign สำหรับ "ชะลอวัย" Keyword Cluster'
+        ]},
+        {color:'#7c3aed',icon:'💬',title:'LINE & Attribution',items:[
+          'ตั้ง UTM Parameter ทุก LINE Ad เพื่อ Track Revenue แม่นยำขึ้น',
+          'ทดสอบ Rich Card Message Format บน LINE',
+          'สอบถาม Source ลูกค้า "อื่นๆ" 68 Orders — อาจเป็น Referral ที่ยังไม่ Track',
+          'สร้าง LINE Follow-up Sequence หลัง Purchase เพื่อเพิ่ม Repeat'
+        ]}
+      ])}
+    </div>
+  </div>
+
+  </div>`;
+
+  // ── Cancino ──────────────────────────────────────────────
   if(brand==='Cancino') return `<div class="findings-wrap">
 
   <div class="findings-platform">
-    ${fPlatHead('📘','Facebook Ads Analysis','#f59e0b')}
+    ${fPlatHead('📘','Facebook Ads Analysis','#1877f2')}
     <div class="fp-body">
       ${fRow([
-        '<strong>ROAS 16.19x — สูงที่สุดในทุกแบรนด์ APCO</strong> และเพิ่มขึ้นจาก 14.81x (+9.3% MoM) ด้วย Spend ที่ลดลง ฿33.1K → ฿30K (-9.4%)',
-        '<strong>ใช้งบเพียง ฿30K/เดือน แต่สร้างรายได้ ฿486K</strong> — Efficiency ที่หาได้ยากมาก น่านำเป็น Best Practice',
-        'ลูกค้าใหม่ 46 คน คงที่ MoM — Stable Acquisition แสดงว่า Creative ยังทำงานได้ดีโดยไม่ต้อง Refresh บ่อย',
-        'Old:New Ratio = 99:46 ≈ 68:32 — สัดส่วนลูกค้าใหม่ดีกว่า BIM-C และ LIV มาก'
+        '<strong>ROAS 12.61x ยังสูงอันดับ 1 แม้จะลดจาก 16.19x</strong> — Budget น้อย Revenue ดี เป็น "Cash Cow" ของ Portfolio',
+        '<strong>Top Ad: พลังสารสกัดจากธรรมชาติ = 8 Purchase, CPP ฿854 ถูกที่สุดในทุกแบรนด์</strong> — Creative นี้เป็น "Golden Ad" ที่ควร Scale',
+        'Promo "3 Free 1" = 3 Purchase, CPP ฿236 — <strong>ถูกสุดของทุก Ad ทุกแบรนด์</strong> Promo Content ทำงานได้ดีมากกับ Cancino',
+        'FB Purchase 23 ชิ้นจาก Budget ฿30K — Efficiency ดีกว่า BIM-C และ Mylife100 มาก'
       ],[
-        '<strong>Revenue ลดลงเล็กน้อย -0.9% MoM</strong> (฿490.3K → ฿486K) ต้องระวังอย่าให้ลดต่อเนื่อง แม้จะยัง Stable',
-        'ยังไม่มี Google Ads และ LINE OA — ถ้าเพิ่ม 2 Channel นี้อาจขยายรายได้ได้อย่างมีนัยสำคัญ',
-        'FB MSG เพียง 221 ราย + Purchases 11 ชิ้น — ฐานเล็ก ถ้า Creative Fatigue จะ Drop ทันที',
-        'ต้องเตรียม Creative ชุดใหม่ทุก 4–6 สัปดาห์ เพราะ Audience Pool อาจแคบ'
+        '<strong>Revenue ลดจาก ฿486K → ฿379K (-22.0%)</strong> — เป็นการลดที่มากที่สุดใน % Revenue เมื่อเทียบกับ Spend คงที่',
+        '<strong>ลูกค้าใหม่ลดจาก 46 → 27 (-41.3%)</strong> — New Customer Pipeline น่ากังวลที่สุดในกลุ่ม',
+        'Revenue ฿379K จาก Budget เพียง ฿30K — ถ้าเพิ่ม Budget ฿50K อาจได้ Revenue เพิ่ม ฿200–300K',
+        'ยังไม่มี Google Ads และ LINE OA — Missing 2 Channels ที่ทุกแบรนด์อื่นใช้'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🏆','Facebook Content Strategy','#f59e0b')}
+    ${fPlatHead('🏆','Top 5 Facebook Content Analysis','#1877f2')}
     <div class="fp-body">
       <div class="pattern-box">
-        <b>จุดแข็งของ Cancino: "ทำน้อยได้มาก"</b><br>
-        ROAS 16x ด้วย Budget เพียง ฿30K/เดือน บ่งชี้ว่า Creative ที่ใช้อยู่ <b>ตรงกลุ่มเป้าหมายมาก</b> และ <b>Audience ยังไม่ Saturate</b> — โอกาสคือการ Scale อย่างระมัดระวัง ไม่ใช่เพิ่ม Budget แบบ Aggressive
+        <b>April 2026 — Cancino Winning Pattern:</b><br>
+        <b>① สารสกัดจากธรรมชาติ</b> (Natural Extract Appeal) + <b>② Promotion/Bundle Offer</b> (Value Proposition) = Purchase Rate สูงสุด — Cancino Customer ตอบสนองต่อ "ธรรมชาติ + คุ้มค่า" มากที่สุด
       </div>
       ${fRow([
-        '<strong>Efficiency สูงที่สุดในกลุ่ม: ฿30K → ฿486K</strong> — ทุก ฿1 ที่ใช้ได้ยอดขายกลับมา ฿16 ซึ่งหาได้ยากมากในตลาด Health Supplement',
-        'FB Purchases 11 ชิ้น จาก MSG 221 ราย = Conversion Rate ≈ 5% — สูงกว่า Industry Average ที่ ~2-3% อย่างชัดเจน',
-        'AOV ต่อ Purchase ≈ ฿44,000 — ถ้าคิดจาก Revenue ÷ Purchases แสดงว่ากลุ่มลูกค้า Cancino ซื้อปริมาณมาก',
-        'ลูกค้าเก่า 99 คน ยอด ฿371K — Loyalty สูง คนซื้อซ้ำ ระบบ CRM น่าจะแข็งแกร่ง'
+        '<strong>พลังสารสกัดธรรมชาติ = 8 Purchase, CPP ฿854</strong> — Best CPP ของทุกแบรนด์ทุกเดือน ควร Scale ทันที +100% Budget',
+        '"3 Free 1" Promo = 3 Purchase, CPP ฿236 — <strong>ถูกที่สุด!</strong> Promo Bundle ทำงานได้ดีอย่างเหนือความคาดหมาย',
+        'สเต็มเซลล์/เซลล์ต้นกำเนิด = 3 Purchase, CPP ฿1,237 — Science Content ยังทำงานได้ดี',
+        'เนื้อหาที่ได้ผลล้วนเชื่อมโยงกับ "สาร + กลไกธรรมชาติ" — สอดคล้องกับ Brand Positioning'
       ],[
-        '<strong>อย่า Scale Budget เร็วเกินไป</strong> — ROAS สูงเพราะ Audience แคบและ Targeting แม่น ถ้า Audience กว้างขึ้น ROAS จะลด',
-        'ทดสอบ Scale +20–30% ก่อน ดูว่า ROAS ยังรักษาระดับ 12x+ ได้ไหม',
-        'ต้องเตรียม Creative ชุดสำรองเสมอ — ถ้า Fatigue แล้วไม่มี Creative ใหม่ รายได้จะหายทันที',
-        'เริ่มทดสอบ Google Search Ads เบาๆ เพื่อ Capture Intent-based Traffic เพิ่มเติม'
+        'ยังไม่มี Creative ที่ใช้ดร.หรืองานวิจัย — ทุกแบรนด์ที่ทำแล้วได้ Conversion ดีขึ้น 2–3 เท่า',
+        'ควรผลิต Reel/Video Format ที่ยังไม่เคยลอง — Ad ปัจจุบันทั้งหมดเป็น Image',
+        'ไม่มี Testimonial ใน Top 5 — เพิ่ม Real Customer Story อาจ Lower CPP ลงได้',
+        'Budget ฿30K ต่ำเกินไปสำหรับ Portfolio ที่มี ROAS 12x — ควรเพิ่ม Budget เป็น 2 เท่า'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🔍','Google &amp; LINE Opportunity','#ea4335')}
-    <div class="fp-body">
-      <div class="pattern-box" style="background:#fffbeb;border-color:#fcd34d;color:#92400e">
-        <b>⚡ โอกาสที่ยังไม่ได้ใช้:</b> Cancino ยังไม่มี Google Ads และ LINE OA เลย ในขณะที่ 3 แบรนด์อื่นใช้ทั้ง 2 Channel นี้ — การเพิ่ม Channel ใหม่สามารถขยายรายได้ได้โดยไม่กระทบ ROAS ของ Facebook
-      </div>
-      ${fRow([
-        'Google Search Ads เหมาะมากสำหรับ Cancino — คนที่ค้นหา Keyword เฉพาะมี Intent ชัด Close Rate สูงกว่า FB',
-        'LINE OA ช่วย Nurture Leads หลังจาก Inbox FB แล้ว — Cost ต่ำมาก เป็น Retention Channel ที่ดี',
-        'ถ้า Google + LINE เพิ่ม Revenue อีก 20% จาก Base ฿486K = รายได้เพิ่ม ~฿97K/เดือน'
-      ],[
-        'เริ่ม Google ด้วย Budget เล็ก ฿5–10K ทดสอบ Brand + Product Keywords ก่อน',
-        'LINE OA ให้เริ่มสร้าง Official Account และ Rich Menu ก่อน Build Audience ให้ครบ',
-        'ระวัง Cannibalization — ต้องวัด Incrementality ว่า Google/LINE เพิ่ม New Revenue จริงหรือแค่ย้าย Attribution'
-      ])}
-    </div>
-  </div>
-
-  <div class="findings-platform">
-    ${fPlatHead('📊','Month-over-Month Comparison (ก.พ. → มี.ค. 2026)','#6366f1')}
+    ${fPlatHead('📊','Month-over-Month Comparison (มี.ค. → เม.ย. 2026)','#6366f1')}
     <div class="fp-body">
       ${fMomTable(`
-        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿490.3K</td><td class="r">฿486.0K</td><td class="r mom-dn">▼ -0.9% (Stable)</td></tr>
-        <tr><td>Ad Spend รวม</td><td class="r">฿33.1K</td><td class="r">฿30.0K</td><td class="r mom-up">▼ -9.4% (ดีขึ้น)</td></tr>
-        <tr><td><strong>ROAS รวม</strong></td><td class="r">14.81x</td><td class="r">16.19x</td><td class="r mom-up">▲ +9.3% — สูงสุดทุกแบรนด์!</td></tr>
-        <tr><td>ลูกค้าใหม่</td><td class="r">46 คน</td><td class="r">46 คน</td><td class="r mom-neut">– คงที่</td></tr>
-        <tr><td>ลูกค้าเก่า</td><td class="r">~99 คน</td><td class="r">99 คน</td><td class="r mom-neut">– คงที่</td></tr>
-        <tr><td>FB Purchases</td><td class="r">–</td><td class="r">11</td><td class="r mom-neut">–</td></tr>
+        <tr><td><strong>ยอดขายรวม</strong></td><td class="r">฿486K</td><td class="r">฿379K</td><td class="r mom-dn">▼ -22.0%</td></tr>
+        <tr><td>Ad Spend รวม</td><td class="r">฿30,014</td><td class="r">฿30,078</td><td class="r mom-neut">– คงเดิม</td></tr>
+        <tr><td><strong>ROAS รวม</strong></td><td class="r">16.19x</td><td class="r">12.61x</td><td class="r mom-dn">▼ -22.1%</td></tr>
+        <tr><td>FB Purchases</td><td class="r">11</td><td class="r">23</td><td class="r mom-up">▲ +109% (ดีมาก)</td></tr>
+        <tr><td>CPL (ต่อ Contact)</td><td class="r">–</td><td class="r">฿94</td><td class="r mom-neut">– (เริ่มวัดได้)</td></tr>
+        <tr><td>จำนวน Orders</td><td class="r">145</td><td class="r">113</td><td class="r mom-dn">▼ -22.1%</td></tr>
+        <tr><td>ลูกค้าใหม่</td><td class="r">46 คน</td><td class="r">27 คน</td><td class="r mom-dn">▼ -41.3%</td></tr>
+        <tr><td>Channels ที่ใช้</td><td class="r">FB เท่านั้น</td><td class="r">FB เท่านั้น</td><td class="r mom-dn">– ยังขาด G/LINE</td></tr>
       `)}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🚀','Action Plan — เมษายน 2026','#f59e0b')}
+    ${fPlatHead('🚀','Action Plan พฤษภาคม 2026','#7c3aed')}
     <div class="fp-body">
       ${fActionGrid([
-        {color:'#16a34a',icon:'🏆',title:'รักษา ROAS ระดับ 16x',items:[
-          'อย่าเพิ่ม Budget เร็วเกินไป ทดสอบ +20% ก่อนดู ROAS',
-          'Refresh Creative ทุก 4 สัปดาห์ป้องกัน Fatigue',
-          'Scale อย่างช้าๆ เป้าหมาย Revenue ฿550K ต่อเดือน'
+        {color:'#16a34a',icon:'🏆',title:'Quick Wins (1–2 สัปดาห์)',items:[
+          'Scale "พลังสารสกัดธรรมชาติ" +100% Budget ทันที — CPP ฿854 ทำกำไรได้ชัด',
+          'เปิด "3 Free 1" Promo Campaign อีกครั้ง — CPP ฿236 ดีที่สุดทุกแบรนด์',
+          'เพิ่ม Budget จาก ฿30K → ฿60K เพื่อทดสอบ Scale ที่ ROAS 12x',
+          'Reactivate Testimonial Ads ที่เคยทำงานดีใน March'
         ]},
-        {color:'#2563eb',icon:'🔍',title:'ทดสอบ Google Search Ads',items:[
-          'Budget ฿5–8K เดือนแรก ทดสอบ Brand + Product Terms',
-          'วัด CPA ก่อน Scale ถ้า CPA < ฿1,000 ให้ Scale ต่อ',
-          'Target: เพิ่มรายได้ 10–15% จาก Google channel ใหม่'
+        {color:'#2563eb',icon:'🆕',title:'New Channel Launch (พ.ค.)',items:[
+          'เปิด Google Ads Budget ฿10K — ทดสอบ Keyword "cancino", "ภูมิสมดุล ราคา"',
+          'สร้าง LINE OA Account — เริ่ม Build Friends Base ผ่าน Facebook Lead',
+          'ตั้ง LINE Campaign Budget ฿5K ทดสอบ เพิ่มช่องทาง Remarketing',
+          'ทดสอบ Google DSA (Dynamic Search Ads) เพื่อ Capture Long-tail Intent'
         ]},
-        {color:'#059669',icon:'💬',title:'เริ่มต้น LINE OA',items:[
-          'สร้าง Official Account + Rich Menu พร้อมใช้',
-          'Build Audience จาก FB Inbox → Add LINE',
-          'ทดสอบ Broadcast ข้อมูลสินค้า + Offer รายเดือน'
+        {color:'#d97706',icon:'🎬',title:'Content Production (พ.ค.)',items:[
+          'ผลิต Video: "ดร.อธิบายสารสกัดธรรมชาติ" — เพิ่ม Credibility',
+          'Reel 30 วิ: "Before/After ใช้ Cancino 3 เดือน" — เน้น Outcome',
+          'Testimonial ใหม่ 2 คน — Real Story เป็น Key Missing Element',
+          'ภาพ Infographic: "ธรรมชาติ + วิทยาศาสตร์ = Cancino" — Positioning Content'
         ]},
-        {color:'#7c3aed',icon:'🤝',title:'Strengthen Retention',items:[
-          'สร้าง Loyalty Program สำหรับลูกค้าเก่า 99 คน',
-          'เพิ่ม AOV ด้วยการ Bundle หรือ Subscription Model',
-          'Target LTV: เพิ่ม Avg Purchase Frequency จาก 1x → 1.5x/ปี'
+        {color:'#7c3aed',icon:'📊',title:'Strategic Growth',items:[
+          'เพิ่ม Budget ทุกเดือน 20% ถ้า ROAS ยังสูงกว่า 10x — ไม่มีเหตุผลที่จะไม่ Scale',
+          'Target Revenue ฿600K พ.ค. ด้วย Budget ฿60K — Possible ที่ ROAS 10x',
+          'ตั้งเป้า New Customer 50 คน/เดือน เพื่อ Build Recurring Revenue Base',
+          'สร้าง Loyalty Program เพื่อรักษา Repeat Purchase Rate ที่สูง'
         ]}
       ])}
     </div>
@@ -1116,28 +1111,29 @@ function findingsHTML(brand){
 
   </div>`;
 
-  return `<div class="card" style="padding:16px;color:var(--text3)">ไม่มีข้อมูล Findings สำหรับแบรนด์นี้</div>`;
+  return `<div class="card" style="padding:20px;color:var(--text3);font-size:12px">ไม่มีข้อมูล Findings สำหรับ ${brand}</div>`;
 }
 
-// ════════════════════════════════════════════════
-// FINDINGS OVERVIEW (all brands summary)
-// ════════════════════════════════════════════════
 function findingsOverviewHTML(){
   return `<div class="findings-wrap">
 
   <div class="findings-platform">
-    ${fPlatHead('📊','ภาพรวม APCO — มีนาคม 2026 vs กุมภาพันธ์ 2026','#8b5cf6')}
+    ${fPlatHead('📊','ภาพรวม APCO — เมษายน 2026 vs มีนาคม 2026','#8b5cf6')}
     <div class="fp-body">
       <div class="mom-table-wrap"><table class="mom-table">
-        <thead><tr><th>แบรนด์</th><th class="r">ROAS ก.พ.</th><th class="r">ROAS มี.ค.</th><th class="r">เปลี่ยนแปลง</th><th class="r">Revenue มี.ค.</th><th class="r">สัดส่วน</th></tr></thead>
+        <thead><tr><th>แบรนด์</th><th class="r">ROAS มี.ค.</th><th class="r">ROAS เม.ย.</th><th class="r">เปลี่ยนแปลง</th><th class="r">Revenue เม.ย.</th><th class="r">สัดส่วน</th></tr></thead>
         <tbody>
-          <tr><td><strong>BIM-C</strong></td><td class="r">5.50x</td><td class="r">6.16x</td><td class="r mom-up">▲ +12.0%</td><td class="r">฿3.63M</td><td class="r">37.8%</td></tr>
-          <tr><td><strong>LIV</strong></td><td class="r">10.29x</td><td class="r">11.93x</td><td class="r mom-up">▲ +15.9%</td><td class="r">฿2.38M</td><td class="r">24.8%</td></tr>
-          <tr><td><strong>Mylife100</strong></td><td class="r">7.30x</td><td class="r">8.17x</td><td class="r mom-up">▲ +11.9%</td><td class="r">฿3.10M</td><td class="r">32.3%</td></tr>
-          <tr><td><strong>Cancino</strong></td><td class="r">14.81x</td><td class="r">16.19x</td><td class="r mom-up">▲ +9.3%</td><td class="r">฿486K</td><td class="r">5.1%</td></tr>
-          <tr style="background:#f8faff"><td><strong>รวม APCO</strong></td><td class="r"><strong>7.09x</strong></td><td class="r"><strong>8.01x</strong></td><td class="r mom-up"><strong>▲ +13.0%</strong></td><td class="r"><strong>฿9.61M</strong></td><td class="r">100%</td></tr>
+          <tr><td><strong>BIM-C</strong></td><td class="r">6.16x</td><td class="r">4.90x</td><td class="r mom-dn">▼ -20.5%</td><td class="r">฿2.98M</td><td class="r">37.1%</td></tr>
+          <tr><td><strong>LIV</strong></td><td class="r">11.93x</td><td class="r">10.01x</td><td class="r mom-dn">▼ -16.1%</td><td class="r">฿1.95M</td><td class="r">24.3%</td></tr>
+          <tr><td><strong>Mylife100</strong></td><td class="r">8.17x</td><td class="r">7.74x</td><td class="r mom-dn">▼ -5.3%</td><td class="r">฿2.73M</td><td class="r">33.9%</td></tr>
+          <tr><td><strong>Cancino</strong></td><td class="r">16.19x</td><td class="r">12.61x</td><td class="r mom-dn">▼ -22.1%</td><td class="r">฿379K</td><td class="r">4.7%</td></tr>
+          <tr style="background:#f8faff"><td><strong>รวม APCO</strong></td><td class="r"><strong>8.01x</strong></td><td class="r"><strong>6.78x</strong></td><td class="r mom-dn"><strong>▼ -15.4%</strong></td><td class="r"><strong>฿8.04M</strong></td><td class="r">100%</td></tr>
         </tbody>
       </table></div>
+      <div class="pattern-box" style="margin-top:10px;background:#fff8f0;border-color:#f97316;">
+        <b>🌊 Songkran Holiday Impact (13–15 เม.ย.) — ปัจจัยหลักที่ดึง Revenue ลง:</b><br>
+        3 วันหยุดยาว Songkran ทำให้ทุกแบรนด์มี Revenue = ฿0 ประมาณการสูญเสีย <b>฿700K–900K</b> (Daily Avg × 3 วัน) — หากตัดผลกระทบ Songkran ออก ROAS Portfolio เมษายนจะอยู่ที่ประมาณ <b>7.5x–8.0x</b> ใกล้เคียงมีนาคม
+      </div>
     </div>
   </div>
 
@@ -1145,16 +1141,15 @@ function findingsOverviewHTML(){
     ${fPlatHead('🔑','Key Findings — มุมมองนักการตลาดออนไลน์ 10+ ปี','#1e40af')}
     <div class="fp-body">
       ${fRow([
-        '<strong>ทุกแบรนด์ ROAS ดีขึ้น MoM พร้อมกัน</strong> — บ่งชี้ว่า Platform Algorithm เอื้ออำนวยในช่วง มี.ค. หรือ Creative Quality โดยรวมดีขึ้น ไม่ใช่โชค',
-        '<strong>Revenue รวมเพิ่ม ฿952K (+11% MoM)</strong> ด้วย Ad Spend ที่ลดลง ฿20K — Efficiency Portfolio ดีขึ้นจริง',
-        'Cancino (ROAS 16x) พิสูจน์ว่า "Budget น้อย + Targeting แม่น = ผลลัพธ์ดีได้" — Model นี้น่านำมาใช้กับแบรนด์อื่น',
-        'Mylife100 FB Purchase 145 ชิ้น — Sales Team ปิดได้มีประสิทธิภาพสูงที่สุด MSG:Sale ≈ 19:1 ดีกว่า BIM-C (47:1)',
-        'LIV CPL ลด -58% MoM — การเปลี่ยนเป็น Reel + Testimonial ได้ผลชัดเจน บทเรียนนี้ควรถ่ายทอดให้ BIM-C'
+        '<strong>BIM-C FB Purchase พุ่ง 58→96 (+65.5%)</strong> — เพจ1 (Killer T Cell) ปรับ Campaign Objective ได้ผลทันที 53 Purchases ในเดือนแรก นี่คือ Breakthrough ที่สำคัญที่สุดของเดือน',
+        '<strong>Mylife100 Revenue +฿626K (+25.6% MoM)</strong> — New Customer เพิ่มจาก 83 → 135 ชัดเจน Promotion Creative + "สูตรโปรฝาก LINE" ทำงานได้ดีมาก',
+        'Cancino ROAS 12.61x ด้วย Spend เพียง ฿30K — Efficiency สูงสุดในพอร์ต Budget น้อยแต่เลือก Targeting แม่นได้ผล',
+        'Ad Spend รวม ฿1.19M เท่าเดิม (มี.ค. ฿1.20M) — Revenue ลดมาจาก Songkran ไม่ใช่ Budget ลดหรือ Platform เสีย'
       ],[
-        '<strong>ลูกค้าใหม่ทุกแบรนด์ยัง ROAS ติดลบ</strong> (BIM-C 0.88x, LIV 0.53x) — กลยุทธ์ CAC ต้องปรับ ต้องวาง Retention Plan ให้ชัดเพื่อ LTV ยาว',
-        'New Orders รวมลดจาก 377 → 356 (-5.6% MoM) แม้ Revenue รวมเพิ่ม — บ่งชี้ว่า Growth มาจาก Old Customer Repeat ไม่ใช่ New Customer Acquisition',
-        'Killer T Cell Page (BIM-C) ใช้ ฿135K แต่ Purchase 0 — Budget Waste ที่ชัดเจนที่สุดใน Portfolio ทั้งหมด',
-        'Cancino ยังไม่มี Google + LINE — โอกาสขยาย Revenue โดยไม่กระทบ ROAS FB ที่ดีอยู่แล้ว'
+        '<strong>LIV FB Purchase ดิ่ง 52→9 (-82.7%) ต้องแก้ด่วน</strong> — Creative Reset ทั้งหมดในคราวเดียวทำให้ Algorithm สูญเสีย Signal สำคัญ ต้องนำ Creative เก่าที่เคยทำงานดีกลับมา',
+        'New Customer รวมลด 356→254 (-28.7%) — Songkran เป็นส่วนหนึ่ง แต่ LIV FB Crash คือปัจจัยหลัก',
+        'ลูกค้าใหม่ทุกแบรนด์ยัง ROAS ติดลบ (CAC > First Order Value) — ต้องวาง Retention Flow ให้ชัดเพื่อให้ LTV Cover CAC ใน 3 เดือน',
+        'BIM-C เพจ2 (ภูมิสมดุล BIM) Spend ฿320K แต่ Purchase น้อยกว่าเพจ1 — ควรทบทวน Budget Allocation เพจ1 vs เพจ2'
       ])}
     </div>
   </div>
@@ -1163,19 +1158,19 @@ function findingsOverviewHTML(){
     ${fPlatHead('📘','Facebook Ads — Cross-Brand Analysis','#1877f2')}
     <div class="fp-body">
       <div class="pattern-box">
-        <b>Universal Pattern ที่ขายได้ข้ามทุกแบรนด์ Health Supplement/HIV:</b><br>
-        <b>① ผู้เชี่ยวชาญหน้ากล้อง (ดร./ผู้ติดเชื้อจริง)</b> + <b>② Pain Language ที่คนไข้พูดได้เอง</b> + <b>③ หลักฐานทางวิทยาศาสตร์/ผลตรวจ</b> = สูตรที่ขายได้สม่ำเสมอในทุกเดือน
+        <b>April 2026 — Winning Pattern ข้ามแบรนด์ที่พิสูจน์แล้ว:</b><br>
+        <b>① Promotion Creative (3Free1, ส่วนลด, ของแถม)</b> + <b>② Social Proof (ผลตรวจ, ใบรับรองแพทย์, Testimonial)</b> + <b>③ Objective = Purchases (ไม่ใช่ Message)</b> = สูตรที่ขายได้สูงสุดใน April 2026
       </div>
       ${fRow([
-        'BIM-C: Operation BIM Research Album (11 Pur) — Credibility Content สูงสุด',
-        'LIV: Reel วิทยาศาสตร์ชะลอโรค (7 Pur, CPP ฿1,697) — Educational + Emotional',
-        'Mylife100: Purchase 145 (สูงสุด) — Multiple Winners Portfolio',
-        'Cancino: Budget น้อยสุด แต่ ROAS สูงสุด — Precision Targeting'
+        'BIM-C เพจ1 53 Purchases ในเดือนแรก — การเปลี่ยน Objective เป็น Conversion พิสูจน์แล้วว่าได้ผล',
+        'Mylife100: "สูตรโปรฝาก LINE" 47 Msg + "Promotion Telomere" — Top Creative ของแบรนด์ในเดือนนี้',
+        'Cancino: ROAS 12.61x ด้วย "สารสกัดธรรมชาติ CPP ฿854" และ "3Free1 CPP ฿236" สม่ำเสมอ',
+        'LIV: ต้องนำ Winning Creative จากมีนาคม (Reel วิทยาศาสตร์ + Testimonial คุณมุ่มนิม) กลับมาทันที'
       ],[
-        'แนะนำทุกแบรนด์: สร้าง "Pillar Content" ดร.หน้ากล้อง 1 ชิ้น/เดือน เป็น BOFU หลัก',
-        'Rotate Creative ทุก 3–4 สัปดาห์ป้องกัน Audience Fatigue โดยเฉพาะ LIV และ Cancino ที่ Audience แคบ',
-        'ลงทุน Video Production ดร.เพิ่มขึ้น — ROI ต่อการลงทุนสร้างคอนเทนต์ได้ผลชัดเจนที่สุด',
-        'Test Short-form Reel (30–60 วิ) ทุกแบรนด์ — LIV พิสูจน์แล้วว่าให้ CPP ดีที่สุด'
+        'แนะนำทุกแบรนด์: อย่า Reset Creative ทั้งหมดพร้อมกัน — เปลี่ยนทีละ 1–2 ชิ้น ทิ้ง Winning ไว้เสมอ',
+        'Scale เพจ1 BIM-C ต่อเนื่อง ลด Budget เพจ2 ลง 20–30% เพื่อทดสอบ Efficiency',
+        'Mylife100: เตรียม Promotion Creative สำหรับ Mother\'s Day / Workaholics Day พฤษภาคม',
+        'Cancino: Budget ยังน้อย (฿30K) — ทดสอบเพิ่ม 50% เพื่อดู Scalability ของ ROAS 12x'
       ])}
     </div>
   </div>
@@ -1184,15 +1179,15 @@ function findingsOverviewHTML(){
     ${fPlatHead('🔍','Google Ads — Cross-Brand Analysis','#ea4335')}
     <div class="fp-body">
       ${fRow([
-        '<strong>LIV: "เพิ่ม cd4" — 44 Conv จาก 2,660 Clicks</strong> — High-Intent Keyword ที่มีประสิทธิภาพสูงสุดทั้งพอร์ต',
-        'BIM-C: "รักษา มะเร็ง" (78 Conv) + "ภูมิคุ้มกัน บำบัด ราคา" (73 Conv) — 2 Keywords หลักที่ควร Maximize',
-        'Mylife100 G Clicks 4,268 — Traffic สูงสุด แสดงว่า Keyword Coverage ดี',
-        'Google รวม 927 Conversions/เดือน — Channel ที่ Complement Facebook ได้ดี (High Intent vs Awareness)'
+        '<strong>BIM-C: "รักษา มะเร็ง" 92 Conv, "ภูมิสมดุล มะเร็ง" 38 Conv</strong> — High-Intent Keywords ที่ Convert ได้สม่ำเสมอ ควร Maximize Bid',
+        'BIM-C G Clicks 13,957 — Traffic จาก Search สูงที่สุดในพอร์ต Google ทำงานดีมาก',
+        'LIV: "เพิ่ม cd4" 43 Conv ยังแข็งแกร่ง — LIV Search Intent สม่ำเสมอแม้ FB จะ Crash',
+        'Mylife100: "telomere" 20 Conv + "ชะลอวัย" 10 Conv — Keyword Coverage ดี รองรับ Anti-Aging Trend'
       ],[
-        'Cancino ยังไม่มี Google — โอกาสเพิ่ม Revenue ที่ Low-Risk ที่สุด ควรเริ่มทดสอบ',
-        'ทุกแบรนด์ควรตรวจ "Keywords ที่ Click สูงแต่ Convert ต่ำ" และเพิ่ม Negative Keywords',
-        'Landing Page Optimization สำคัญมาก — CTR สูงแต่ Conv ต่ำ = Landing Page ไม่ Match Intent',
-        'Google Search Brand Terms ทุกแบรนด์ควรทำเพื่อ Protect Brand และ Convert High-Intent Traffic'
+        'Cancino ยังไม่มี Google — Low-Risk Channel ที่ควรเริ่มทดสอบ Budget ฿5–10K/เดือน',
+        'LIV Google Cost ลด (฿39K เม.ย. vs สูงกว่านั้นใน มี.ค.) — ควรรักษา Spend ระดับนี้ขณะ FB Recovery',
+        'ทุกแบรนด์: ตรวจ Search Terms Report หา Negative Keywords ลด Wasted Spend',
+        'BIM-C: ทดสอบ Display/YouTube Remarketing สำหรับ Visitors ที่ไม่ Convert ใน Search'
       ])}
     </div>
   </div>
@@ -1201,42 +1196,46 @@ function findingsOverviewHTML(){
     ${fPlatHead('💬','LINE OA — Cross-Brand Analysis','#06c755')}
     <div class="fp-body">
       ${fRow([
-        'LINE OA ทั้ง 3 แบรนด์มี CPC ต่ำมาก (฿7–9) — Channel ที่ Cost-Effective ที่สุดสำหรับ Retention',
-        'LIV มี Impressions LINE สูงสุด 3.2M/เดือน (รวม 2 บัญชี) — แสดงว่า LINE Audience ของ HIV Product กว้างมาก',
-        'BIM-C LINE 1.5M Impr, Mylife100 1.83M Impr — ทั้งคู่ Active สม่ำเสมอ',
-        'LINE ทำหน้าที่ Retention + Remarketing ที่ Facebook ทำได้ยากกว่าเพราะ CPM สูงกว่า'
+        'LIV LINE 2 บัญชี รวม CPC ฿6.30–6.33 — ต้นทุนต่ำที่สุดในพอร์ต LINE Audience ของ HIV Product กว้างมาก',
+        'BIM-C LINE CPC ฿9.97, Impr 1.71M — Active สม่ำเสมอ ช่วย Retain ลูกค้าเก่าในช่วง Songkran',
+        'Mylife100 LINE CPC ฿7.60, Impr 2.46M — ช่วย Support Sales ช่วงวันหยุดที่ FB อาจไม่เห็น',
+        'LINE ทำหน้าที่ Retention + Remarketing ที่ช่วย Soften ผลกระทบ Songkran ได้บางส่วน'
       ],[
-        'ต้องตั้ง Conversion Tracking บน LINE ทุกแบรนด์ — ตอนนี้ยังไม่ชัดว่า LINE สร้าง Revenue เท่าไหร่จริงๆ',
-        'Cancino ไม่มี LINE — เพิ่มและใช้เป็น Retention Tool หลังจาก Facebook Lead เข้ามา',
-        'แนะนำทุกแบรนด์: LINE Broadcast ประจำสัปดาห์ + Content Calendar สม่ำเสมอ'
+        'ต้องตั้ง Conversion Tracking บน LINE ทุกแบรนด์ — ยังไม่สามารถ Attribute Revenue ได้ชัดเจน',
+        'Cancino ไม่มี LINE — ควรเริ่ม LINE OA เพื่อ Follow-up ลูกค้าที่มาจาก FB และ Reduce Churn',
+        'แนะนำ LINE Broadcast รายสัปดาห์: Educational Content + Soft Promotion + CTA ชัดเจน',
+        'LIV: ใช้ LINE ส่ง ByeByeHIV Content เพื่อ Warm Audience ขณะ FB Creative Recovery'
       ])}
     </div>
   </div>
 
   <div class="findings-platform">
-    ${fPlatHead('🚀','Portfolio Action Plan — เมษายน 2026','#8b5cf6')}
+    ${fPlatHead('🚀','Portfolio Action Plan — พฤษภาคม 2026','#8b5cf6')}
     <div class="fp-body">
       ${fActionGrid([
-        {color:'#16a34a',icon:'🏆',title:'Quick Wins (1–2 สัปดาห์)',items:[
-          'BIM-C: Pause Killer T Cell Page ชั่วคราว โยก Budget ฿135K ไป BIM Page',
-          'LIV: Scale Reel วิทยาศาสตร์ +30%, Retarget 458 Inbox จาก Testimonial คุณมุ่มนิม',
-          'Mylife100: ระบุ Top 3 Creative แล้ว Scale ทันที',
-          'รวมประหยัดงบ Waste + Scale Winners คาดเพิ่ม Revenue 15–20%'
+        {color:'#dc2626',icon:'🚨',title:'เร่งด่วน (สัปดาห์แรก)',items:[
+          'LIV: นำ Winning Creative มี.ค. (Reel วิทยาศาสตร์ + Testimonial) กลับมาทันที',
+          'LIV: อย่า Reset Ad Sets ทั้งหมดพร้อมกัน — เปิด Creative ใหม่ใน Ad Set เดิม',
+          'LIV: เพิ่ม Budget Google ฿10K ชดเชย FB ขณะรอ Recovery',
+          'BIM-C: Pause เพจ2 Creative ที่ CPP > ฿2,000 ทันที'
         ]},
-        {color:'#2563eb',icon:'🎬',title:'Content Production (เดือน เม.ย.)',items:[
-          'ผลิต คลิปดร.ใหม่ทุกแบรนด์ อย่างน้อยแบรนด์ละ 1–2 ชิ้น',
-          'LIV: Testimonial ใหม่ 2–3 คน ป้องกัน Fatigue',
-          'ทุกแบรนด์: Short-form Reel 30–60 วิ Format ทดสอบ'
+        {color:'#16a34a',icon:'🏆',title:'Scale Winners (2 สัปดาห์แรก)',items:[
+          'BIM-C เพจ1: เพิ่ม Budget +50% (จาก ฿140K → ฿210K) — Conversion Objective พิสูจน์แล้ว',
+          'Mylife100: Scale "สูตรโปรฝาก LINE" และ "Promotion Telomere" +30%',
+          'Cancino: เพิ่ม Budget ฿30K→฿45K ทดสอบ Scalability ROAS 12x',
+          'รวมคาดเพิ่ม Revenue 15–20% ด้วย Spend ไม่เพิ่มมาก'
         ]},
-        {color:'#d97706',icon:'📊',title:'Analytics & Attribution (เดือน เม.ย.)',items:[
-          'ตั้ง UTM Tracking บน LINE ทุกแบรนด์',
-          'Setup Google Analytics Goal Tracking ให้ครบ',
-          'Report ROAS per Channel รายสัปดาห์ เพื่อ Optimize Budget Real-time'
+        {color:'#2563eb',icon:'🎬',title:'Content Production (พ.ค.)',items:[
+          'LIV: ผลิต Testimonial ใหม่ 3 คน (ห้ามหยุด Production ระหว่าง Recovery)',
+          'BIM-C: ดร.หน้ากล้อง เพจ1 ชิ้นใหม่ + Before/After ผลตรวจ',
+          'Mylife100: Mother\'s Day / Anti-Aging Promotion Creative พ.ค.',
+          'ทุกแบรนด์: Short-form Reel 30–60 วิ สำหรับ May Campaign'
         ]},
-        {color:'#7c3aed',icon:'🆕',title:'New Channel Tests',items:[
-          'Cancino: เริ่ม Google Ads Budget ฿5K ทดสอบ',
-          'Cancino: สร้าง LINE OA เริ่ม Build Audience',
-          'ทุกแบรนด์: ทดสอบ TikTok Ads สำหรับ Health Audience กลุ่มอายุ 35–55'
+        {color:'#7c3aed',icon:'📈',title:'Growth Initiatives (พ.ค.)',items:[
+          'Cancino: เริ่ม Google Ads ฿5K ทดสอบ "cancino supplement" + Brand Keywords',
+          'Cancino: สร้าง LINE OA และ Broadcast ครั้งแรก',
+          'ตั้ง UTM Tracking + LINE Conversion บนทุกแบรนด์',
+          'ทุกแบรนด์: เตรียม Campaign สำหรับ วันแม่ 12 สิงหาคม (ล่วงหน้า 3 เดือน)'
         ]}
       ])}
     </div>
@@ -1244,6 +1243,7 @@ function findingsOverviewHTML(){
 
   </div>`;
 }
+
 
 // ════════════════════════════════════════════════
 // RENDER MAIN CONTENT
@@ -1308,7 +1308,7 @@ function renderMain(){
     <div class="sh">💡 Findings &amp; Suggestions</div>
     <div id="findingsSection"></div>
 
-    <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
+    <div class="footer">APCO Ads &amp; Sales Report | April 2026 | AO MEDIA</div>
   `;
 
   // fill in HTML blocks
@@ -1722,7 +1722,7 @@ function renderOverview(){
   main.innerHTML=`
   <!-- ① SUMMARY -->
   <div class="ov-section">
-    <div class="ov-head summary">📊 สรุปภาพรวม — มีนาคม 2026</div>
+    <div class="ov-head summary">📊 สรุปภาพรวม — เมษายน 2026</div>
     <div class="ov-body">
       <div class="ov-grid">
         ${st('ค่าโฆษณารวม',fmtM(T.spend),'FB + Google + LINE','#8b5cf6')}
@@ -1838,7 +1838,7 @@ function renderOverview(){
   <div class="sh">💡 Findings &amp; Suggestions — ภาพรวมทั้ง 4 แบรนด์</div>
   <div id="ovFindingsSection"></div>
 
-  <div class="footer">APCO Ads &amp; Sales Report | March 2026 | AO MEDIA</div>
+  <div class="footer">APCO Ads &amp; Sales Report | April 2026 | AO MEDIA</div>
   `;
 
   // ── DRAW CHARTS ──
